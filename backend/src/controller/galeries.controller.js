@@ -1,13 +1,13 @@
-const galeriesService = require('../services/galeries.services.js');
+const galeriesService = require('../services/db/galeries.services.js');
 
 class GaleriesController {
   async getGaleries(req, res, next) {
     try {
       const {page, limit} = req.query;
 
-      const books = await galeriesService.getGaleries(query, page, limit, type);
+      const galeries = await galeriesService.getGaleries(page, limit);
       
-      res.status(200).json(books);
+      res.status(200).json(galeries);
     } catch (error) {
       next(error);
     }

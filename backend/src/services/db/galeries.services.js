@@ -1,12 +1,14 @@
 const FlibustaAPI = require('flibusta').default;
+const db = require('../../db/models/index');
+
+const Galery = db.Galery;
 
 class GaleriesService {
-  async getGaleries(query, page, limit) {
-    const flibustaApi = new FlibustaAPI();
+  async getGaleries(page, limit) {
 
-    const books = await flibustaApi.getBooksByNameFromOpdsPaginated(query, page, limit);
+    const galeries = await Galery.findAll({ offset: page*limit, limit });
 
-    return books;
+    return galeries;
   }
 
   // async getBooksByAuthor(id, page, limit) {
