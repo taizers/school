@@ -1,4 +1,4 @@
-module.exports = (sequelize, DataTypes) => {
+export default (sequelize, DataTypes) => {
   const Storage = sequelize.define(
     'storage',
     {
@@ -22,8 +22,8 @@ module.exports = (sequelize, DataTypes) => {
   );
 
   Storage.associate = (models) => {
-    Storage.belongsTo(models.Storagegroup, { onDelete: 'cascade', foreignKey: "group_id", });
-    Storage.belongsTo(models.User, { onDelete: 'cascade', foreignKey: "creator_id", });
+    Storage.belongsTo(models.Storagegroup, { foreignKey: "group_id", });
+    Storage.belongsTo(models.User, { foreignKey: "creator_id", });
   };
 
   return Storage;

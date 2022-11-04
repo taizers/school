@@ -1,4 +1,4 @@
-module.exports = (sequelize, DataTypes) => {
+export default (sequelize, DataTypes) => {
   const News = sequelize.define(
     'news',
     {
@@ -19,7 +19,7 @@ module.exports = (sequelize, DataTypes) => {
   );
 
   News.associate = (models) => {
-    News.belongsTo(models.User, { onDelete: 'cascade', foreignKey: "creator_id", });
+    News.belongsTo(models.User, { foreignKey: "creator_id", });
   };
 
   return News;

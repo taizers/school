@@ -1,31 +1,32 @@
 'use strict';
 
+// eslint-disable-next-line no-undef
 module.exports = {
   up: (queryInterface) => {
     return queryInterface.bulkInsert(
       'users',
       [
         {
-          name: 'test1',
+          username: 'test1',
           email: 'test1@mail',
-          password: 'test1',
-          activationlink: 'bhrfrthy6thgrfrth',
+          password: '1234',
+          avatar: '3rty6ytety544ter',
           created_at: new Date(),
           updated_at: new Date(),
         },
         {
-          name: 'test2',
+          username: 'test2',
           email: 'test2@mail',
-          password: 'test2',
-          activationlink: 'y7brver65r6tn7t7',
+          password: '1234',
+          avatar: '2rty6ytety544ter',
           created_at: new Date(),
           updated_at: new Date(),
         },
         {
-          name: 'test3',
+          username: 'test3',
           email: 'test3@mail',
-          password: 'test3',
-          activationlink: 'tb7trv7e4ev6bnt7',
+          password: '1234',
+          avatar: '1rty6ytety544ter',
           created_at: new Date(),
           updated_at: new Date(),
         },

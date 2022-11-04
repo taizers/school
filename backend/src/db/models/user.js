@@ -1,25 +1,22 @@
-module.exports = (sequelize, DataTypes) => {
+export default (sequelize, DataTypes) => {
   const User = sequelize.define(
     'user',
     {
       password: {
         type: DataTypes.STRING,
-        allowNull: false,
+        allowNull: true,
+        defaultValue: null,
       },
-      first_name: {
+      username: {
         type: DataTypes.STRING,
         allowNull: true,
         defaultValue: null,
       },
-      last_name: {
-        type: DataTypes.STRING,
+      email: {
         allowNull: true,
         defaultValue: null,
-      },
-      family: {
+        unique: true,
         type: DataTypes.STRING,
-        allowNull: true,
-        defaultValue: null,
       },
       avatar: {
         type: DataTypes.STRING,
@@ -39,18 +36,19 @@ module.exports = (sequelize, DataTypes) => {
       activationkey: {
         type: DataTypes.STRING,
         allowNull: false,
+        unique: true,
       },
     }
   );
 
   User.associate = (models) => {
-    User.hasOne(models.Token, { onDelete: 'cascade' });
-    User.belongsTo(models.Group, { onDelete: 'cascade', foreignKey: "group_id" });
-    User.hasMany(models.Galery, { onDelete: 'cascade' });
-    User.hasMany(models.Comment, { onDelete: 'cascade' });
-    User.hasMany(models.News, { onDelete: 'cascade' });
-    User.hasMany(models.Storage, { onDelete: 'cascade' });
-    User.hasMany(models.Page, { onDelete: 'cascade' });
+    User.hasOne(models.Token, { onDelete: 'cascade', foreignKey: "owner_id" });
+    User.belongsTo(models.Group, { foreignKey: "group_id", as: 'users' });
+    User.hasMany(models.Galery, { foreignKey: "creator_id" });
+    User.hasMany(models.Comment, { foreignKey: "creator_id" });
+    User.hasMany(models.News, { foreignKey: "creator_id" });
+    User.hasMany(models.Storage, { foreignKey: "creator_id" });
+    User.hasMany(models.Page, { foreignKey: "creator_id" });
   };
 
   return User;

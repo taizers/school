@@ -1,3 +1,4 @@
+/* eslint-disable no-undef */
 'use strict';
 
 module.exports = {
@@ -9,28 +10,49 @@ module.exports = {
         primaryKey: true,
         type: Sequelize.DataTypes.INTEGER,
       },
-      name: {
+      group_id: {
+        allowNull: true,
+        references: {
+          model: 'groups',
+          key: 'id',
+        },
+        type: Sequelize.DataTypes.INTEGER,
+      },
+      username: {
         allowNull: true,
         defaultValue: null,
         type: Sequelize.DataTypes.STRING,
       },
       email: {
-        allowNull: false,
+        allowNull: true,
+        defaultValue: null,
         unique: true,
         type: Sequelize.DataTypes.STRING,
       },
-      password: {
-        allowNull: false,
+      avatar: {
         type: Sequelize.DataTypes.STRING,
-      },
-      isactivated: {
-        type: Sequelize.DataTypes.BOOLEAN,
         allowNull: true,
         defaultValue: null,
       },
-      activationlink: {
+      post: {
+        type: Sequelize.DataTypes.STRING,
+        allowNull: true,
+        defaultValue: null,
+      },
+      role: {
         type: Sequelize.DataTypes.STRING,
         allowNull: false,
+        defaultValue: 'user',
+      },
+      activationkey: {
+        type: Sequelize.DataTypes.STRING,
+        allowNull: false,
+        unique: true,
+      },
+      password: {
+        allowNull: true,
+        defaultValue: null,
+        type: Sequelize.DataTypes.STRING,
       },
       created_at: {
         allowNull: false,
@@ -38,11 +60,6 @@ module.exports = {
       },
       updated_at: {
         allowNull: false,
-        type: Sequelize.DataTypes.DATE,
-      },
-      deleted_at: {
-        allowNull: true,
-        defaultValue: null,
         type: Sequelize.DataTypes.DATE,
       },
     });

@@ -1,8 +1,8 @@
-module.exports = (sequelize, DataTypes) => {
+export default (sequelize, DataTypes) => {
   const Galeryphoto = sequelize.define(
     'galeryphoto',
     {
-      photo: {
+      name: {
         type: DataTypes.STRING,
         allowNull: false,
       },
@@ -10,7 +10,7 @@ module.exports = (sequelize, DataTypes) => {
   );
 
   Galeryphoto.associate = (models) => {
-    Galeryphoto.belongsTo(models.Galery, { onDelete: 'cascade', foreignKey: "galery_id", });
+    Galeryphoto.belongsTo(models.Galery, { foreignKey: "galery_id", });
   };
 
   return Galeryphoto;

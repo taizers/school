@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-var-requires */
+/* eslint-disable no-undef */
 require('dotenv').config();
 const { Sequelize, DataTypes } = require('sequelize');
 const fs = require('fs');
@@ -27,6 +29,8 @@ const sequelize = new Sequelize(process.env.DATABASE_URL, {
   define: {
     timestamps: true,
     underscored: true,
+    createdAt: 'created_at',
+    updatedAt: 'updated_at',
   },
 });
 
@@ -37,7 +41,10 @@ fs.readdirSync(__dirname)
     );
   })
   .forEach((file) => {
-    const model = require(path.join(__dirname, file))(sequelize, DataTypes);
+    const model = require(path.join(__dirname, file)).default(
+      sequelize,
+      DataTypes
+    );
     const modelName = model.name.charAt(0).toUpperCase() + model.name.slice(1);
     db[modelName] = model;
   });

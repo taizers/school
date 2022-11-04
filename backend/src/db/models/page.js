@@ -1,4 +1,4 @@
-module.exports = (sequelize, DataTypes) => {
+export default (sequelize, DataTypes) => {
   const Page = sequelize.define(
     'page',
     {
@@ -14,8 +14,8 @@ module.exports = (sequelize, DataTypes) => {
   );
 
   Page.associate = (models) => {
-    Page.belongsTo(models.User, { onDelete: 'cascade', foreignKey: "creator_id", });
-    Page.belongsToMany(models.Page, { onDelete: 'cascade', as: 'subpage', through: 'subpages' });
+    Page.belongsTo(models.User, {  foreignKey: "creator_id", });
+    Page.belongsToMany(models.Page, {  as: 'subpage', through: 'subpages' });
   };
 
   return Page;

@@ -1,8 +1,8 @@
-module.exports = (sequelize, DataTypes) => {
+export default (sequelize, DataTypes) => {
   const Token = sequelize.define(
     'token',
     {
-      refreshtoken: {
+      refresh_token: {
         type: DataTypes.TEXT,
         allowNull: false,
       },
@@ -10,7 +10,7 @@ module.exports = (sequelize, DataTypes) => {
   );
 
   Token.associate = (models) => {
-    Token.belongsTo(models.User, { onDelete: 'cascade', foreignKey: "user_id",});
+    Token.belongsTo(models.User, { onDelete: 'cascade', foreignKey: "owner_id",});
   };
 
   return Token;

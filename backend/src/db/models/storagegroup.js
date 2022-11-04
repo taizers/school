@@ -1,4 +1,4 @@
-module.exports = (sequelize, DataTypes) => {
+export default (sequelize, DataTypes) => {
   const Storagegroup = sequelize.define(
     'storagegroup',
     {
@@ -10,7 +10,7 @@ module.exports = (sequelize, DataTypes) => {
   );
 
   Storagegroup.associate = (models) => {
-    Storagegroup.hasMany(models.Storage, { onDelete: 'cascade' });
+    Storagegroup.hasMany(models.Storage, { foreignKey: "group_id", });
   };
 
   return Storagegroup;
