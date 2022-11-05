@@ -42,6 +42,19 @@ export const findUser = async (where: object) => {
   return dtosUser;
 };
 
+export const findPaginatedUsers = async (page:  number, limit: number) => {
+  const { count, rows } = await User.findAndCountAll({
+    offset: page * limit,
+    row: true,
+    attributes: {
+      exclude: ['password']
+    },
+    order: [['created_at', 'DESC']],
+  });
+
+  return { totalPages: Math.ceil(count / limit), page: page + 1, users: rows };
+};
+
 export const findUsers = async (where: object) => {
   const users = await User.findAll({
     where,

@@ -7,7 +7,6 @@ import {
   logoutAction,
 } from '../controllers/auth.controller';
 import {
-  searchMembersAction,
   uploadUserAvatarAction,
 } from '../controllers/users.controller';
 // import {
@@ -15,17 +14,13 @@ import {
 //   getProjectsStatisticAction,
 //   getUserProjectsAction,
 // } from '../controllers/news.controller';
-import {
-  getAssignedTasksAction,
-  getMemberTasksAction,
-  getProjectTasksAction,
-  getUserTasksAction,
-  uploadTaskAttachmentAction,
-} from '../controllers/tasks.controller';
-import {
-  getTaskCommentsAction,
-  uploadCommentAttachmentAction,
-} from '../controllers/comments.controller';
+// import {
+//   getAssignedTasksAction,
+//   getMemberTasksAction,
+//   getProjectTasksAction,
+//   getUserTasksAction,
+//   uploadTaskAttachmentAction,
+// } from '../controllers/tasks.controller';
 import {
   getAdministartionGroupAction,
   getGroupsListAction,
@@ -36,17 +31,16 @@ import {
   loginValidation,
   cookiesValidation,
 } from '../validations/auth.validation';
-import { paramsIdValidation } from '../validations/global.validation';
-import { uploadCommentAttachmentValidation } from '../validations/comments.validation';
-import { uploadTaskAttachmentValidation } from '../validations/tasks.validation';
+// import { paramsIdValidation } from '../validations/global.validation';
 
 import galeriesRouter from './galeries.routes';
 import groupsRouter from './groups.routes';
 import pagesRouter from './pages.routes';
 import newsRouter from './news.routes';
-import tasksRouter from './tasks.routes';
 import commentsRouter from './comments.routes';
 import usersRouter from './users.routes';
+import storageGroupsRouter from './storage-groups.routes';
+import storageRouter from './storages.routes';
 
 import {
   uploadAvatarMiddleware,
@@ -81,36 +75,36 @@ router.post('/sign-out', cookiesValidation, logoutAction);
 
 // Get Relations
 
-router.get(
-  '/project-tasks/:id',
-  verifyToken,
-  paramsIdValidation,
-  getProjectTasksAction
-);
-router.get(
-  '/assigned-tasks/:id',
-  verifyToken,
-  paramsIdValidation,
-  getAssignedTasksAction
-);
-router.get(
-  '/tasks-comments/:id',
-  verifyToken,
-  paramsIdValidation,
-  getTaskCommentsAction
-);
-router.get(
-  '/participate-in-tasks/:id',
-  verifyToken,
-  paramsIdValidation,
-  getMemberTasksAction
-);
-router.get(
-  '/user-tasks/:id',
-  verifyToken,
-  paramsIdValidation,
-  getUserTasksAction
-);
+// router.get(
+//   '/project-tasks/:id',
+//   verifyToken,
+//   paramsIdValidation,
+//   getProjectTasksAction
+// );
+// router.get(
+//   '/assigned-tasks/:id',
+//   verifyToken,
+//   paramsIdValidation,
+//   getAssignedTasksAction
+// );
+// router.get(
+//   '/tasks-comments/:id',
+//   verifyToken,
+//   paramsIdValidation,
+//   getTaskCommentsAction
+// );
+// router.get(
+//   '/participate-in-tasks/:id',
+//   verifyToken,
+//   paramsIdValidation,
+//   getMemberTasksAction
+// );
+// router.get(
+//   '/user-tasks/:id',
+//   verifyToken,
+//   paramsIdValidation,
+//   getUserTasksAction
+// );
 // router.get(
 //   '/user-projects/:id',
 //   verifyToken,
@@ -135,20 +129,13 @@ router.get(
 
 // Upload Files
 
-router.post(
-  '/tasks-attachments',
-  verifyToken,
-  uploadGaleryMiddleware.array('files'),
-  uploadTaskAttachmentValidation,
-  uploadTaskAttachmentAction
-);
-router.post(
-  '/files',
-  verifyToken,
-  uploadFilesMiddleware.single('file'),
-  uploadCommentAttachmentValidation,
-  uploadCommentAttachmentAction
-);
+// router.post(
+//   '/tasks-attachments',
+//   verifyToken,
+//   uploadGaleryMiddleware.array('files'),
+//   uploadTaskAttachmentValidation,
+//   uploadTaskAttachmentAction
+// );
 router.post(
   '/users-avatar',
   verifyToken,
@@ -170,9 +157,10 @@ router.get('/groups-list', verifyToken, getGroupsListAction);
 
 router.use('/galeries', verifyToken, galeriesRouter);
 router.use('/groups', verifyToken, groupsRouter);
+router.use('/storage', verifyToken, storageRouter);
+router.use('/storage-groups', verifyToken, storageGroupsRouter);
 router.use('/pages', verifyToken, pagesRouter);
 router.use('/news', verifyToken, newsRouter);
-router.use('/tasks', verifyToken, tasksRouter);
 router.use('/comments', verifyToken, commentsRouter);
 router.use('/users', verifyToken, usersRouter);
 

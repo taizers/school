@@ -4,7 +4,7 @@ export default (sequelize, DataTypes) => {
       type: DataTypes.STRING,
       allowNull: false,
     },
-    link: {
+    name: {
       type: DataTypes.STRING,
       allowNull: false,
     },
@@ -13,7 +13,7 @@ export default (sequelize, DataTypes) => {
       allowNull: false,
     },
     size: {
-      type: DataTypes.STRING,
+      type: DataTypes.NUMBER,
       allowNull: false,
     },
   });

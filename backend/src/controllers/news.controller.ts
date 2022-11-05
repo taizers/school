@@ -20,6 +20,8 @@ export const createNewsAction = async (
   const { id } = req.user;
   const { path } = req.file;
 
+  console.log(req.file);
+
   logger.info(
     `Create News Action: { title: ${title}, content: ${content}, userId: ${id}, path: ${path}, created_at: ${created_at} } `
   );

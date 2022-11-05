@@ -12,16 +12,32 @@ module.exports = {
       },
       type: {
         allowNull: false,
-        type: Sequelize.DataTypes.STRING(10),
+        type: Sequelize.DataTypes.STRING(15),
       },
       name: {
         allowNull: false,
         type: Sequelize.DataTypes.STRING,
       },
+      title: {
+        allowNull: false,
+        type: Sequelize.DataTypes.STRING,
+      },
+      size: {
+        allowNull: false,
+        type: Sequelize.DataTypes.NUMBER,
+      },
       storagegroup_id: {
         allowNull: false,
         references: {
           model: 'storagegroups',
+          key: 'id',
+        },
+        type: Sequelize.DataTypes.INTEGER,
+      },
+      creator_id: {
+        allowNull: false,
+        references: {
+          model: 'users',
           key: 'id',
         },
         type: Sequelize.DataTypes.INTEGER,

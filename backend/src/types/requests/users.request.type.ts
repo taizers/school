@@ -6,6 +6,13 @@ export interface SearchMembersRequest extends Request {
   };
 }
 
+export interface GetUsersRequest extends Request {
+  query: {
+    page: string;
+    limit: string;
+  };
+}
+
 export interface createUserRequest extends Request {
   body: {
     username?: string;

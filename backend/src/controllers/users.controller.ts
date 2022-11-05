@@ -1,5 +1,6 @@
 import { NextFunction, Response } from 'express';
 import {
+  findPaginatedUsers,
   findUser,
   findUsers,
   updateUser,
@@ -12,6 +13,7 @@ import { UnProcessableEntityError } from '../helpers/error';
 import {
   SearchMembersRequest,
   createUserRequest,
+  GetUsersRequest,
 } from '../types/requests/users.request.type';
 import { ParamsIdRequest } from '../types/requests/global.request.type';
 import uuid = require('uuid');
@@ -27,6 +29,25 @@ export const getUserAction = async (
 
   try {
     const users: any = await findUser({ id });
+
+    return customResponse(res, 200, users);
+  } catch (err) {
+    logger.error('Get User Action - Cannot get users', err);
+    next(err);
+  }
+};
+
+export const getUsersAction = async (
+  req: GetUsersRequest,
+  res: Response,
+  next: NextFunction
+) => {
+  const { page, limit } = req.query;
+
+  logger.info(`Get User Action: { page: ${page}, limit: ${limit} } `);
+
+  try {
+    const users = await findPaginatedUsers(Number(page) - 1, Number(limit));
 
     return customResponse(res, 200, users);
   } catch (err) {

@@ -1,20 +1,15 @@
 // eslint-disable-next-line @typescript-eslint/no-var-requires
-const { Comment, Commentattachment } = require('../../db/models/index');
+const { Comment, User } = require('../../db/models/index');
 import {
   EntityNotFoundError,
   ResourceNotFoundError,
   DontHaveAccessError,
 } from '../../helpers/error';
-import {
-  CommentAttachmentType,
-  CommentFromDBType,
-} from '../../types/entities/global.entities.type';
-
-import CommentAttachmentDto from '../../dtos/comment-attachment.dto';
 
 export const checkComment = async (
   id: number | string,
-  userId?: number | string
+  userId?: number | string,
+  role?: string
 ) => {
   const comment = await Comment.findByPk(id);
 
@@ -22,17 +17,9 @@ export const checkComment = async (
     throw new ResourceNotFoundError('Comment');
   }
 
-  if (userId && comment.owner_id !== userId) {
+  if ((userId && (comment.cretor_id !== userId)) && (role && (role !== 'admin'))) {
     throw new DontHaveAccessError();
   }
-};
-
-const convertAttchmentsInComment = (comment: CommentFromDBType) => {
-  const dtosAttachments = comment?.attachments?.map(
-    (attachment: CommentAttachmentType) => new CommentAttachmentDto(attachment)
-  );
-
-  return { ...comment.dataValues, attachments: dtosAttachments };
 };
 
 export const createComment = async (payload: object) => {
@@ -55,32 +42,19 @@ export const deleteComment = async (id: string) => {
   }
 };
 
-export const findComments = async (where: object) => {
+export const findComments = async (page: number, limit: number) => {
   const comments = await Comment.findAll({
-    where,
+    offset: page * limit,
+    limit,
     include: [
       {
-        model: Commentattachment,
-        as: 'attachments',
+        model: User,
+        as: 'user',
+        attributes: ['username', 'avatar', 'id'],
       },
     ],
+    order: [['created_at', 'DESC']],
   });
 
-  const resultComments = comments?.map((comment: CommentFromDBType) =>
-    convertAttchmentsInComment(comment)
-  );
-
-  return resultComments;
-};
-
-export const uploadCommentAttachement = async (payload: object) => {
-  let attachment;
-
-  try {
-    attachment = await Commentattachment.create(payload);
-  } catch (error) {
-    throw new ResourceNotFoundError('Comment');
-  }
-
-  return new CommentAttachmentDto(attachment);
+  return comments;
 };

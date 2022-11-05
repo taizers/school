@@ -92,9 +92,9 @@ export const refreshAction = async (
   logger.info(`Refresh Action: { refresh_token: ${refresh_token} }`);
 
   try {
-    const userSession: UserSessionType = await refresh(refresh_token);
+    const userSession: any = await refresh(refresh_token);
 
-    res.cookie('refresh_token', userSession.refresh_token, {
+    res.cookie('refresh_token', userSession.user_session.refresh_token, {
       maxAge: Number(process.env.JWT_REFRESH_MAX_AGE) * 1000,
       httpOnly: true,
       secure: false,

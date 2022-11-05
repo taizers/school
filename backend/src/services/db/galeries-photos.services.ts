@@ -1,31 +1,8 @@
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const { Galeryphoto } = require('../../db/models/index');
-import path from 'path';
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const fs = require('fs').promises;
 import { EntityNotFoundError } from '../../helpers/error';
-
-// export const getChecklistId = async (id: number | string) => {
-//   const checklistitem = await Checklistitem.findByPk(id);
-
-//   if (!checklistitem) {
-//     throw new EntityNotFoundError(id.toString(), 'ChecklistItemModel');
-//   }
-
-//   return checklistitem.checklist_id;
-// };
-
-// export const createGaleryPhoto = async (payload: object) => {
-//   let galeriesPhoto;
-
-//   try {
-//     galeriesPhoto = await Galeryphoto.create(payload);
-//   } catch (error) {
-//     throw new Error('Фото не создано');
-//   }
-
-//   return galeriesPhoto;
-// };
 
 export const createGaleryPhotos = async (payload: object) => {
   let galeryPhotos;
@@ -33,27 +10,26 @@ export const createGaleryPhotos = async (payload: object) => {
   try {
     galeryPhotos = await Galeryphoto.bulkCreate(payload);
   } catch (error) {
-    console.log(error);
     throw new Error('Фото не созданы');
   }
 
   return galeryPhotos;
 };
 
-export const deleteGaleryPhoto = async (id: string) => {
-  const result = await Galeryphoto.destroy({ where: { id } });
-
-  if (result === 0) {
-    throw new EntityNotFoundError(id, 'Фото');
-  }
-};
-
 export const deleteGaleryPhotos = async (ids: Array<string>) => {
-  const result = await Galeryphoto.destroy({ where: { id: ids } });
+  await Promise.all(
+    ids.map(async item => {
+      const photo = await Galeryphoto.findOne({ where: { id: item }, attributes: ['name'] });
 
-  if (result === 0) {
-    throw new EntityNotFoundError(ids.join(' '), 'Фото');
-  }
+      await fs.unlink(photo.name);
+
+      const result = await Galeryphoto.destroy({ where: { id: item } });
+
+      if (result === 0) {
+        throw new EntityNotFoundError(item, 'Фото');
+      }
+    })
+  );
 };
 
 export const deleteGalerysPhotos = async (id: number) => {

@@ -4,7 +4,6 @@ export const createCommentValidation = validate(
   {
     body: Joi.object({
       content: Joi.string().required().max(1024),
-      task_id: Joi.number().required(),
     }),
   },
   {
@@ -15,11 +14,11 @@ export const createCommentValidation = validate(
   }
 );
 
-export const uploadCommentAttachmentValidation = validate(
+export const getCommentsValidation = validate(
   {
-    body: Joi.object({
-      type: Joi.string().max(10).required(),
-      comment_id: Joi.string().required(),
+    params: Joi.object({
+      page: Joi.number().required(),
+      limit: Joi.number().required(),
     }),
   },
   {
@@ -29,3 +28,4 @@ export const uploadCommentAttachmentValidation = validate(
     stripUnknown: true,
   }
 );
+

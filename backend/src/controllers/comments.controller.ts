@@ -1,39 +1,32 @@
-import { NextFunction, Response } from 'express';
+import { NextFunction, Response, Request } from 'express';
 import {
   findComments,
   createComment,
   deleteComment,
-  uploadCommentAttachement,
   checkComment,
 } from '../services/db/comments.services';
 import { customResponse } from '../helpers/responce';
-import { UnProcessableEntityError } from '../helpers/error';
-import { ParamsIdRequest } from '../types/requests/global.request.type';
 import logger from '../helpers/logger';
-import { checkTask } from '../services/db/tasks.services';
 
 export const createCommentAction = async (
   req: any,
   res: Response,
   next: NextFunction
 ) => {
-  const { content, task_id } = req.body;
+  const { content } = req.body;
   const { id } = req.user;
 
   logger.info(
     `Create Comment Action: { 
       content: ${content}, 
-      task_id: ${task_id},
       userId: ${id} 
     } `
   );
 
   try {
-    await checkTask(task_id);
     const comment = await createComment({
       content,
-      task_id,
-      owner_id: id,
+      creator_id: id,
     });
 
     return customResponse(res, 200, comment);
@@ -49,12 +42,12 @@ export const deleteCommentAction = async (
   next: NextFunction
 ) => {
   const { id } = req.params;
-  const { id: userId } = req.user;
+  const { id: userId, role } = req.user;
 
   logger.info(`Delete Comment Action: { id: ${id} } `);
 
   try {
-    await checkComment(id, userId);
+    await checkComment(id, userId, role);
     await deleteComment(id);
 
     return customResponse(res, 200, { id });
@@ -64,54 +57,21 @@ export const deleteCommentAction = async (
   }
 };
 
-export const getTaskCommentsAction = async (
-  req: ParamsIdRequest,
+export const getCommentsAction = async (
+  req: Request,
   res: Response,
   next: NextFunction
 ) => {
-  const { id } = req.params;
+  const { page, limit } = req.params;
 
-  logger.info(`Get Task Comments Action: { id: ${id} } `);
+  logger.info('Get Comments Action');
 
   try {
-    await checkTask(id);
-    const comments = await findComments({ task_id: id });
+    const comments = await findComments(Number(page) - 1, Number(limit));
 
     return customResponse(res, 200, comments);
   } catch (err) {
-    logger.error('Get Task Comments Action - Cannot get comments', err);
-    next(err);
-  }
-};
-
-export const uploadCommentAttachmentAction = async (
-  req: any,
-  res: Response,
-  next: NextFunction
-) => {
-  if (!req.file) {
-    return next(new UnProcessableEntityError('File Not Found'));
-  }
-
-  const { comment_id, type } = req.body;
-  const { path } = req.file;
-  const { id } = req.user;
-
-  logger.info(
-    `Upload Comment Attachment Action: { comment_id: ${comment_id}, type: ${type}, path: ${path} } `
-  );
-
-  try {
-    await checkComment(comment_id, id);
-    const attachment = await uploadCommentAttachement({
-      comment_id,
-      type,
-      name: path,
-    });
-
-    return customResponse(res, 200, attachment);
-  } catch (err) {
-    logger.error('Upload Comment Attachment Action - Cannot get comments', err);
+    logger.error('Get Comments Action - Cannot get comments', err);
     next(err);
   }
 };
