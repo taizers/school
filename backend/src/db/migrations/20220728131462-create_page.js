@@ -18,6 +18,15 @@ module.exports = {
         },
         type: Sequelize.DataTypes.INTEGER,
       },
+      mainpage_id: {
+        allowNull: true,
+        defaultValue: null,
+        references: {
+          model: 'pages',
+          key: 'id',
+        },
+        type: Sequelize.DataTypes.INTEGER,
+      },
       title: {
         allowNull: false,
         type: Sequelize.DataTypes.STRING,

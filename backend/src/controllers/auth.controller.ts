@@ -1,10 +1,6 @@
 import { NextFunction, Response } from 'express';
 import bcrypt from 'bcrypt';
-import {
-  login,
-  refresh,
-  logout,
-} from '../services/db/auth.services';
+import { login, refresh, logout } from '../services/db/auth.services';
 import { customResponse } from '../helpers/responce';
 import { getUser, updateUser } from '../services/db/users.services';
 import {
@@ -46,7 +42,7 @@ export const signUpAction = async (
   const encryptedPassword = await bcrypt.hash(password, 10);
 
   try {
-    user = await updateUser(user.id,{
+    user = await updateUser(user.id, {
       email,
       password: encryptedPassword,
     });
@@ -58,7 +54,6 @@ export const signUpAction = async (
   }
 };
 
-
 export const loginAction = async (
   req: loginRequest,
   res: Response,
@@ -69,7 +64,10 @@ export const loginAction = async (
   logger.info(`Login Action: { email: ${email}, password: ${password} }`);
 
   try {
-    const userSession: {user_session: UserSessionType;} = await login(email, password);
+    const userSession: { user_session: UserSessionType } = await login(
+      email,
+      password
+    );
 
     res.cookie('refresh_token', userSession.user_session.refresh_token, {
       maxAge: Number(process.env.JWT_REFRESH_MAX_AGE) * 1000,

@@ -9,14 +9,12 @@ import {
 import {
   searchMembersAction,
   uploadUserAvatarAction,
-  getUserStatisticAction,
 } from '../controllers/users.controller';
 import {
   searchProjectAction,
   getProjectsStatisticAction,
   getUserProjectsAction,
 } from '../controllers/projects.controller';
-// import { getUserChecklistsAction } from '../controllers/checklists.controller';
 import {
   getAssignedTasksAction,
   getMemberTasksAction,
@@ -28,7 +26,10 @@ import {
   getTaskCommentsAction,
   uploadCommentAttachmentAction,
 } from '../controllers/comments.controller';
-import { getAdministartionGroupAction, getGroupsListAction } from '../controllers/groups.controller';
+import {
+  getAdministartionGroupAction,
+  getGroupsListAction,
+} from '../controllers/groups.controller';
 
 import {
   signUpValidation,
@@ -42,7 +43,7 @@ import { uploadTaskAttachmentValidation } from '../validations/tasks.validation'
 
 import galeriesRouter from './galeries.routes';
 import groupsRouter from './groups.routes';
-// import checklistItemsRouter from './checklist-items.routes';
+import pagesRouter from './pages.routes';
 import projectsRouter from './projects.routes';
 import tasksRouter from './tasks.routes';
 import commentsRouter from './comments.routes';
@@ -127,12 +128,6 @@ router.get(
 // Get Statistics
 
 router.get(
-  '/users-statistics/:id',
-  verifyToken,
-  paramsIdValidation,
-  getUserStatisticAction
-);
-router.get(
   '/projects-statistics/:id',
   verifyToken,
   paramsIdValidation,
@@ -164,32 +159,18 @@ router.post(
 
 // Get Files
 
-router.use(
-  '/avatars',
-  express.static('files/avatars')
-);
-router.use(
-  '/galeries-image',
-  express.static('files/galeries')
-);
+router.use('/avatars', express.static('files/avatars'));
+router.use('/galeries-image', express.static('files/galeries'));
 router.use('/files', express.static('files/files'));
 
-router.get(
-  '/administration-group',
-  verifyToken,
-  getAdministartionGroupAction
-);
-router.get(
-  '/groups-list',
-  verifyToken,
-  getGroupsListAction
-);
+router.get('/administration-group', verifyToken, getAdministartionGroupAction);
+router.get('/groups-list', verifyToken, getGroupsListAction);
 
 // Routers
 
 router.use('/galeries', verifyToken, galeriesRouter);
 router.use('/groups', verifyToken, groupsRouter);
-// router.use('/checklists-items', verifyToken, checklistItemsRouter);
+router.use('/pages', verifyToken, pagesRouter);
 router.use('/projects', verifyToken, projectsRouter);
 router.use('/tasks', verifyToken, tasksRouter);
 router.use('/comments', verifyToken, commentsRouter);

@@ -57,21 +57,23 @@ export const deleteGaleryPhotos = async (ids: Array<string>) => {
 };
 
 export const deleteGalerysPhotos = async (id: number) => {
-  const photos = await Galeryphoto.findAll({where: {galery_id: id}});
+  const photos = await Galeryphoto.findAll({ where: { galery_id: id } });
 
   if (!photos.length) {
     return;
   }
-  
-  await Promise.all(photos.map(async(item: {name: string, id: number}) => {
-    const pathToFile = path.join('files', 'galeries', item.name);
-  
-    await fs.unlink(pathToFile);
 
-    const result = await Galeryphoto.destroy({where: {id: item.id}});
+  await Promise.all(
+    photos.map(async (item: { name: string; id: number }) => {
+      const pathToFile = path.join('files', 'galeries', item.name);
 
-    if (result === 0) {
-      throw new EntityNotFoundError(item.id.toString(), 'Фото');
-    }
-  }));
+      await fs.unlink(pathToFile);
+
+      const result = await Galeryphoto.destroy({ where: { id: item.id } });
+
+      if (result === 0) {
+        throw new EntityNotFoundError(item.id.toString(), 'Фото');
+      }
+    })
+  );
 };

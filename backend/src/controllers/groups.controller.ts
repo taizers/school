@@ -22,15 +22,13 @@ export const createGroupAction = async (
   const { title } = req.body;
   const { role } = req.user;
 
-  logger.info(
-    `Create Group Action: { title: ${title} } `
-  );
+  logger.info(`Create Group Action: { title: ${title} } `);
 
   try {
     if (role !== 'admin') {
       throw new DontHaveAccessError();
     }
-    const group = await createGroup({title});
+    const group = await createGroup({ title });
 
     return customResponse(res, 200, group);
   } catch (err) {
@@ -51,13 +49,13 @@ export const deleteGroupAction = async (
 
   try {
     if (role !== 'admin') {
-        throw new DontHaveAccessError();
+      throw new DontHaveAccessError();
     }
 
-    const group = await checkGroup({ title: 'Администрация'});
+    const group = await checkGroup({ title: 'Администрация' });
 
     if (group?.id === id) {
-        throw new DontHaveAccessError();
+      throw new DontHaveAccessError();
     }
 
     await deleteGroup(id);
@@ -93,7 +91,6 @@ export const getAdministartionGroupAction = async (
   res: Response,
   next: NextFunction
 ) => {
-
   logger.info('Get Administration Group Action');
 
   try {
@@ -101,7 +98,10 @@ export const getAdministartionGroupAction = async (
 
     return customResponse(res, 200, group);
   } catch (err) {
-    logger.error('Get Administration Group Action - Cannot get Administration Group', err);
+    logger.error(
+      'Get Administration Group Action - Cannot get Administration Group',
+      err
+    );
     next(err);
   }
 };
@@ -118,9 +118,9 @@ export const getGroupsAction = async (
   try {
     const groups = await findGroups();
 
-    const users = await findUsers({group_id: null});
+    const users = await findUsers({ group_id: null });
 
-    return customResponse(res, 200, {groups, users});
+    return customResponse(res, 200, { groups, users });
   } catch (err) {
     logger.error('Get Groups Action - Cannot get Groups', err);
     next(err);
@@ -153,9 +153,7 @@ export const updateGroupsAction = async (
   const { id } = req.params;
   const { role } = req.user;
 
-  logger.info(
-    `Update Groups Action: { title: ${title} } `
-  );
+  logger.info(`Update Groups Action: { title: ${title} } `);
 
   try {
     if (role !== 'admin') {

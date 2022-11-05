@@ -44,7 +44,7 @@ export const login = async (email: string, password: string) => {
 
   const dtosUser = new UserDto(user);
 
-  return {user_session, user: dtosUser};
+  return { user_session, user: dtosUser };
 };
 
 export const createUser = async (payload: object) => {

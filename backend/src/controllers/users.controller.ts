@@ -3,16 +3,16 @@ import {
   findUser,
   findUsers,
   updateUser,
-  getUserStatistic,
 } from '../services/db/users.services';
-import {
-  createUser,
-} from '../services/db/auth.services';
+import { createUser } from '../services/db/auth.services';
 import { customResponse } from '../helpers/responce';
 import logger from '../helpers/logger';
 import { Op } from 'sequelize';
 import { UnProcessableEntityError } from '../helpers/error';
-import { SearchMembersRequest, createUserRequest } from '../types/requests/users.request.type';
+import {
+  SearchMembersRequest,
+  createUserRequest,
+} from '../types/requests/users.request.type';
 import { ParamsIdRequest } from '../types/requests/global.request.type';
 import uuid = require('uuid');
 
@@ -51,7 +51,7 @@ export const createUserAction = async (
     if (userRole !== 'admin') {
       throw new Error('У вас нет доступа');
     }
-  
+
     const activationkey = await uuid.v4();
 
     const user = await createUser({
@@ -65,25 +65,6 @@ export const createUserAction = async (
     return customResponse(res, 201, user);
   } catch (err) {
     logger.error('Create User Action - Cannot create user', err);
-    next(err);
-  }
-};
-
-export const getUserStatisticAction = async (
-  req: ParamsIdRequest,
-  res: Response,
-  next: NextFunction
-) => {
-  const { id } = req.params;
-
-  logger.info(`Get User Statistics Action: { id: ${id} } `);
-
-  try {
-    const users = await getUserStatistic(id);
-
-    return customResponse(res, 200, users);
-  } catch (err) {
-    logger.error('Get User Statistics Action - Cannot get users', err);
     next(err);
   }
 };

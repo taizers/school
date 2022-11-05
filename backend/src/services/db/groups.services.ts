@@ -1,17 +1,15 @@
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const { Group, User } = require('../../db/models/index');
 // eslint-disable-next-line @typescript-eslint/no-var-requires
-const { Op } = require("sequelize");
+const { Op } = require('sequelize');
 import {
   ResourceNotFoundError,
   EntityNotFoundError,
   DontHaveAccessError,
 } from '../../helpers/error';
 
-export const checkGroup = async (
-  where: object,
-) => {
-  const group = await Group.findOne({where});
+export const checkGroup = async (where: object) => {
+  const group = await Group.findOne({ where });
 
   // if (!group) {
   //   throw new ResourceNotFoundError('Group');
@@ -40,7 +38,7 @@ export const findGroup = async (where: object) => {
 
 export const findGroups = async () => {
   const groups = await Group.findAll({
-    where: { title: {[Op.not]: 'Администрация',} },
+    where: { title: { [Op.not]: 'Администрация' } },
     include: [
       {
         model: User,
@@ -103,10 +101,7 @@ export const deleteGroup = async (id: string) => {
 //   return checklists;
 // };
 
-export const updateGroup = async (
-  id: string,
-  payload: object,
-) => {
+export const updateGroup = async (id: string, payload: object) => {
   const group = await Group.update(payload, {
     where: { id },
   });

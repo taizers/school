@@ -17,8 +17,7 @@ export default class CommentAttachmentDto {
     this.id = model.id;
     this.comment_id = model.comment_id;
     this.url =
-      model.name &&
-      `${process.env.BACKEND_URL}${filesPath}/${model.name}`;
+      model.name && `${process.env.BACKEND_URL}${filesPath}/${model.name}`;
     this.type = model.type;
     this.created_at = model.created_at;
     this.updated_at = model.updated_at;

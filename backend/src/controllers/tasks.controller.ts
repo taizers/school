@@ -44,8 +44,6 @@ export const createTaskAction = async (
   );
 
   try {
-
-
     await getAndCheckProject(project_id, id);
 
     const task = await createTask(
@@ -248,7 +246,6 @@ export const updateTaskAction = async (
 
   try {
     await checkTask(id, userId);
-
 
     if (project_id) {
       await getAndCheckProject(project_id);

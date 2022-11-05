@@ -9,7 +9,7 @@ import {
 import {
   createGaleryPhotos,
   deleteGaleryPhotos,
-  deleteGalerysPhotos
+  deleteGalerysPhotos,
 } from '../services/db/galeries-photos.services';
 import { customResponse } from '../helpers/responce';
 import { ParamsIdRequest } from '../types/requests/global.request.type';
@@ -23,9 +23,7 @@ export const createGaleryAction = async (
   const { title } = req.body;
   const { id: userId } = req.user;
 
-  logger.info(
-    `Create Galery Action: { title: ${title}, userId: ${userId} } `
-  );
+  logger.info(`Create Galery Action: { title: ${title}, userId: ${userId} } `);
 
   try {
     const createdGalery = await createGalery({
@@ -34,7 +32,10 @@ export const createGaleryAction = async (
       creator_id: userId,
     });
 
-    const photos = req.files?.map((item:any) => ({name: item.filename, galery_id: createdGalery.id}));
+    const photos = req.files?.map((item: any) => ({
+      name: item.filename,
+      galery_id: createdGalery.id,
+    }));
 
     console.log(photos);
 
@@ -122,11 +123,14 @@ export const updateGaleryAction = async (
 
   try {
     if (title || cover) {
-      await updateGalery(id, {title, cover});
+      await updateGalery(id, { title, cover });
     }
 
     if (req.files) {
-      const filenames = req.files.map((item: any) => ({name: item.filename, galery_id: id}));
+      const filenames = req.files.map((item: any) => ({
+        name: item.filename,
+        galery_id: id,
+      }));
 
       await createGaleryPhotos(filenames);
     }
@@ -135,7 +139,7 @@ export const updateGaleryAction = async (
       const ids = deleted.split(' ');
 
       await deleteGaleryPhotos(ids);
-    } 
+    }
 
     const galery = await findGalery({ id });
 

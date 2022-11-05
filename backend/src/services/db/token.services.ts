@@ -4,12 +4,20 @@ import { EntityNotFoundError } from '../../helpers/error';
 const { Token } = require('../../db/models/index');
 
 export const generateTokens = (id: number, role: string) => {
-  const access_token = jwt.sign({ id, role }, String(process.env.JWT_ACCESS_KEY), {
-    expiresIn: '48h',
-  });
-  const refresh_token = jwt.sign({ id, role }, String(process.env.JWT_REFRESH_KEY), {
-    expiresIn: '7d',
-  });
+  const access_token = jwt.sign(
+    { id, role },
+    String(process.env.JWT_ACCESS_KEY),
+    {
+      expiresIn: '48h',
+    }
+  );
+  const refresh_token = jwt.sign(
+    { id, role },
+    String(process.env.JWT_REFRESH_KEY),
+    {
+      expiresIn: '7d',
+    }
+  );
 
   return {
     access_token,

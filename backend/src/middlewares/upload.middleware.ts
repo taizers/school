@@ -35,7 +35,11 @@ const avatarsStorage = multer.diskStorage({
 });
 
 const fileFilter = (req: any, file: Express.Multer.File, callback: any) => {
-  if (file.mimetype === 'image/jpg' || file.mimetype === 'image/jpeg' || file.mimetype === 'image/png') {
+  if (
+    file.mimetype === 'image/jpg' ||
+    file.mimetype === 'image/jpeg' ||
+    file.mimetype === 'image/png'
+  ) {
     callback(null, true);
   } else {
     callback(null, false);
@@ -65,5 +69,3 @@ export const uploadFilesMiddleware = multer({
   storage: filesStorage,
   limits: filesLimits,
 });
-
-

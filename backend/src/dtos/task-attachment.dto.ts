@@ -17,8 +17,7 @@ export default class TaskAttachmentDto {
     this.id = model.id;
     this.task_id = model.task_id;
     this.url =
-      model.name &&
-      `${process.env.BACKEND_URL}${filesPath}/${model.name}`;
+      model.name && `${process.env.BACKEND_URL}${filesPath}/${model.name}`;
     this.type = model.type;
     this.created_at = model.created_at;
     this.updated_at = model.updated_at;

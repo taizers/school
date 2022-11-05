@@ -27,15 +27,19 @@ app.use('/api/v1', router);
 app.use(errorMiddleware);
 
 app.post('/add-admin', async (req, res) => {
-  const user = await createUser({ username: 'Александр Сачок', role: 'admin', activationkey: '1' });
+  const user = await createUser({
+    username: 'Александр Сачок',
+    role: 'admin',
+    activationkey: '1',
+  });
   res.send(user);
-})
+});
 
 //global error handler
 
 app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname, 'build', 'index.html'))
-})
+  res.sendFile(path.join(__dirname, 'build', 'index.html'));
+});
 
 app.use((req: express.Request, res: express.Response) =>
   customResponse(res, 404, { code: 404, message: 'Not Found' })

@@ -62,9 +62,13 @@ export const deleteGalery = async (id: string) => {
 };
 
 export const findGaleries = async (page: number, limit: number) => {
-  const {count, rows} = await Galery.findAndCountAll({ offset: page*limit, limit, order: [['created_at', 'DESC']] });
+  const { count, rows } = await Galery.findAndCountAll({
+    offset: page * limit,
+    limit,
+    order: [['created_at', 'DESC']],
+  });
 
-  return { totalPages: Math.ceil(count/limit), page, galeries: rows };
+  return { totalPages: Math.ceil(count / limit), page, galeries: rows };
 };
 
 export const updateGalery = async (id: string, payload: object) => {
