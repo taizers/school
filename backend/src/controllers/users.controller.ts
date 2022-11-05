@@ -54,7 +54,7 @@ export const createUserAction = async (
 
     const activationkey = await uuid.v4();
 
-    const user = await createUser({
+    await createUser({
       role,
       username,
       post,
@@ -62,7 +62,7 @@ export const createUserAction = async (
       activationkey,
     });
 
-    return customResponse(res, 201, user);
+    return customResponse(res, 201, 'created');
   } catch (err) {
     logger.error('Create User Action - Cannot create user', err);
     next(err);
@@ -78,14 +78,14 @@ export const uploadUserAvatarAction = async (
     return next(new UnProcessableEntityError('File Not Found'));
   }
   const { id } = req.user;
-  const { filename } = req.file;
+  const { path } = req.file;
 
   logger.info(
-    `Upload User Avatar Action: { userId: ${id}, filename: ${filename} } `
+    `Upload User Avatar Action: { userId: ${id}, path: ${path} } `
   );
 
   try {
-    const user = await updateUser(id, { avatar: filename });
+    const user = await updateUser(id, { avatar: path });
 
     return customResponse(res, 200, user);
   } catch (err) {

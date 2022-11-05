@@ -13,7 +13,7 @@ import { customResponse } from '../helpers/responce';
 import logger from '../helpers/logger';
 import { ParamsIdRequest } from '../types/requests/global.request.type';
 import { UnProcessableEntityError } from '../helpers/error';
-import { getAndCheckProject } from '../services/db/projects.services';
+// import { getAndCheckProject } from '../services/db/projects.services';
 
 export const createTaskAction = async (
   req: any,
@@ -44,7 +44,7 @@ export const createTaskAction = async (
   );
 
   try {
-    await getAndCheckProject(project_id, id);
+    // await getAndCheckProject(project_id, id);
 
     const task = await createTask(
       {
@@ -193,11 +193,11 @@ export const uploadTaskAttachmentAction = async (
   }
 
   const { task_id, type } = req.body;
-  const { filename } = req.file;
+  const { path } = req.file;
   const { id } = req.user;
 
   logger.info(
-    `Upload Task Attachment Action: { task_id: ${task_id}, type: ${type}, filename: ${filename} } `
+    `Upload Task Attachment Action: { task_id: ${task_id}, type: ${type}, path: ${path} } `
   );
 
   try {
@@ -205,7 +205,7 @@ export const uploadTaskAttachmentAction = async (
     const attachment = await uploadTaskAttachement({
       task_id,
       type,
-      name: filename,
+      name: path,
     });
 
     return customResponse(res, 200, attachment);
@@ -248,7 +248,7 @@ export const updateTaskAction = async (
     await checkTask(id, userId);
 
     if (project_id) {
-      await getAndCheckProject(project_id);
+      // await getAndCheckProject(project_id);
     }
 
     const task = await updateTask(id, members, {

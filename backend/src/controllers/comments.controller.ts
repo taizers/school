@@ -94,11 +94,11 @@ export const uploadCommentAttachmentAction = async (
   }
 
   const { comment_id, type } = req.body;
-  const { filename } = req.file;
+  const { path } = req.file;
   const { id } = req.user;
 
   logger.info(
-    `Upload Comment Attachment Action: { comment_id: ${comment_id}, type: ${type}, filename: ${filename} } `
+    `Upload Comment Attachment Action: { comment_id: ${comment_id}, type: ${type}, path: ${path} } `
   );
 
   try {
@@ -106,7 +106,7 @@ export const uploadCommentAttachmentAction = async (
     const attachment = await uploadCommentAttachement({
       comment_id,
       type,
-      name: filename,
+      name: path,
     });
 
     return customResponse(res, 200, attachment);

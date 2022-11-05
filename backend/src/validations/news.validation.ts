@@ -1,11 +1,11 @@
 import { Joi, validate } from 'express-validation';
-import { colorTemplate } from '../helpers/regex';
 
-export const createProjectValidation = validate(
+export const createNewsValidation = validate(
   {
     body: Joi.object({
       title: Joi.string().max(32).required(),
-      color: Joi.string().pattern(colorTemplate).max(7).required(),
+      content: Joi.string().max(10000).required(),
+      created_at: Joi.date(),
     }),
   },
   {
@@ -16,11 +16,12 @@ export const createProjectValidation = validate(
   }
 );
 
-export const updateProjectValidation = validate(
+export const updateNewsValidation = validate(
   {
     body: Joi.object({
-      title: Joi.string().max(32),
-      color: Joi.string().pattern(colorTemplate).max(7),
+      title: Joi.string().max(32).required(),
+      content: Joi.string().max(10000).required(),
+      created_at: Joi.date(),
     }),
     params: Joi.object({
       id: Joi.string().required(),
@@ -34,10 +35,11 @@ export const updateProjectValidation = validate(
   }
 );
 
-export const searchValidation = validate(
+export const getAllNewsValidation = validate(
   {
     query: Joi.object({
-      query: Joi.string().trim().required(),
+      page: Joi.number().required(),
+      limit: Joi.number().required(),
     }),
   },
   {

@@ -102,7 +102,7 @@ export const updatePageAction = async (
   res: Response,
   next: NextFunction
 ) => {
-  const { title, content, mainpage_id } = req.body;
+  const { title, content, mainpage_id, created_at } = req.body;
   const { id } = req.params;
 
   logger.info(
@@ -114,7 +114,7 @@ export const updatePageAction = async (
       await checkPage(mainpage_id);
     }
 
-    const page = await updatePage(id, { content, title, mainpage_id });
+    const page = await updatePage(id, { content, title, mainpage_id, created_at });
 
     return customResponse(res, 200, page);
   } catch (err) {

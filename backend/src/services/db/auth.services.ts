@@ -48,15 +48,11 @@ export const login = async (email: string, password: string) => {
 };
 
 export const createUser = async (payload: object) => {
-  let user;
-
   try {
-    user = await User.create(payload);
+    await User.create(payload);
   } catch (error) {
     throw new Error('Could not create user');
   }
-
-  return user;
 };
 
 export const logout = async (refreshToken: string) => {
@@ -86,5 +82,7 @@ export const refresh = async (refreshToken: string) => {
 
   const user_session = await getUserSession(user.id, user.role);
 
-  return user_session;
+  const dtosUser = new UserDto(user);
+
+  return { user_session, user: dtosUser };
 };

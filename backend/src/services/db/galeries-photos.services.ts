@@ -65,9 +65,7 @@ export const deleteGalerysPhotos = async (id: number) => {
 
   await Promise.all(
     photos.map(async (item: { name: string; id: number }) => {
-      const pathToFile = path.join('files', 'galeries', item.name);
-
-      await fs.unlink(pathToFile);
+      await fs.unlink(item.name);
 
       const result = await Galeryphoto.destroy({ where: { id: item.id } });
 

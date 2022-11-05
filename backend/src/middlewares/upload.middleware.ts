@@ -34,6 +34,17 @@ const avatarsStorage = multer.diskStorage({
   },
 });
 
+const newsCoverStorage = multer.diskStorage({
+  destination(req, file, callback) {
+    callback(null, 'files/news-covers/');
+  },
+  filename(req, file, callback) {
+    const date = moment().format('DDMMYYYY-HHmmss_SSS');
+
+    callback(null, `${date}-${file.originalname}`);
+  },
+});
+
 const fileFilter = (req: any, file: Express.Multer.File, callback: any) => {
   if (
     file.mimetype === 'image/jpg' ||
@@ -59,8 +70,15 @@ export const uploadAvatarMiddleware = multer({
   fileFilter,
   limits,
 });
+
 export const uploadGaleryMiddleware = multer({
   storage: galeriesStorage,
+  fileFilter,
+  limits,
+});
+
+export const uploadNewsCoverMiddleware = multer({
+  storage: newsCoverStorage,
   fileFilter,
   limits,
 });

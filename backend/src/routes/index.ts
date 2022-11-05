@@ -10,11 +10,11 @@ import {
   searchMembersAction,
   uploadUserAvatarAction,
 } from '../controllers/users.controller';
-import {
-  searchProjectAction,
-  getProjectsStatisticAction,
-  getUserProjectsAction,
-} from '../controllers/projects.controller';
+// import {
+//   searchProjectAction,
+//   getProjectsStatisticAction,
+//   getUserProjectsAction,
+// } from '../controllers/news.controller';
 import {
   getAssignedTasksAction,
   getMemberTasksAction,
@@ -36,7 +36,6 @@ import {
   loginValidation,
   cookiesValidation,
 } from '../validations/auth.validation';
-import { searchValidation } from '../validations/projects.validation';
 import { paramsIdValidation } from '../validations/global.validation';
 import { uploadCommentAttachmentValidation } from '../validations/comments.validation';
 import { uploadTaskAttachmentValidation } from '../validations/tasks.validation';
@@ -44,7 +43,7 @@ import { uploadTaskAttachmentValidation } from '../validations/tasks.validation'
 import galeriesRouter from './galeries.routes';
 import groupsRouter from './groups.routes';
 import pagesRouter from './pages.routes';
-import projectsRouter from './projects.routes';
+import newsRouter from './news.routes';
 import tasksRouter from './tasks.routes';
 import commentsRouter from './comments.routes';
 import usersRouter from './users.routes';
@@ -67,18 +66,18 @@ router.post('/sign-out', cookiesValidation, logoutAction);
 
 // Search
 
-router.get(
-  '/projects-search',
-  verifyToken,
-  searchValidation,
-  searchProjectAction
-);
-router.get(
-  '/task-members-search',
-  verifyToken,
-  searchValidation,
-  searchMembersAction
-);
+// router.get(
+//   '/projects-search',
+//   verifyToken,
+//   searchValidation,
+//   searchProjectAction
+// );
+// router.get(
+//   '/task-members-search',
+//   verifyToken,
+//   searchValidation,
+//   searchMembersAction
+// );
 
 // Get Relations
 
@@ -112,12 +111,12 @@ router.get(
   paramsIdValidation,
   getUserTasksAction
 );
-router.get(
-  '/user-projects/:id',
-  verifyToken,
-  paramsIdValidation,
-  getUserProjectsAction
-);
+// router.get(
+//   '/user-projects/:id',
+//   verifyToken,
+//   paramsIdValidation,
+//   getUserProjectsAction
+// );
 // router.get(
 //   '/user-checklists/:id',
 //   verifyToken,
@@ -127,12 +126,12 @@ router.get(
 
 // Get Statistics
 
-router.get(
-  '/projects-statistics/:id',
-  verifyToken,
-  paramsIdValidation,
-  getProjectsStatisticAction
-);
+// router.get(
+//   '/projects-statistics/:id',
+//   verifyToken,
+//   paramsIdValidation,
+//   getProjectsStatisticAction
+// );
 
 // Upload Files
 
@@ -162,16 +161,17 @@ router.post(
 router.use('/avatars', express.static('files/avatars'));
 router.use('/galeries-image', express.static('files/galeries'));
 router.use('/files', express.static('files/files'));
+router.use('/news-covers', express.static('files/news-covers'));
+
+// Routers
 
 router.get('/administration-group', verifyToken, getAdministartionGroupAction);
 router.get('/groups-list', verifyToken, getGroupsListAction);
 
-// Routers
-
 router.use('/galeries', verifyToken, galeriesRouter);
 router.use('/groups', verifyToken, groupsRouter);
 router.use('/pages', verifyToken, pagesRouter);
-router.use('/projects', verifyToken, projectsRouter);
+router.use('/news', verifyToken, newsRouter);
 router.use('/tasks', verifyToken, tasksRouter);
 router.use('/comments', verifyToken, commentsRouter);
 router.use('/users', verifyToken, usersRouter);

@@ -1,25 +1,10 @@
 // eslint-disable-next-line @typescript-eslint/no-var-requires
-const { Galery, Galeryphoto } = require('../../db/models/index');
+const { Galery, Galeryphoto, User } = require('../../db/models/index');
 import {
   ResourceNotFoundError,
   EntityNotFoundError,
   DontHaveAccessError,
 } from '../../helpers/error';
-
-// export const checkNote = async (
-//   id: number | string,
-//   userId?: number | string
-// ) => {
-//   const note = await Note.findByPk(id);
-
-//   if (!note) {
-//     throw new ResourceNotFoundError('Note');
-//   }
-
-//   if (userId && note.owner_id !== userId) {
-//     throw new DontHaveAccessError();
-//   }
-// };
 
 export const findGalery = async (where: object) => {
   const galery = await Galery.findOne({
@@ -28,6 +13,13 @@ export const findGalery = async (where: object) => {
       {
         model: Galeryphoto,
         as: 'items',
+      },
+      {
+        model: User,
+        as: 'user',
+        attributes: {
+          exclude: ['password', 'activationkey']
+        },
       },
     ],
     row: true,
@@ -68,7 +60,7 @@ export const findGaleries = async (page: number, limit: number) => {
     order: [['created_at', 'DESC']],
   });
 
-  return { totalPages: Math.ceil(count / limit), page, galeries: rows };
+  return { totalPages: Math.ceil(count / limit), page: page + 1, galeries: rows };
 };
 
 export const updateGalery = async (id: string, payload: object) => {

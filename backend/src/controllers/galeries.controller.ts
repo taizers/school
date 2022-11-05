@@ -20,20 +20,21 @@ export const createGaleryAction = async (
   res: Response,
   next: NextFunction
 ) => {
-  const { title } = req.body;
+  const { title, created_at } = req.body;
   const { id: userId } = req.user;
 
-  logger.info(`Create Galery Action: { title: ${title}, userId: ${userId} } `);
+  logger.info(`Create Galery Action: { title: ${title}, userId: ${userId}, created_at: ${created_at} } `);
 
   try {
     const createdGalery = await createGalery({
       title,
-      cover: req.files[0]?.filename,
+      cover: req.files[0]?.path,
       creator_id: userId,
+      created_at
     });
 
     const photos = req.files?.map((item: any) => ({
-      name: item.filename,
+      name: item.path,
       galery_id: createdGalery.id,
     }));
 
@@ -63,6 +64,7 @@ export const deleteGaleryAction = async (
 
   try {
     await deleteGalerysPhotos(id);
+    await deleteGalery(id);
 
     return customResponse(res, 200, { id });
   } catch (err) {
@@ -114,25 +116,25 @@ export const updateGaleryAction = async (
   res: Response,
   next: NextFunction
 ) => {
-  const { title, deleted, cover } = req.body;
+  const { title, deleted, cover, created_at } = req.body;
   const { id } = req.params;
 
   logger.info(
-    `Update Galery Action: { title: ${title}, deleted: ${deleted}, cover: ${cover} } `
+    `Update Galery Action: { title: ${title}, deleted: ${deleted}, cover: ${cover}, created_at: ${created_at} } `
   );
 
   try {
-    if (title || cover) {
-      await updateGalery(id, { title, cover });
+    if (title || cover || created_at) {
+      await updateGalery(id, { title, cover, created_at });
     }
 
     if (req.files) {
-      const filenames = req.files.map((item: any) => ({
-        name: item.filename,
+      const photos = req.files.map((item: any) => ({
+        name: item.path,
         galery_id: id,
       }));
 
-      await createGaleryPhotos(filenames);
+      await createGaleryPhotos(photos);
     }
 
     if (deleted) {

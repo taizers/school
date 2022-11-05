@@ -6,6 +6,7 @@ export const createPageValidation = validate(
       title: Joi.string().max(256).required(),
       content: Joi.string().max(20000).required(),
       mainpage_id: Joi.number(),
+      created_at: Joi.date(),
     }),
   },
   {
@@ -22,6 +23,7 @@ export const updatePageValidation = validate(
       title: Joi.string().max(256).required(),
       content: Joi.string().max(20000).required(),
       mainpage_id: Joi.number(),
+      created_at: Joi.date(),
     }),
     params: Joi.object({
       id: Joi.string().required(),

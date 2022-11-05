@@ -21,9 +21,7 @@ export default class UserDto {
     this.post = model.post;
     this.role = model.role;
     this.group_id = model.group_id;
-    this.avatar =
-      model.avatar &&
-      `${process.env.BACKEND_URL}${avatarsPath}/${model.avatar}`;
+    this.avatar = model.avatar;
     this.username = model.username;
     this.created_at = model.created_at;
     this.updated_at = model.updated_at;
