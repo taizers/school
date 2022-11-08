@@ -18,6 +18,11 @@
 .env.production.local
 backend/.env
 
+backend/storage/avatars/*
+backend/storage/files/*
+backend/storage/galeries/*
+backend/storage/news-covers/*
+
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
