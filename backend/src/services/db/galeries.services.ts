@@ -5,6 +5,7 @@ import {
   EntityNotFoundError,
   DontHaveAccessError,
 } from '../../helpers/error';
+import { editPath } from '../../utils/path';
 
 export const findGalery = async (where: object) => {
   const galery = await Galery.findOne({
@@ -18,7 +19,7 @@ export const findGalery = async (where: object) => {
         model: User,
         as: 'user',
         attributes: {
-          exclude: ['password', 'activationkey']
+          exclude: ['password', 'activationkey'],
         },
       },
     ],
@@ -28,6 +29,10 @@ export const findGalery = async (where: object) => {
   if (!galery) {
     throw new ResourceNotFoundError('Галерея');
   }
+
+  const items = galery.items.map((item: any) => ({...item, name: editPath(item.name)}));
+
+  galery.items = items;
 
   return galery;
 };
@@ -60,7 +65,15 @@ export const findGaleries = async (page: number, limit: number) => {
     order: [['created_at', 'DESC']],
   });
 
-  return { totalPages: Math.ceil(count / limit), page: page + 1, galeries: rows };
+  const galeries = rows.map((item: any) => ({...item, cover: editPath(item.cover)}));
+
+  const totalPages = !count ? 1 : Math.ceil(count / limit);
+
+  return {
+    totalPages,
+    page: page + 1,
+    galeries,
+  };
 };
 
 export const updateGalery = async (id: string, payload: object) => {
@@ -76,5 +89,8 @@ export const updateGalery = async (id: string, payload: object) => {
     throw new Error('Галерея не обновлена');
   }
 
-  return galery[1];
+  const cover = editPath(galery[1].cover);
+  const resultGalery = {...galery[1], cover};
+
+  return resultGalery;
 };

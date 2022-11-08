@@ -4,6 +4,7 @@ export const createStorageGroupValidation = validate(
   {
     body: Joi.object({
       title: Joi.string().max(256).required(),
+      created_at: Joi.date(),
     }),
   },
   {

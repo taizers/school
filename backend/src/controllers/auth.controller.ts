@@ -16,10 +16,10 @@ export const signUpAction = async (
   res: Response,
   next: NextFunction
 ) => {
-  const { email, password, activationkey } = req.body;
+  const { email, password, activationkey, username } = req.body;
 
   logger.info(
-    `SignUp Action: { password: ${password}, email: ${email}, activationkey: ${activationkey} }`
+    `SignUp Action: { password: ${password}, email: ${email}, activationkey: ${activationkey}, username: ${username} }`
   );
 
   let user;
@@ -45,6 +45,7 @@ export const signUpAction = async (
     user = await updateUser(user.id, {
       email,
       password: encryptedPassword,
+      username,
     });
 
     return customResponse(res, 201, 'created');
@@ -113,7 +114,6 @@ export const logoutAction = async (
   next: NextFunction
 ) => {
   const refresh_token = req.cookies.refresh_token;
-  logger.info(req.cookies);
 
   logger.info(`Logout Action: { refresh_token: ${refresh_token} }`);
 

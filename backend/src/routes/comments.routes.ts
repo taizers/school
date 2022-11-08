@@ -4,7 +4,10 @@ import {
   deleteCommentAction,
   getCommentsAction,
 } from '../controllers/comments.controller';
-import { createCommentValidation, getCommentsValidation } from '../validations/comments.validation';
+import {
+  createCommentValidation,
+  getCommentsValidation,
+} from '../validations/comments.validation';
 import { paramsIdValidation } from '../validations/global.validation';
 
 const router = express.Router();

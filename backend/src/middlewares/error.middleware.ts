@@ -20,12 +20,12 @@ export default async (
     }
     if (req.files?.length) {
       await Promise.all(
-        req.files.map(async (item: { path: string; }) => {
+        req.files.map(async (item: { path: string }) => {
           await fs.unlink(item.path);
         })
       );
     }
-  } catch (error:any) {
+  } catch (error: any) {
     error.status = error.statusCode || error.status || 500;
     return customResponse(res, error.status, {
       code: error.status,

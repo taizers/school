@@ -28,4 +28,3 @@ export const getCommentsValidation = validate(
     stripUnknown: true,
   }
 );
-

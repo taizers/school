@@ -18,8 +18,11 @@ export const createGaleryPhotos = async (payload: object) => {
 
 export const deleteGaleryPhotos = async (ids: Array<string>) => {
   await Promise.all(
-    ids.map(async item => {
-      const photo = await Galeryphoto.findOne({ where: { id: item }, attributes: ['name'] });
+    ids.map(async (item) => {
+      const photo = await Galeryphoto.findOne({
+        where: { id: item },
+        attributes: ['name'],
+      });
 
       await fs.unlink(photo.name);
 

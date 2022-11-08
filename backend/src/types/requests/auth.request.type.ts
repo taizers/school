@@ -5,6 +5,7 @@ export interface signUpRequest extends Request {
     activationkey: string;
     email: string;
     password: string;
+    username: string;
   };
 }
 

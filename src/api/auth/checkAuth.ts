@@ -1,8 +1,5 @@
-import axios from 'axios';
-import { apiUrl } from '../../constants/constants';
+import http from '../../http';
 
 export const checkAuth = () => {
-  return axios.get<AuthenticatorResponse>(`${apiUrl}auth/refresh`, {
-    withCredentials: true,
-  });
+  return http.post<AuthenticatorResponse>(`/refresh-token`);
 };

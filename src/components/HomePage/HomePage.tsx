@@ -58,9 +58,9 @@ const human = {
 
 const getColumnValues = (arr: Array<string>) => {
   return (
-    <Box sx={{ display: 'flex', flexDirection: 'column' }}>
-      {arr.map((item) => (
-        <StyledValue>{item}</StyledValue>
+    <Box sx={{ display: 'flex', flexDirection: 'column' }} >
+      {arr.map((item, index) => (
+        <StyledValue key={`${item} ${index}`}>{item}</StyledValue>
       ))}
     </Box>
   );
@@ -82,19 +82,20 @@ export const HomePage = () => {
         <TableContainer sx={{ backgroundColor: '#f1eded' }} component={Paper}>
           <Table aria-label="info table">
             <TableBody>
-              {tableInfo.map((row) => (
+              {tableInfo.map((row, index) => (
                 <TableRow
-                  key={row.title}
+                  key={`${row.title} ${index}`}
                   sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
                 >
                   <TableCell
                     sx={{ width: 'max-content', p: '8px', fontWeight: 550 }}
                     component="th"
                     scope="column"
+                    key={`${row.title} ${index} cell 1`}
                   >
                     {row.title}
                   </TableCell>
-                  <TableCell sx={{ p: '8px' }}>
+                  <TableCell sx={{ p: '8px' }} key={`${row.title} ${index} cell 2`}>
                     {isArray(row.value)
                       ? getColumnValues(row.value)
                       : row.value}

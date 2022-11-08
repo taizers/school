@@ -17,7 +17,7 @@ export const checkComment = async (
     throw new ResourceNotFoundError('Comment');
   }
 
-  if ((userId && (comment.cretor_id !== userId)) && (role && (role !== 'admin'))) {
+  if (userId && comment.cretor_id !== userId && role && role !== 'admin') {
     throw new DontHaveAccessError();
   }
 };

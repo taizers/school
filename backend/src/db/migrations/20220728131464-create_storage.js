@@ -24,7 +24,7 @@ module.exports = {
       },
       size: {
         allowNull: false,
-        type: Sequelize.DataTypes.NUMBER,
+        type: Sequelize.DataTypes.INTEGER,
       },
       storagegroup_id: {
         allowNull: false,

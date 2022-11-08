@@ -9,6 +9,7 @@ export const SIGNUP_SUCCESSED = 'SIGNUP_SUCCESSED';
 export const SIGNUP_FAILED = 'SIGNUP_FAILED';
 export const SET_AUTH_LOADING = 'SET_AUTH_LOADING';
 export const CHECK_AUTH = 'CHECK_AUTH';
+export const CLEAR_AUTH = 'CLEAR_AUTH';
 
 //USERS
 

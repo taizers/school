@@ -8,6 +8,7 @@ import {
   SIGNUP_FAILED,
   SET_AUTH_LOADING,
   CHECK_AUTH,
+  CLEAR_AUTH,
 } from '../constants/types';
 import {
   SignUpUserType,
@@ -23,6 +24,10 @@ export const login = (data: { data: LoginUserType; history: any }) => ({
 export const loginSuccessed = (user: UserType) => ({
   type: LOGIN_SUCCESSED,
   payload: user,
+});
+
+export const clearAuth = () => ({
+  type: CLEAR_AUTH,
 });
 
 export const setAuthLoading = (bool: boolean) => ({

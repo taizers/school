@@ -114,7 +114,12 @@ export const updatePageAction = async (
       await checkPage(mainpage_id);
     }
 
-    const page = await updatePage(id, { content, title, mainpage_id, created_at });
+    const page = await updatePage(id, {
+      content,
+      title,
+      mainpage_id,
+      created_at,
+    });
 
     return customResponse(res, 200, page);
   } catch (err) {

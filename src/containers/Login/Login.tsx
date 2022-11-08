@@ -101,10 +101,10 @@ export const Login: FC<LoginTypes> = ({ login, isLoading }) => {
               id="password"
               autoComplete="current-password"
             />
-            <FormControlLabel
+            {/* <FormControlLabel
               control={<Checkbox value="remember" color="primary" />}
               label="Запомнить меня"
-            />
+            /> */}
             <Button
               type="submit"
               fullWidth
@@ -116,11 +116,11 @@ export const Login: FC<LoginTypes> = ({ login, isLoading }) => {
             <Grid container>
               <Grid item xs>
                 <Link href="/#/forgotPassword" variant="body2">
-                  Забыли пароль?
+                  Забыли пароль? Обратитесь к администратору.
                 </Link>
               </Grid>
               <Grid item>
-                <Link href="/#/signUp" variant="body2">
+                <Link href="/sign-up" variant="body2">
                   {'Нет аккаунта? Зарегистрироваться'}
                 </Link>
               </Grid>

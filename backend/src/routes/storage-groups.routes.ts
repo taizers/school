@@ -1,7 +1,7 @@
 import express from 'express';
 import {
   createStorageGroupAction,
-  updateStorageGroupsAction,
+  updateStorageGroupAction,
   deleteStorageGroupAction,
   getStorageGroupAction,
   getStorageGroupsListAction,
@@ -16,7 +16,7 @@ const router = express.Router();
 
 router.post('/', createStorageGroupValidation, createStorageGroupAction);
 router.delete('/:id', paramsIdValidation, deleteStorageGroupAction);
-router.put('/:id', updateStorageGroupValidation, updateStorageGroupsAction);
+router.put('/:id', updateStorageGroupValidation, updateStorageGroupAction);
 router.get('/:id', paramsIdValidation, getStorageGroupAction);
 router.get('/', getStorageGroupsListAction);
 

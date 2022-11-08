@@ -61,8 +61,9 @@ export const NewsWidget: FC<any> = () => {
     <Box>
       <StyledTitle>Новости</StyledTitle>
       <Box sx={{ display: 'flex', flexDirection: 'column', maxWidth: '800px' }}>
-        {news.map((item) => (
+        {news.map((item, index) => (
           <Box
+            key={`news ${item.title} ${index}`}
             sx={{
               display: 'flex',
               gap: '10px',

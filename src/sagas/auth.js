@@ -17,7 +17,7 @@ function* login({ payload: { data, history } }) {
     yield put(authAction.loginSuccessed(user));
     yield history('/');
   } catch (error) {
-    yield createToast.error(error.response.data.message);
+    yield createToast.error(error?.response?.data?.data?.message);
   } finally {
     yield put(authAction.setAuthLoading(false));
   }
@@ -29,7 +29,7 @@ function* signUpUser({ payload: { data, history } }) {
     yield call(authApi.signUp, data);
     yield history('/login');
   } catch (error) {
-    yield createToast.error(error.response.data.message);
+    yield createToast.error(error?.response?.data?.data?.message);
   } finally {
     yield put(authAction.setAuthLoading(false));
   }
@@ -38,13 +38,15 @@ function* signUpUser({ payload: { data, history } }) {
 function* checkAuth({ payload: { history } }) {
   try {
     const {
-      data: { user, accessToken },
+      data: { user, access_token },
     } = yield call(authApi.checkAuth);
 
-    yield setToken(accessToken);
+    yield setToken(access_token);
     yield put(authAction.loginSuccessed(user));
   } catch (error) {
-    yield createToast.error(error.response.data.message);
+    // yield clearToken();
+    // yield put(authAction.clearAuth());
+    yield createToast.error(error?.response?.data?.data?.message);
   }
 }
 
@@ -55,7 +57,7 @@ function* logout({ payload: { history } }) {
     yield clearToken();
     yield history('/');
   } catch (error) {
-    yield createToast.error(error.response.data.message);
+    yield createToast.error(error?.response?.data?.data?.message);
   }
 }
 

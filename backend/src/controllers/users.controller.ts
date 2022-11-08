@@ -10,7 +10,11 @@ import { createUser } from '../services/db/auth.services';
 import { customResponse } from '../helpers/responce';
 import logger from '../helpers/logger';
 import { Op } from 'sequelize';
-import { BadCredentialsError, DontHaveAccessError, UnProcessableEntityError } from '../helpers/error';
+import {
+  BadCredentialsError,
+  DontHaveAccessError,
+  UnProcessableEntityError,
+} from '../helpers/error';
 import {
   SearchMembersRequest,
   createUserRequest,
@@ -103,9 +107,7 @@ export const uploadUserAvatarAction = async (
   const { id } = req.user;
   const { path } = req.file;
 
-  logger.info(
-    `Upload User Avatar Action: { userId: ${id}, path: ${path} } `
-  );
+  logger.info(`Upload User Avatar Action: { userId: ${id}, path: ${path} } `);
 
   try {
     const user = await updateUser(id, { avatar: path });
@@ -122,8 +124,8 @@ export const updateUserAction = async (
   res: Response,
   next: NextFunction
 ) => {
-
-  const { id, role: userRole } = req.user;
+  const { id } = req.params;
+  const { role: userRole } = req.user;
   const { post, role, username, group_id } = req.body;
 
   logger.info(
@@ -151,14 +153,15 @@ export const updateUserProfileAction = async (
   const { id } = req.user;
   const { username, new_password, old_password } = req.body;
 
-  logger.info(
-    `Update User Action: { userId: ${id}, username: ${username} } `
-  );
+  logger.info(`Update User Action: { userId: ${id}, username: ${username} } `);
 
   try {
-    const oldUser = await getUser({id});
+    const oldUser = await getUser({ id });
 
-    const isPasswordsEqual = await bcrypt.compare(old_password, oldUser.password);
+    const isPasswordsEqual = await bcrypt.compare(
+      old_password,
+      oldUser.password
+    );
 
     if (!isPasswordsEqual) {
       throw new BadCredentialsError('Bad password');
@@ -166,8 +169,10 @@ export const updateUserProfileAction = async (
 
     const encryptedNewPassword = await bcrypt.hash(new_password, 10);
 
-
-    const user = await updateUser(id, { username, password: encryptedNewPassword });
+    const user = await updateUser(id, {
+      username,
+      password: encryptedNewPassword,
+    });
 
     return customResponse(res, 200, user);
   } catch (err) {

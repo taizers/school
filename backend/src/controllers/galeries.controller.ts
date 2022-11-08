@@ -23,14 +23,16 @@ export const createGaleryAction = async (
   const { title, created_at } = req.body;
   const { id: userId } = req.user;
 
-  logger.info(`Create Galery Action: { title: ${title}, userId: ${userId}, created_at: ${created_at} } `);
+  logger.info(
+    `Create Galery Action: { title: ${title}, userId: ${userId}, created_at: ${created_at} } `
+  );
 
   try {
     const createdGalery = await createGalery({
       title,
       cover: req.files[0]?.path,
       creator_id: userId,
-      created_at
+      created_at,
     });
 
     const photos = req.files?.map((item: any) => ({

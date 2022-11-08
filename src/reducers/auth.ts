@@ -1,9 +1,10 @@
-import { LOGIN_SUCCESSED, SET_AUTH_LOADING } from '../constants/types';
+import { LOGIN_SUCCESSED, SET_AUTH_LOADING, CLEAR_AUTH } from '../constants/types';
 
 const initialState = {
   authUser: {},
   isLoading: false,
   isAuth: false,
+  role: '',
 };
 
 const reducer = (
@@ -17,8 +18,11 @@ const reducer = (
       return {
         ...state,
         authUser: payload,
+        role: payload?.role,
         isAuth: true,
       };
+    case CLEAR_AUTH:
+      return initialState;
     case SET_AUTH_LOADING:
       return {
         ...state,

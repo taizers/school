@@ -29,23 +29,31 @@ export const findStorageGroup = async (where: object) => {
 
 export const findStorageGroupsList = async (page: number, limit: number) => {
   const { count, rows } = await Storagegroup.findAndCountAll({
+    subQuery: false,
     offset: page * limit,
     limit,
     row: true,
+    attributes: { 
+      include: [[sequelize.fn("COUNT", sequelize.col("files.id")), "items"]] 
+    },
     include: [
       {
         model: Storage,
-        attributes: [[sequelize.fn('COUNT', 'id'), 'items']]
+        as: 'files',
+        attributes: []
       },
     ],
     order: [['created_at', 'DESC']],
+    group: ['storagegroup.id'],
   });
 
-  if (!rows.length) {
-    throw new ResourceNotFoundError('Группы файлов');
-  }
+  const totalPages = !count.length ? 1 : Math.ceil(count?.length / limit);
 
-  return { totalPages: Math.ceil(count / limit), page: page + 1, storageGroups: rows };
+  return {
+    totalPages,
+    page: page + 1,
+    storageGroups: rows,
+  };
 };
 
 export const createStorageGroup = async (payload: object) => {

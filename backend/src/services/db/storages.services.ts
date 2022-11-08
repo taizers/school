@@ -9,21 +9,29 @@ import {
   EntityNotFoundError,
   DontHaveAccessError,
 } from '../../helpers/error';
+import { editPath } from '../../utils/path';
 
-export const findStorageList = async (page: number, limit: number, group_id: number) => {
+export const findStorageList = async (
+  group_id: number,
+  page: number,
+  limit: number,
+) => {
   const { count, rows } = await Storage.findAndCountAll({
     offset: page * limit,
     limit,
-    where: { group_id },
-    row: true,
+    where: { storagegroup_id: group_id },
     order: [['created_at', 'DESC']],
   });
 
-  if (!rows.length) {
-    throw new ResourceNotFoundError('Файлы');
-  }
+  const storages = rows?.map((item: any) => ({...item?.dataValues, name: editPath(item?.dataValues.name)})) || [];
 
-  return { totalPages: Math.ceil(count / limit), page: page + 1, storages: rows };
+  const totalPages = !count ? 1 : Math.ceil(count / limit);
+
+  return {
+    totalPages,
+    page: page + 1,
+    storages,
+  };
 };
 
 export const createStorage = async (payload: object) => {
@@ -31,6 +39,7 @@ export const createStorage = async (payload: object) => {
 
   try {
     storage = await Storage.create(payload);
+    storage.name = editPath(storage.name);
   } catch (error) {
     throw new Error('Файл не создан');
   }
@@ -41,8 +50,12 @@ export const createStorage = async (payload: object) => {
 export const deleteStorage = async (id: string) => {
   const photo = await Storage.findOne({ where: { id }, attributes: ['name'] });
 
-  await fs.unlink(photo.name);
-  
+  if (!photo) {
+    throw new ResourceNotFoundError('Файл'); 
+  }
+
+  await fs.unlink(photo?.name);
+
   const result = await Storage.destroy({ where: { id } });
 
   if (result === 0) {
@@ -51,7 +64,10 @@ export const deleteStorage = async (id: string) => {
 };
 
 export const deleteGroupsStorages = async (id: number) => {
-  const files = await Storage.findAll({ where: { group_id: id }, attributes: ['name', 'id'] });
+  const files = await Storage.findAll({
+    where: { storagegroup_id: id },
+    attributes: ['name', 'id'],
+  });
 
   if (!files.length) {
     return;

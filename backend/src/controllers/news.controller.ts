@@ -108,7 +108,9 @@ export const updateNewsAction = async (
   const { id } = req.params;
   const { path } = req.file;
 
-  logger.info(`Update News Action: { title: ${title}, content: ${content}, path: ${path}, created_at: ${created_at} } `);
+  logger.info(
+    `Update News Action: { title: ${title}, content: ${content}, path: ${path}, created_at: ${created_at} } `
+  );
 
   try {
     const news = await updateNews(id, {

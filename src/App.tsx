@@ -50,7 +50,7 @@ const App: FC<AppType> = ({ checkAuth }) => {
           <Route path='/books/:id' element={<PrivateRoute component={<Book />}/>} /> */}
         <Route path="/login" element={<PublicRoute component={<Login />} />} />
         <Route
-          path="/signUp"
+          path="/sign-up"
           element={<PublicRoute component={<SignUp />} />}
         />
         <Route path="/*" element={<Main />} />

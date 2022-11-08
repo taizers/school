@@ -4,12 +4,15 @@ import {
   deleteStorageGroup,
   findStorageGroup,
   findStorageGroupsList,
-  updateStorageGroup
+  updateStorageGroup,
 } from '../services/db/storage-groups.services';
 import { customResponse } from '../helpers/responce';
 import { ParamsIdRequest } from '../types/requests/global.request.type';
 import logger from '../helpers/logger';
-import { CreateStorageGroupRequest, UpdateStorageGroupRequest } from '../types/requests/storage-groups.request.type';
+import {
+  CreateStorageGroupRequest,
+  UpdateStorageGroupRequest,
+} from '../types/requests/storage-groups.request.type';
 import { deleteGroupsStorages } from '../services/db/storages.services';
 
 export const createStorageGroupAction = async (
@@ -17,16 +20,19 @@ export const createStorageGroupAction = async (
   res: Response,
   next: NextFunction
 ) => {
-  const { title } = req.body;
+  const { title, created_at } = req.body;
 
-  logger.info(`Create Storage Group Action: { title: ${title} } `);
+  logger.info(`Create Storage Group Action: { title: ${title}, created_at: ${created_at} } `);
 
   try {
-    const group = await createStorageGroup({ title });
+    const group = await createStorageGroup({ title, created_at });
 
     return customResponse(res, 200, group);
   } catch (err) {
-    logger.error('Create Storage Group Action - Cannot storage create group', err);
+    logger.error(
+      'Create Storage Group Action - Cannot storage create group',
+      err
+    );
     next(err);
   }
 };
@@ -46,7 +52,10 @@ export const deleteStorageGroupAction = async (
 
     return customResponse(res, 200, { id });
   } catch (err) {
-    logger.error('Delete Storage Group Action - Cannot delete Storage Group', err);
+    logger.error(
+      'Delete Storage Group Action - Cannot delete Storage Group',
+      err
+    );
     next(err);
   }
 };
@@ -77,7 +86,11 @@ export const getStorageGroupsListAction = async (
 ) => {
   const { page, limit } = req.query;
 
-  logger.info(`Get Storage Storage Groups Action: { page: ${Number(page) - 1}, limit: ${limit}} `);
+  logger.info(
+    `Get Storage Groups Action: { page: ${
+      Number(page) - 1
+    }, limit: ${limit}} `
+  );
 
   try {
     const groups = await findStorageGroupsList(Number(page) - 1, Number(limit));
@@ -89,7 +102,7 @@ export const getStorageGroupsListAction = async (
   }
 };
 
-export const updateStorageGroupsAction = async (
+export const updateStorageGroupAction = async (
   req: UpdateStorageGroupRequest,
   res: Response,
   next: NextFunction
@@ -97,14 +110,17 @@ export const updateStorageGroupsAction = async (
   const { title } = req.body;
   const { id } = req.params;
 
-  logger.info(`Update Storage Group Action: { title: ${title} } `);
+  logger.info(`Update Storage Group Action: { title: ${title}, id: ${id} } `);
 
   try {
     const group = await updateStorageGroup(id, { title });
 
     return customResponse(res, 200, group);
   } catch (err) {
-    logger.error('Update Storage Group Action - Cannot update storage Group', err);
+    logger.error(
+      'Update Storage Group Action - Cannot update storage Group',
+      err
+    );
     next(err);
   }
 };

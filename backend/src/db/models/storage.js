@@ -13,15 +13,14 @@ export default (sequelize, DataTypes) => {
       allowNull: false,
     },
     size: {
-      type: DataTypes.NUMBER,
+      type: DataTypes.INTEGER,
       allowNull: false,
     },
   });
 
   Storage.associate = (models) => {
     Storage.belongsTo(models.Storagegroup, {
-      foreignKey: 'group_id',
-      as: 'files',
+      foreignKey: 'storagegroup_id',
     });
     Storage.belongsTo(models.User, { foreignKey: 'creator_id', as: 'user' });
   };

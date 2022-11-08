@@ -7,7 +7,7 @@ export default (sequelize, DataTypes) => {
   });
 
   Storagegroup.associate = (models) => {
-    Storagegroup.hasMany(models.Storage, { foreignKey: 'group_id' });
+    Storagegroup.hasMany(models.Storage, { foreignKey: 'storagegroup_id', as: 'files', });
   };
 
   return Storagegroup;

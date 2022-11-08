@@ -29,7 +29,7 @@ export const findUser = async (where: object) => {
     where,
     row: true,
     attributes: {
-      exclude: ['password', 'activationkey']
+      exclude: ['password', 'activationkey'],
     },
   });
 
@@ -42,12 +42,12 @@ export const findUser = async (where: object) => {
   return dtosUser;
 };
 
-export const findPaginatedUsers = async (page:  number, limit: number) => {
+export const findPaginatedUsers = async (page: number, limit: number) => {
   const { count, rows } = await User.findAndCountAll({
     offset: page * limit,
     row: true,
     attributes: {
-      exclude: ['password']
+      exclude: ['password'],
     },
     order: [['created_at', 'DESC']],
   });
@@ -59,7 +59,7 @@ export const findUsers = async (where: object) => {
   const users = await User.findAll({
     where,
     attributes: {
-      exclude: ['password', 'activationkey']
+      exclude: ['password', 'activationkey'],
     },
   });
 
@@ -77,7 +77,7 @@ export const updateUser = async (id: string, payload: object) => {
       returning: true,
       plain: true,
       attributes: {
-        exclude: ['password', 'activationkey']
+        exclude: ['password', 'activationkey'],
       },
     });
   } catch (error) {

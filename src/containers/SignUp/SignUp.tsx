@@ -13,6 +13,7 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import { useNavigate } from 'react-router-dom';
 import { SignUpUserType } from '../../constants/tsSchemes';
+import { createToast } from '../../utils/toasts';
 
 const Copyright = (props: any) => {
   return (
@@ -50,16 +51,21 @@ export const SignUp: FC<LoginTypes> = ({ signUp, isLoading }) => {
     const data = {
       email: formData.get('email')?.toString() || '',
       password: formData.get('password')?.toString() || '',
-      name: formData.get('name')?.toString() || '',
+      username: formData.get('name')?.toString() || '',
+      activationkey: formData.get('activationkey')?.toString() || '',
     };
 
     if (
       data.email &&
       data.password &&
-      data.name &&
+      data.username &&
+      data.activationkey &&
       data.password === secondPassword
     ) {
+      console.log('+++++++')
       signUp({ data, history });
+    } else {
+      createToast.error('Проверьте заполнение полей');
     }
   };
 
@@ -111,6 +117,16 @@ export const SignUp: FC<LoginTypes> = ({ signUp, isLoading }) => {
               margin="normal"
               required
               fullWidth
+              id="key"
+              label="Секретный ключ"
+              name="activationkey"
+              autoComplete="text"
+              autoFocus
+            />
+            <TextField
+              margin="normal"
+              required
+              fullWidth
               name="password"
               label="Пароль"
               type="password"
@@ -137,7 +153,7 @@ export const SignUp: FC<LoginTypes> = ({ signUp, isLoading }) => {
             </Button>
             <Grid container>
               <Grid item>
-                <Link href="/#/login" variant="body2">
+                <Link href="/login" variant="body2">
                   {'Есть аккаунт? Войти'}
                 </Link>
               </Grid>

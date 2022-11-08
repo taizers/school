@@ -24,7 +24,7 @@ export const findPage = async (where: object) => {
         model: User,
         as: 'user',
         attributes: {
-          exclude: ['password', 'activationkey']
+          exclude: ['password', 'activationkey'],
         },
       },
     ],
@@ -41,8 +41,8 @@ export const findPage = async (where: object) => {
 export const findPagesList = async () => {
   const pages = await Page.findAll({
     row: true,
-    where: {mainpage_id: null},
-    order: [['title','DESC']],
+    where: { mainpage_id: null },
+    order: [['title', 'DESC']],
     include: [
       {
         model: Page,
