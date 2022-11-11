@@ -28,6 +28,7 @@ export const findNews = async (where: object) => {
   if (!news) {
     throw new ResourceNotFoundError('News');
   }
+  news.cover = editPath(news.cover);
 
   return news;
 };
@@ -73,9 +74,9 @@ export const findAllNews = async (page: number, limit: number) => {
   const { count, rows } = await News.findAndCountAll({
     offset: page * limit,
     limit,
-    attributes: {
-      exclude: ['content'],
-    },
+    // attributes: {
+    //   exclude: ['content'],
+    // },
     include: [
       {
         model: User,
@@ -90,7 +91,7 @@ export const findAllNews = async (page: number, limit: number) => {
     throw new ResourceNotFoundError('News');
   }
 
-  const news = rows.map((item: any) => ({...item, cover: editPath(item.cover)}));
+  const news = rows?.map((item: any) => ({...item?.dataValues, cover: editPath(item?.dataValues?.cover)}));
 
   const totalPages = !count ? 1 : Math.ceil(count / limit);
 

@@ -14,8 +14,8 @@ import NotFound from '../../components/NotFound/index';
 import TeachersPage from '../../containers/TeachersPage/index';
 import Galeries from '../../containers/Galeries/index';
 import Galery from '../../components/Galery/index';
-import CreateGaleryPage from '../Galeries/CreateGaleryModal/index';
 import News from '../../containers/News/index';
+import Profile from '../../containers/Profile/index';
 import NewsItem from '../../components/NewsItem/index';
 import {
   PublicRoute,
@@ -99,6 +99,7 @@ export const Main: FC<MainType> = ({}) => {
             <Route path="/" element={<HomePage />} />
             <Route path="/administration" element={<HaventAccess />} />
             <Route path="/teachers" element={<TeachersPage />} />
+            <Route path="/profile" element={<Profile />} />
             <Route path="/galeries" element={<Galeries />} />
             <Route path="/galeries/:id" element={<Galery />} />
             <Route path="/news" element={<News />} />
@@ -126,7 +127,6 @@ export const Main: FC<MainType> = ({}) => {
           ))}
         </Slide>
       </Box>
-
       <Footer />
     </Box>
   );

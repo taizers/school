@@ -14,48 +14,16 @@ import DialogTitle from '@mui/material/DialogTitle';
 import TextField from '@mui/material/TextField';
 import { useTheme } from '@mui/material/styles';
 import dayjs, { Dayjs } from 'dayjs';
-import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
-import { MobileDatePicker } from '@mui/x-date-pickers/MobileDatePicker';
-import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import UploadFile from '../../../components/UploadFile/index';
+import DatePicker from '../../../components/DatePicker/index';
 
-import { FilePond, registerPlugin } from 'react-filepond';
+type CreateGaleryModalType = {
+  isOpen: boolean;
+  createGalery: (data: any) => Promise<any>;
+  setGaleriesModalStatus: (data: boolean) => void;
+}
 
-import 'filepond/dist/filepond.min.css';
-
-import FilePondPluginImageExifOrientation from 'filepond-plugin-image-exif-orientation';
-import FilePondPluginImagePreview from 'filepond-plugin-image-preview';
-import 'filepond-plugin-image-preview/dist/filepond-plugin-image-preview.css';
-
-registerPlugin(FilePondPluginImageExifOrientation, FilePondPluginImagePreview);
-
-const galery = {
-  title: 'Название Альбома',
-  photos: [
-    {
-      id: 1,
-      url: '/static/images/school.jpg',
-    },
-    {
-      id: 2,
-      url: '/static/images/school.jpg',
-    },
-    {
-      id: 3,
-      url: '/static/images/school.jpg',
-    },
-    {
-      id: 4,
-      url: '/static/images/school.jpg',
-    },
-    {
-      id: 5,
-      url: '/static/images/images.jpg',
-    },
-  ],
-};
-
-export const CreateGaleryModal: FC<any> = () => {
-  const [open, setOpen] = useState(false);
+export const CreateGaleryModal: FC<CreateGaleryModalType> = ({isOpen, createGalery, setGaleriesModalStatus}) => {
   const [title, setTitle] = useState('');
   const [files, setFiles] = useState<any>([]);
   const [date, setDate] = useState<any>(dayjs(Date.now()));
@@ -63,45 +31,29 @@ export const CreateGaleryModal: FC<any> = () => {
   const theme = useTheme();
   const fullScreen = useMediaQuery(theme.breakpoints.down('md'));
 
-  const handleClickOpen = () => {
-    setOpen(true);
-  };
-
   const handleClose = () => {
-    setTitle('');
-    setFiles([]);
-    setDate(dayjs(Date.now()));
-    setOpen(false);
+    setGaleriesModalStatus(false);
   };
 
   const onModalSubmit = () => {
-    setOpen(false);
     const formData = new FormData();
 
     formData.append('title', title);
-    formData.append('published', date);
+    formData.append('created_at', date);
 
-    files.forEach((item: any) => {
-      formData.append('images[]', item);
+    files?.forEach((item: any) => {
+      formData.append('files', item.file);
     });
 
-    console.log(formData);
-
-    for (var pair of formData.entries()) {
-      console.log(pair[0] + ', ' + pair[1]);
-    }
-
-    handleClose();
+    createGalery(formData);
+    // setGaleriesModalStatus(false);
   };
 
   return (
     <Box sx={{}}>
-      <Button variant="outlined" onClick={handleClickOpen}>
-        Создать альбом
-      </Button>
       <Dialog
         fullScreen={fullScreen}
-        open={open}
+        open={isOpen}
         onClose={handleClose}
         onSubmit={onModalSubmit}
       >
@@ -126,24 +78,8 @@ export const CreateGaleryModal: FC<any> = () => {
             variant="standard"
             onChange={(event) => setTitle(event.target.value)}
           />
-          <LocalizationProvider dateAdapter={AdapterDayjs}>
-            <MobileDatePicker
-              label="Дата публикации"
-              inputFormat="DD/MM/YYYY"
-              value={date}
-              onChange={(value) => setDate(value)}
-              renderInput={(params) => <TextField {...params} />}
-            />
-          </LocalizationProvider>
-          <FilePond
-            files={files}
-            onupdatefiles={setFiles}
-            maxFiles={15}
-            allowMultiple={true}
-            accepted-file-types="image/jpeg, image/png"
-            name="files"
-            labelIdle='Ператащите изображения либо <span class="filepond--label-action">Откройте</span>'
-          />
+          <DatePicker date={date} setDate={setDate} />
+          <UploadFile files={files} setFiles={setFiles} isMultiply />
         </DialogContent>
         <DialogActions>
           <Button onClick={handleClose}>Отмена</Button>

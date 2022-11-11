@@ -11,8 +11,8 @@ export default class UserDto {
   username;
   avatar;
   post;
+  group;
   role;
-  group_id;
   created_at;
   updated_at;
 
@@ -21,7 +21,7 @@ export default class UserDto {
     this.email = model.email;
     this.post = model.post;
     this.role = model.role;
-    this.group_id = model.group_id;
+    this.group = model.users;
     this.avatar = editPath(model.avatar);
     this.username = model.username;
     this.created_at = model.created_at;

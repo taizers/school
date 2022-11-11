@@ -8,9 +8,13 @@ import Container from '@mui/material/Container';
 import { UserType } from '../../constants/tsSchemes';
 import UpdateUserModal from '../UpdateUserModal/index';
 
-export const Profile: FC<{ user: UserType }> = ({ user }) => {
+type ProfileType = {
+  user: UserType;
+}
+
+export const Profile: FC<ProfileType> = ({ user }) => {
   return (
-    <Container component="main" maxWidth="xs">
+    <Container maxWidth="xs">
       <CssBaseline />
       <Box
         sx={{
@@ -26,21 +30,24 @@ export const Profile: FC<{ user: UserType }> = ({ user }) => {
           <LockOutlinedIcon />
         </Avatar>
 
-        <Box component="form" sx={{ mt: 1 }}>
+        {user && <Box component="form" sx={{ mt: 1 }}>
           <Typography component="h3" variant="h5">
-            ID: {user?.id}
+            ID: {user.id}
           </Typography>
           <Typography component="h3" variant="h5">
-            Почта: {user?.email}
+            Почта: {user.email}
           </Typography>
           <Typography component="h3" variant="h5">
-            Имя: {user?.name}
+            Имя: {user.username}
           </Typography>
           <Typography component="h3" variant="h5">
-            Активирован: {user?.isActivated ? 'Да' : 'Нет'}
+            Пост: {user.post}
+          </Typography>
+          <Typography component="h3" variant="h5">
+            Роль: {user.role}
           </Typography>
           <UpdateUserModal />
-        </Box>
+        </Box>}
       </Box>
     </Container>
   );

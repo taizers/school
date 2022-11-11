@@ -4,7 +4,7 @@ export const createNewsValidation = validate(
   {
     body: Joi.object({
       title: Joi.string().max(32).required(),
-      content: Joi.string().max(10000).required(),
+      content: Joi.string().required(),
       created_at: Joi.date(),
     }),
   },
@@ -20,7 +20,7 @@ export const updateNewsValidation = validate(
   {
     body: Joi.object({
       title: Joi.string().max(32).required(),
-      content: Joi.string().max(10000).required(),
+      content: Joi.string().required(),
       created_at: Joi.date(),
     }),
     params: Joi.object({

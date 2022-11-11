@@ -91,7 +91,7 @@ router.post(
 // Get Files
 
 router.use('/avatars', express.static('storage/avatars'));
-router.use('/galeries-image', express.static('storage/galeries'));
+router.use('/galeries-items', express.static('storage/galeries-items'));
 router.use('/files', express.static('storage/files'));
 router.use('/news-covers', express.static('storage/news-covers'));
 

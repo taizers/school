@@ -5,6 +5,7 @@ import { StyledImage, StyledTitle } from './styled';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import ImageViewer from 'react-simple-image-viewer';
+import { apiUrl } from '../../constants/constants';
 
 const galery = {
   title: 'Название Альбома',
@@ -32,14 +33,20 @@ const galery = {
   ],
 };
 
-export const Galery: FC<any> = () => {
+type GaleryType = {
+  isLoading: boolean;
+  galery: any;
+  getGalery: (data: any) => Promise<any>;
+}
+
+export const Galery: FC<GaleryType> = ({getGalery, isLoading, galery}) => {
   const [currentImage, setCurrentImage] = useState(0);
   const [isViewerOpen, setIsViewerOpen] = useState(false);
   const { id } = useParams();
 
   useEffect(() => {
     if (id) {
-      // getBook(id);
+      getGalery(id);
     }
   }, []);
 
@@ -64,11 +71,11 @@ export const Galery: FC<any> = () => {
           justifyContent: 'space-around',
         }}
       >
-        {galery?.photos?.map((item, index) => (
+        {galery?.items?.map((item: any, index: number) => (
           <StyledImage
             key={`photo ${item.id}`}
             onClick={() => openImageViewer(index)}
-            src={item.url}
+            src={`${apiUrl}${item.name}`}
             height="200"
             width="300"
             alt="Фото из альбома"
@@ -78,7 +85,7 @@ export const Galery: FC<any> = () => {
       <Box>
         {isViewerOpen && (
           <ImageViewer
-            src={galery?.photos?.map((item) => item.url)}
+            src={galery?.items?.map((item: any) => `${apiUrl}${item.name}`)}
             currentIndex={currentImage}
             disableScroll={true}
             closeOnClickOutside={true}

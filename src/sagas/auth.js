@@ -10,13 +10,14 @@ function* login({ payload: { data, history } }) {
   yield put(authAction.setAuthLoading(true));
   try {
     const {
-      data: { user, accessToken },
+      data: {data: { user, user_session }},
     } = yield call(authApi.login, data);
 
-    yield setToken(accessToken);
+    yield setToken(user_session.access_token);
     yield put(authAction.loginSuccessed(user));
     yield history('/');
   } catch (error) {
+    yield console.log(error)
     yield createToast.error(error?.response?.data?.data?.message);
   } finally {
     yield put(authAction.setAuthLoading(false));
@@ -38,10 +39,10 @@ function* signUpUser({ payload: { data, history } }) {
 function* checkAuth({ payload: { history } }) {
   try {
     const {
-      data: { user, access_token },
+      data: {data: { user, user_session }},
     } = yield call(authApi.checkAuth);
 
-    yield setToken(access_token);
+    yield setToken(user_session.access_token);
     yield put(authAction.loginSuccessed(user));
   } catch (error) {
     // yield clearToken();

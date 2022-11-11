@@ -18,19 +18,19 @@ export const createNewsAction = async (
 ) => {
   const { title, content, created_at } = req.body;
   const { id } = req.user;
-  const { path } = req.file;
+  const cover = req.file?.path;
 
   console.log(req.file);
 
   logger.info(
-    `Create News Action: { title: ${title}, content: ${content}, userId: ${id}, path: ${path}, created_at: ${created_at} } `
+    `Create News Action: { title: ${title}, content: ${content}, userId: ${id}, path: ${cover}, created_at: ${created_at} } `
   );
 
   try {
     const news = await createNews({
       title,
       content,
-      cover: path,
+      cover,
       creator_id: id,
       created_at,
     });

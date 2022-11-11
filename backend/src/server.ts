@@ -16,10 +16,36 @@ dotenv.config();
 
 const app = express();
 
+app.use(cors({
+  origin: 'http://localhost:3000', 
+  credentials: true
+}));
+
 app.use(bodyParser.json());
 app.use(cookieParser());
 
-app.use(cors({ origin: 'http://localhost:3000', credentials: true, }));
+// app.use(cors({ 
+//   origin: 'http://localhost:3000', 
+//   credentials: true, 
+//   methods: ["PUT", "OPTIONS", "GET", "DELETE", "POST"],
+//   allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With', 'Accept', 'Origin'],
+// }));
+
+// app.use(cors({origin:true,credentials: true}));
+
+// app.use(function(req, res, next) {
+//   console.log(req);
+//   res.header("Access-Control-Allow-Origin", "http://localhost:3000");
+//   res.header("Access-Control-Allow-Credentials", "true");
+//   res.header("Access-Control-Allow-Headers", "Origin, Authorization, X-Requested-With, Content-Type, Accept");
+//   res.header('Access-Control-Allow-Methods', 'PUT');
+//   res.header('Access-Control-Max-Age', '86400');
+//   if (req.method === "OPTIONS") {
+//     return res.status(200).end();
+//   }
+//      next();
+// });
+
 
 app.use(morganMiddleware);
 

@@ -1,7 +1,9 @@
-import React, { FC } from 'react';
+import React, { FC, useEffect, useState } from 'react';
 import Box from '@mui/material/Box';
 import moment from 'moment';
 import Pagination from '@mui/material/Pagination';
+import CreateNewsModal from './CreateNewsModal/index';
+import Button from '@mui/material/Button';
 import {
   StyledTitle,
   StyledImage,
@@ -9,72 +11,59 @@ import {
   StyledLink,
   StyledNoteLink,
 } from './styled';
+import { apiUrl } from '../../constants/constants';
 
-type NewsType = {};
-
-const news = [
-  {
-    id: 1,
-    title: 'Новость 1',
-    published: Date.now(),
-    cover: '/static/images/school.jpg',
-  },
-  {
-    id: 2,
-    title: 'Новость 1',
-    published: Date.now(),
-    cover: '/static/images/school.jpg',
-  },
-  {
-    id: 3,
-    title: 'Новость 1',
-    published: Date.now(),
-    cover: '/static/images/school.jpg',
-  },
-  {
-    id: 4,
-    title: 'Новость 1',
-    published: Date.now(),
-    cover: '/static/images/school.jpg',
-  },
-  {
-    id: 5,
-    title: 'Новость 1',
-    published: Date.now(),
-    cover: '/static/images/school.jpg',
-  },
-  {
-    id: 6,
-    title: 'Новость 1',
-    published: Date.now(),
-    cover: '/static/images/school.jpg',
-  },
-  {
-    id: 7,
-    title: 'Новость 1 fdsfs f dfs dfsd fsdfsdf sdfsdfsdfsd dsf sdf dsf',
-    published: Date.now(),
-    cover: '/static/images/school.jpg',
-  },
-];
-
-const onPaginationChange = (
-  event: React.ChangeEvent<unknown>,
-  value: number
-) => {
-  if (true) {
-    window.scrollTo(0, 0);
-    // setPage(value - 1);
-    // getBooks(query, value - 1);
-  }
+type NewsType = {
+  getAllNewsPaginated: (page: number, limit: number) => Promise<any>;
+  createNews: (data: any) => Promise<any>;
+  updateNews: (data: any) => Promise<any>;
+  setNewsModalStatus: (data: boolean) => void;
+  isLoading: boolean;
+  allNews: any;
+  isOpen: boolean;
 };
 
-export const News: FC<NewsType> = ({}) => {
+export const News: FC<NewsType> = ({ isLoading, allNews, getAllNewsPaginated, createNews, updateNews, setNewsModalStatus, isOpen }) => {
   moment().locale('ru');
+  const [page, setPage] = useState(1);
+  const [news, setNews] = useState();
+  const [totalPages, setTotalPages] = useState(1);
+  const [limit, setLimit] = useState(10);
+
+  useEffect(() => {
+    getAllNewsPaginated(page, limit);
+  }, []);
+
+  useEffect(() => {
+    setPage(allNews.page);
+    setTotalPages(allNews.totalPages);
+  }, [allNews]);
+
+  const onPaginationChange = (
+    event: React.ChangeEvent<unknown>,
+    value: number
+  ) => {
+    if (true) {
+      window.scrollTo(0, 0);
+      getAllNewsPaginated(value, limit);
+    }
+  };
 
   return (
     <Box
       sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}
     >
+      <Box>
+        <Button
+          fullWidth
+          variant="contained"
+          sx={{ mt: 3, mb: 2 }}
+          onClick={() => setNewsModalStatus(true)}
+        > 
+          {'Создать новость'}
+        </Button>
+        {isOpen && <CreateNewsModal modalAction={news ? updateNews : createNews} isOpen={isOpen} news={news} setNews={setNews} setModalStatus={setNewsModalStatus}  />}
+      </Box>
       <Box
         sx={{
           display: 'flex',
@@ -85,7 +74,7 @@ export const News: FC<NewsType> = ({}) => {
           mr: '-10px',
         }}
       >
-        {news?.map((item) => (
+        {allNews?.news?.map((item:any) => (
           <Box
             key={`${item.title} ${item.id}`}
             sx={{
@@ -101,30 +90,39 @@ export const News: FC<NewsType> = ({}) => {
           >
             <StyledLink to={`/news/${item.id}`}>
               <StyledImage
-                src={item.cover}
+                src={item.cover ? `${apiUrl}${item.cover}` : 'static/images/no-image.jpg'}
                 alt="Обложка альбома"
                 width="150"
                 height="150"
               />
             </StyledLink>
             <StyledTitle>{item.title}</StyledTitle>
-            <StyledDate>{`Опубликовано: ${moment(item.published).format(
+            <StyledDate>{`Опубликовано: ${moment(item.created_at).format(
               'DD.MM.YY'
             )}`}</StyledDate>
             <StyledNoteLink to={`/news/${item.id}`}>
               Подробнее...
             </StyledNoteLink>
+            <Button
+              fullWidth
+              variant="contained"
+              sx={{ mt: 3, mb: 2 }}
+              onClick={() => {setNewsModalStatus(true); setNews(item)}}
+            > 
+              {'Редактировать новость'}
+            </Button>
+            {/* <CreateNewsModal modalAction={createNews}  news={item} /> */}
           </Box>
         ))}
       </Box>
-      {news && (
+      {allNews && (
         <Pagination
-          count={1}
+          count={totalPages || 1}
           sx={{ mt: '10px' }}
           color="primary"
           defaultPage={1}
           boundaryCount={2}
-          page={1}
+          page={page || 1}
           onChange={onPaginationChange}
         />
       )}

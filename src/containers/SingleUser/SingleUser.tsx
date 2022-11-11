@@ -49,10 +49,10 @@ export const SingleUser: FC<SingleUserType> = ({ user, getUser }) => {
             Почта: {user?.email}
           </Typography>
           <Typography component="h3" variant="h5">
-            Имя: {user?.name}
+            Имя: {user?.username}
           </Typography>
           <Typography component="h3" variant="h5">
-            Активирован: {user?.isActivated ? 'Да' : 'Нет'}
+            Активирован: {user?.activationkey ? 'Да' : 'Нет'}
           </Typography>
         </Box>
       </Box>

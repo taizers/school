@@ -13,11 +13,11 @@ import { createToast } from '../utils/toasts';
 function* getAllUsers() {
   yield put(usersAction.setUsersLoading(true));
   try {
-    const { data } = yield call(usersApi.getAllUsers);
+    const { data: {data} } = yield call(usersApi.getAllUsers);
     yield console.log(data);
     yield put(usersAction.getAllUsersSuccessed(data));
   } catch (error) {
-    yield createToast.error(error.response.data.message);
+    yield createToast.error(error?.response?.data?.data?.message);
   } finally {
     yield put(usersAction.setUsersLoading(false));
   }
@@ -26,10 +26,10 @@ function* getAllUsers() {
 function* getUser({ payload }) {
   yield put(usersAction.setUsersLoading(true));
   try {
-    const { data } = yield call(usersApi.getUser, payload);
+    const { data: {data} } = yield call(usersApi.getUser, payload);
     yield put(usersAction.getUserSuccessed(data));
   } catch (error) {
-    yield createToast.error(error.response.data.message);
+    yield createToast.error(error?.response?.data?.data?.message);
   } finally {
     yield put(usersAction.setUsersLoading(false));
   }
@@ -39,12 +39,11 @@ function* updateUser({ payload }) {
   yield put(usersAction.setUsersLoading(true));
   try {
     const {
-      data: { user, accessToken },
+      data: {data},
     } = yield call(usersApi.updateUser, payload);
-    yield setToken(accessToken);
-    yield put(authAction.loginSuccessed(user));
+    yield put(authAction.loginSuccessed(data));
   } catch (error) {
-    yield createToast.error(error.response.data.message);
+    yield createToast.error(error?.response?.data?.data?.message);
   } finally {
     yield put(usersAction.setUsersLoading(false));
   }
@@ -57,7 +56,7 @@ function* deleteUser({ payload }) {
     yield put(usersAction.deleteUserSuccessed(responce.status));
     yield put(usersAction.getAllUsers());
   } catch (error) {
-    yield createToast.error(error.response.data.message);
+    yield createToast.error(error?.response?.data?.data?.message);
   } finally {
     yield put(usersAction.setUsersLoading(false));
   }

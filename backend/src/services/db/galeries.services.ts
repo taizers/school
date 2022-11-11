@@ -23,18 +23,29 @@ export const findGalery = async (where: object) => {
         },
       },
     ],
-    row: true,
   });
 
-  if (!galery) {
+  const jsonGalery = galery.toJSON();
+
+  if (!jsonGalery) {
     throw new ResourceNotFoundError('Галерея');
   }
 
-  const items = galery.items.map((item: any) => ({...item, name: editPath(item.name)}));
+  const items = jsonGalery.items?.map((item: any) => ({...item, name: editPath(item?.name)}));
 
-  galery.items = items;
+  const cover = editPath(jsonGalery.cover);
 
-  return galery;
+  let avatar = null;
+
+  if (galery.user?.avatar) {
+    avatar = editPath(jsonGalery.user.avatar);
+  }
+
+  jsonGalery.user.avatar = avatar;
+  jsonGalery.items = items;
+  jsonGalery.cover = cover;
+
+  return jsonGalery;
 };
 
 export const createGalery = async (payload: object) => {
@@ -65,7 +76,7 @@ export const findGaleries = async (page: number, limit: number) => {
     order: [['created_at', 'DESC']],
   });
 
-  const galeries = rows.map((item: any) => ({...item, cover: editPath(item.cover)}));
+  const galeries = rows.map((item: any) => ({...item?.dataValues, cover: editPath(item?.dataValues?.cover)}));
 
   const totalPages = !count ? 1 : Math.ceil(count / limit);
 

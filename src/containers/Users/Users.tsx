@@ -46,7 +46,9 @@ export const Users: FC<UsersComponetTypes> = ({
             <TableCell>ID</TableCell>
             <TableCell align="center">Имя</TableCell>
             <TableCell align="center">Почта</TableCell>
-            <TableCell align="center">Активирован</TableCell>
+            <TableCell align="center">Должность</TableCell>
+            <TableCell align="center">Роль</TableCell>
+            <TableCell align="center">Секретный ключ</TableCell>
             <TableCell align="center"></TableCell>
           </TableRow>
         </TableHead>
@@ -58,11 +60,13 @@ export const Users: FC<UsersComponetTypes> = ({
             >
               <TableCell align="left">{user.id}</TableCell>
               <TableCell component="th" scope="row">
-                {user.name}
+                {user.username}
               </TableCell>
               <TableCell align="center">{user.email}</TableCell>
+              <TableCell align="center">{user.post}</TableCell>
+              <TableCell align="center">{user.role}</TableCell>
               <TableCell align="center">
-                {user.isActivated ? 'Да' : 'Нет'}
+                {user.activationkey}
               </TableCell>
               <TableCell align="center">
                 <DotMenu

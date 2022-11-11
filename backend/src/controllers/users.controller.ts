@@ -124,6 +124,7 @@ export const updateUserAction = async (
   res: Response,
   next: NextFunction
 ) => {
+  console.log('++++')
   const { id } = req.params;
   const { role: userRole } = req.user;
   const { post, role, username, group_id } = req.body;

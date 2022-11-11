@@ -1,77 +1,60 @@
-import React, { FC } from 'react';
+import React, { FC, useEffect, useState } from 'react';
 import Box from '@mui/material/Box';
 import moment from 'moment';
 import Pagination from '@mui/material/Pagination';
 import CreateGaleryModal from './CreateGaleryModal';
 import { StyledTitle, StyledImage, StyledDate, StyledLink } from './styled';
+import Button from '@mui/material/Button';
+import { apiUrl } from '../../constants/constants';
 
-type GaleriesType = {};
-
-const galeries = [
-  {
-    id: 1,
-    title: 'Галерея 1',
-    published: Date.now(),
-    cover: '/static/images/school.jpg',
-  },
-  {
-    id: 2,
-    title: 'Галерея 1',
-    published: Date.now(),
-    cover: '/static/images/school.jpg',
-  },
-  {
-    id: 3,
-    title: 'Галерея 1',
-    published: Date.now(),
-    cover: '/static/images/school.jpg',
-  },
-  {
-    id: 4,
-    title: 'Галерея 1',
-    published: Date.now(),
-    cover: '/static/images/school.jpg',
-  },
-  {
-    id: 5,
-    title: 'Галерея 1',
-    published: Date.now(),
-    cover: '/static/images/school.jpg',
-  },
-  {
-    id: 6,
-    title: 'Галерея 1',
-    published: Date.now(),
-    cover: '/static/images/school.jpg',
-  },
-  {
-    id: 7,
-    title: 'Галерея 1 fdsfs f dfs dfsd fsdfsdf sdfsdfsdfsd dsf sdf dsf',
-    published: Date.now(),
-    cover: '/static/images/school.jpg',
-  },
-];
-
-const onPaginationChange = (
-  event: React.ChangeEvent<unknown>,
-  value: number
-) => {
-  if (true) {
-    window.scrollTo(0, 0);
-    // setPage(value - 1);
-    // getBooks(query, value - 1);
-  }
+type GaleriesType = {
+  getAllGaleriesPaginated: (page: number, limit: number) => Promise<any>;
+  createGalery: (data: any) => Promise<any>;
+  updateGalery: (data: any) => Promise<any>;
+  setGaleriesModalStatus: (data: boolean) => void;
+  isLoading: boolean;
+  galeries: any;
+  isOpen: boolean;
 };
 
-export const Galeries: FC<GaleriesType> = ({}) => {
+
+export const Galeries: FC<GaleriesType> = ({setGaleriesModalStatus, createGalery, isOpen, galeries, getAllGaleriesPaginated}) => {
   moment().locale('ru');
+
+  const [page, setPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
+  const [limit, setLimit] = useState(10);
+
+  useEffect(() => {
+    getAllGaleriesPaginated(page, limit);
+  }, []);
+
+  useEffect(() => {
+    setPage(galeries?.page);
+    setTotalPages(galeries?.totalPages);
+  }, [galeries]);
+
+  const onPaginationChange = (
+    event: React.ChangeEvent<unknown>,
+    value: number
+  ) => {
+    if (true) {
+      window.scrollTo(0, 0);
+      setPage(value);
+      getAllGaleriesPaginated(value, limit);
+    }
+  };
+
   return (
     <Box
       sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}
     >
       {true && (
         <Box sx={{ m: '10px' }}>
-          <CreateGaleryModal />
+          <Button variant="outlined" onClick={() => setGaleriesModalStatus(true)}>
+            Создать альбом
+          </Button>
+          <CreateGaleryModal isOpen={isOpen} createGalery={createGalery} setGaleriesModalStatus={setGaleriesModalStatus} />
         </Box>
       )}
       <Box
@@ -84,7 +67,7 @@ export const Galeries: FC<GaleriesType> = ({}) => {
           mr: '-10px',
         }}
       >
-        {galeries?.map((item) => (
+        {galeries?.galeries?.map((item: any) => (
           <Box
             key={`${item.title} ${item.id}`}
             sx={{
@@ -101,27 +84,30 @@ export const Galeries: FC<GaleriesType> = ({}) => {
           >
             <StyledLink to={`/galeries/${item.id}`}>
               <StyledImage
-                src={item.cover}
+                src={item.cover ? `${apiUrl}${item.cover}` : 'static/images/no-image.jpg'}
                 alt="Обложка альбома"
                 width="150"
                 height="150"
               />
               <StyledTitle>{item.title}</StyledTitle>
-              <StyledDate>{`Опубликовано: ${moment(item.published).format(
+              <StyledDate>{`Опубликовано: ${moment(item.created_at).format(
                 'DD.MM.YY'
               )}`}</StyledDate>
             </StyledLink>
+            <Button variant="outlined" onClick={() => {setGaleriesModalStatus(true)}}>
+              Редактировать альбом
+            </Button>
           </Box>
         ))}
       </Box>
       {galeries && (
         <Pagination
-          count={1}
+          count={totalPages || 1}
           sx={{ mt: '10px' }}
           color="primary"
           defaultPage={1}
           boundaryCount={2}
-          page={1}
+          page={page || 1}
           onChange={onPaginationChange}
         />
       )}

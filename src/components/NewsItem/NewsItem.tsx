@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import { StyledImage, StyledTitle, StyledWrapper } from './styled';
 import Box from '@mui/material/Box';
 import { Markup } from 'interweave';
+import { apiUrl } from '../../constants/constants';
 
 const newsItem = {
   title: 'Название Новости',
@@ -12,12 +13,18 @@ const newsItem = {
   cover: '/static/images/school.jpg',
 };
 
-export const NewsItem: FC<any> = () => {
+type NewsItemType = {
+  getNews: (id: string) => Promise<any>;
+  news: any;
+  isLoading: boolean;
+}
+
+export const NewsItem: FC<NewsItemType> = ({ getNews, news, isLoading }) => {
   const { id } = useParams();
 
   useEffect(() => {
     if (id) {
-      // getBook(id);
+      getNews(id);
     }
   }, []);
 
@@ -27,13 +34,13 @@ export const NewsItem: FC<any> = () => {
     >
       <StyledImage
         alt="Обложка новости"
-        src={newsItem.cover}
+        src={`${apiUrl}${news.cover}`}
         width="400"
         height="400"
       />
-      <StyledTitle>{newsItem.title}</StyledTitle>
+      <StyledTitle>{news.title}</StyledTitle>
       <StyledWrapper>
-        <Markup content={newsItem.content} />
+        <Markup content={news.content} />
       </StyledWrapper>
     </Box>
   );

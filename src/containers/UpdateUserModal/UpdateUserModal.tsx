@@ -48,17 +48,17 @@ export const UpdateUserModal: FC<UpdateUserModalType> = ({
   const onSubmitForm = () => {
     const data: UpdateUserType = { id: user.id };
 
-    if ((!name || name === user.name) && (!oldPassword || !newPassword)) {
+    if ((!name || name === user.username) && (!oldPassword || !newPassword)) {
       return console.log('Empty');
     }
 
     if (oldPassword && newPassword) {
-      data.oldPassword = oldPassword;
-      data.newPassword = newPassword;
+      data.old_password = oldPassword;
+      data.new_password = newPassword;
     }
 
     if (name) {
-      data.name = name;
+      data.username = name;
     }
 
     console.log(data);
@@ -76,9 +76,9 @@ export const UpdateUserModal: FC<UpdateUserModalType> = ({
         Редактировать профиль
       </Button>
       <Dialog open={open} onClose={handleClose}>
-        <DialogTitle>Subscribe</DialogTitle>
+        <DialogTitle>Редактирование профиля</DialogTitle>
         <DialogContent>
-          <DialogContentText>Редактирование профиля</DialogContentText>
+          {/* <DialogContentText>Редактирование профиля</DialogContentText> */}
           <TextField
             autoFocus
             margin="dense"
@@ -87,7 +87,7 @@ export const UpdateUserModal: FC<UpdateUserModalType> = ({
             type="text"
             fullWidth
             variant="standard"
-            defaultValue={user.name || ''}
+            defaultValue={user.username || ''}
             onChange={onChangeName}
           />
           <TextField

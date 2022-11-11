@@ -1,8 +1,18 @@
 export type UserType = {
   id: string;
-  name: string;
+  username: string;
   email: string;
-  isActivated: string;
+  role: string;
+  post: string;
+  activationkey?: string;
+  group: {
+    id: number;
+    title: string;
+    created_at: Date,
+    updated_at: Date;
+  };
+  created_at: Date;
+  updated_at: Date;
 };
 
 export type LoginUserType = {
@@ -19,9 +29,9 @@ export type SignUpUserType = {
 
 export type UpdateUserType = {
   id: string;
-  name?: string;
-  newPassword?: string;
-  oldPassword?: string;
+  username?: string;
+  new_password?: string;
+  old_password?: string;
 };
 
 export type AuthorType = {

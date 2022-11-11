@@ -20,7 +20,12 @@ export type TaskAttachmentType = {
 
 export type UserType = {
   id: number;
-  group_id: number | null;
+  users: {
+    id: number;
+    title: string;
+    created_at: Date;
+    updated_at: Date;
+  };
   email: string;
   username: string | null;
   post: string | null;

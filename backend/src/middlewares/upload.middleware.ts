@@ -14,7 +14,7 @@ const filesStorage = multer.diskStorage({
 
 const galeriesStorage = multer.diskStorage({
   destination(req, file, callback) {
-    callback(null, 'storage/galeries/');
+    callback(null, 'storage/galeries-items/');
   },
   filename(req, file, callback) {
     const date = moment().format('DDMMYYYY-HHmmss_SSS');
