@@ -6,11 +6,13 @@ import CreateGaleryModal from './CreateGaleryModal';
 import { StyledTitle, StyledImage, StyledDate, StyledLink } from './styled';
 import Button from '@mui/material/Button';
 import { apiUrl } from '../../constants/constants';
+import DeleteModal from '../../components/DeleteModal/index';
 
 type GaleriesType = {
   getAllGaleriesPaginated: (page: number, limit: number) => Promise<any>;
   createGalery: (data: any) => Promise<any>;
   updateGalery: (data: any) => Promise<any>;
+  deleteGalery: (id: string) => Promise<any>;
   setGaleriesModalStatus: (data: boolean) => void;
   isLoading: boolean;
   galeries: any;
@@ -18,10 +20,12 @@ type GaleriesType = {
 };
 
 
-export const Galeries: FC<GaleriesType> = ({setGaleriesModalStatus, createGalery, isOpen, galeries, getAllGaleriesPaginated}) => {
+export const Galeries: FC<GaleriesType> = ({setGaleriesModalStatus, createGalery, deleteGalery, isOpen, galeries, getAllGaleriesPaginated}) => {
   moment().locale('ru');
 
   const [page, setPage] = useState(1);
+  const [isDelteModalOpen, setDelteModalOpen] = useState(false);
+  const [deleteId, setDeleteId] = useState(null);
   const [totalPages, setTotalPages] = useState(1);
   const [limit, setLimit] = useState(10);
 
@@ -45,18 +49,23 @@ export const Galeries: FC<GaleriesType> = ({setGaleriesModalStatus, createGalery
     }
   };
 
+  const onDeleteGalery = () => {
+    if (deleteId) {
+      deleteGalery(deleteId);
+    }
+  }
+
   return (
     <Box
       sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}
     >
-      {true && (
-        <Box sx={{ m: '10px' }}>
-          <Button variant="outlined" onClick={() => setGaleriesModalStatus(true)}>
-            Создать альбом
-          </Button>
-          <CreateGaleryModal isOpen={isOpen} createGalery={createGalery} setGaleriesModalStatus={setGaleriesModalStatus} />
-        </Box>
-      )}
+      <Box sx={{ m: '10px' }}>
+        <Button variant="outlined" onClick={() => setGaleriesModalStatus(true)}>
+          Создать альбом
+        </Button>
+        {isOpen && <CreateGaleryModal isOpen={isOpen} createGalery={createGalery} setGaleriesModalStatus={setGaleriesModalStatus} />}
+        {isDelteModalOpen && <DeleteModal isOpen={isDelteModalOpen} item={'галерею'} setModalStatus={setDelteModalOpen} deleteAction={onDeleteGalery} />}
+      </Box>
       <Box
         sx={{
           display: 'flex',
@@ -94,8 +103,21 @@ export const Galeries: FC<GaleriesType> = ({setGaleriesModalStatus, createGalery
                 'DD.MM.YY'
               )}`}</StyledDate>
             </StyledLink>
-            <Button variant="outlined" onClick={() => {setGaleriesModalStatus(true)}}>
-              Редактировать альбом
+            <Button 
+              fullWidth
+              sx={{m:1}}
+              variant="contained"
+              onClick={() => {setGaleriesModalStatus(true)}}
+            >
+              Редактировать
+            </Button>
+            <Button 
+              fullWidth
+              sx={{m:1}}
+              variant="contained"
+              onClick={() => {setDeleteId(item.id); setDelteModalOpen(true)}}
+            >
+              Удалить
             </Button>
           </Box>
         ))}

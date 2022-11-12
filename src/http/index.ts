@@ -5,10 +5,9 @@ import { getToken } from '../utils/index';
 
 const api = axios.create({
   baseURL: apiUrl,
-  withCredentials: true,
-  headers: {
-    'Access-Control-Allow-Origin': '*',
-  },
+  // headers: {
+  //   'Access-Control-Allow-Origin': '*',
+  // },
   data: {},
   timeout: 180000,
 });

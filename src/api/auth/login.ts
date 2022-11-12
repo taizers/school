@@ -1,4 +1,5 @@
-import http from '../../http';
+import axios from 'axios';
+import { apiUrl } from '../../constants/constants';
 
 type ValueType = {
   email: string;
@@ -6,5 +7,7 @@ type ValueType = {
 };
 
 export const login = (data: ValueType) => {
-  return http.post<AuthenticatorResponse>('sign-in', data);
+  axios.defaults.withCredentials = true;
+
+  return axios.post(`${apiUrl}/sign-in`, data);
 };

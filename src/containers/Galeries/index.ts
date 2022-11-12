@@ -1,6 +1,6 @@
 import { Galeries } from './Galeries';
 import { connect } from 'react-redux';
-import { getAllGaleriesPaginated, createGalery, updateGalery, setGaleriesModalStatus } from '../../actions/galeries';
+import { getAllGaleriesPaginated, createGalery, updateGalery, deleteGalery, setGaleriesModalStatus } from '../../actions/galeries';
 
 const mapStateToProps = (state: {
     galeries: { isLoading: boolean; galeries: any; galeriesModalIsOpen: boolean };
@@ -14,6 +14,7 @@ const mapDispatchToProps = (dispatch: any) => ({
     getAllGaleriesPaginated: (page: number, limit: number) => dispatch(getAllGaleriesPaginated(page, limit)),
   createGalery: (data: any) => dispatch(createGalery(data)),
   updateGalery: (data: any) => dispatch(updateGalery(data)),
+  deleteGalery: (id: string) => dispatch(deleteGalery(id)),
   setGaleriesModalStatus: (data: boolean) => dispatch(setGaleriesModalStatus(data)),
 });
 

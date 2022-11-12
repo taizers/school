@@ -17,13 +17,14 @@ type NewsType = {
   getAllNewsPaginated: (page: number, limit: number) => Promise<any>;
   createNews: (data: any) => Promise<any>;
   updateNews: (data: any) => Promise<any>;
+  deleteNews: (id: string) => Promise<any>;
   setNewsModalStatus: (data: boolean) => void;
   isLoading: boolean;
   allNews: any;
   isOpen: boolean;
 };
 
-export const News: FC<NewsType> = ({ isLoading, allNews, getAllNewsPaginated, createNews, updateNews, setNewsModalStatus, isOpen }) => {
+export const News: FC<NewsType> = ({ isLoading, allNews, deleteNews, getAllNewsPaginated, createNews, updateNews, setNewsModalStatus, isOpen }) => {
   moment().locale('ru');
   const [page, setPage] = useState(1);
   const [news, setNews] = useState();
@@ -106,10 +107,18 @@ export const News: FC<NewsType> = ({ isLoading, allNews, getAllNewsPaginated, cr
             <Button
               fullWidth
               variant="contained"
-              sx={{ mt: 3, mb: 2 }}
+              sx={{m:1}}
               onClick={() => {setNewsModalStatus(true); setNews(item)}}
             > 
               {'Редактировать новость'}
+            </Button>
+            <Button
+              fullWidth
+              sx={{m:1}}
+              variant="contained"
+              onClick={() => deleteNews(item.id)}
+            > 
+              {'Удалить'}
             </Button>
             {/* <CreateNewsModal modalAction={createNews}  news={item} /> */}
           </Box>
