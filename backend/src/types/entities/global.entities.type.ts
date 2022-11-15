@@ -28,6 +28,7 @@ export type UserType = {
   };
   email: string;
   username: string | null;
+  phone: string | null;
   post: string | null;
   role: string;
   avatar: string | null;

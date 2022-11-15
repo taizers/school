@@ -5,6 +5,7 @@ export const createStorageValidation = validate(
     body: Joi.object({
       title: Joi.string().max(256).required(),
       group_id: Joi.number().required(),
+      created_at: Joi.date(),
     }),
   },
   {

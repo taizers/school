@@ -1,7 +1,7 @@
 import express from 'express';
 import {
   createGroupAction,
-  updateGroupsAction,
+  updateGroupAction,
   deleteGroupAction,
   getGroupAction,
   getGroupsAction,
@@ -16,7 +16,7 @@ const router = express.Router();
 
 router.post('/', createGroupValidation, createGroupAction);
 router.delete('/:id', paramsIdValidation, deleteGroupAction);
-router.put('/:id', updateGroupValidation, updateGroupsAction);
+router.put('/:id', updateGroupValidation, updateGroupAction);
 router.get('/:id', paramsIdValidation, getGroupAction);
 router.get('/', getGroupsAction);
 

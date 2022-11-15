@@ -3,19 +3,20 @@ import { createStorage, deleteStorage, findStorageList } from '../services/db/st
 import { customResponse } from '../helpers/responce';
 import { ParamsIdRequest } from '../types/requests/global.request.type';
 import logger from '../helpers/logger';
+import { findStorageGroup } from '../services/db/storage-groups.services';
 
 export const createStorageAction = async (
   req: any,
   res: Response,
   next: NextFunction
 ) => {
-  const { title, group_id } = req.body;
+  const { title, group_id, created_at } = req.body;
   const { id } = req.user;
   const { mimetype, size, path } = req.file;
   
 
   logger.info(
-    `Create Storage Action: { title: ${title}, mimetype: ${mimetype}, size: ${size}, path: ${path}, userId: ${id}, storagegroup_id: ${group_id} } `
+    `Create Storage Action: { title: ${title}, mimetype: ${mimetype}, size: ${size}, path: ${path}, userId: ${id}, storagegroup_id: ${group_id}, created_at: ${created_at} } `
   );
 
   try {
@@ -23,6 +24,7 @@ export const createStorageAction = async (
       title,
       type: mimetype,
       size,
+      created_at,
       storagegroup_id: group_id,
       creator_id: id,
       name: path,
@@ -45,15 +47,16 @@ export const findStoragesFromGroupAction = async (
   const { id } = req.user;
 
   logger.info(
-    `Create Storage Action: { userId: ${id}, page: ${page}, limit: ${limit}, storagegroup_id: ${group_id} } `
+    `Find Storage List Action: { userId: ${id}, page: ${page}, limit: ${limit}, storagegroup_id: ${group_id} } `
   );
 
   try {
     const files = await findStorageList(group_id, page - 1, limit);
+    const group = await findStorageGroup({ id: group_id });
 
-    return customResponse(res, 200, files);
+    return customResponse(res, 200, {...group, files});
   } catch (err) {
-    logger.error('Create Storage Action - Cannot storage create', err);
+    logger.error('Find Storage List Action - Cannot Find storage', err);
     next(err);
   }
 };

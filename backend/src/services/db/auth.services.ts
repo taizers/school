@@ -38,13 +38,13 @@ export const login = async (email: string, password: string) => {
   });
 
   if (!user) {
-    throw new ResourceNotFoundError('User');
+    throw new ResourceNotFoundError('Пользователь');
   }
 
   const isPasswordsEqual = await bcrypt.compare(password, user.password);
 
   if (!isPasswordsEqual) {
-    throw new BadCredentialsError('Bad password');
+    throw new BadCredentialsError('Неправильный пароль');
   }
 
   const user_session = await getUserSession(user.id, user.role);
@@ -58,7 +58,7 @@ export const createUser = async (payload: object) => {
   try {
     await User.create(payload);
   } catch (error) {
-    throw new Error('Could not create user');
+    throw new Error('Пользователь не создан');
   }
 };
 
@@ -68,7 +68,7 @@ export const logout = async (refreshToken: string) => {
 
 export const refresh = async (refreshToken: string) => {
   if (!refreshToken) {
-    throw new ApplicationError('Invalid refresh token.', 401);
+    throw new ApplicationError('Неправильный refresh токен.', 401);
   }
 
   const userFormToken = validateRefreshToken(refreshToken);
@@ -79,7 +79,7 @@ export const refresh = async (refreshToken: string) => {
     !tokenFromBd ||
     tokenFromBd.owner_id !== userFormToken.id
   ) {
-    throw new ApplicationError('Invalid refresh token.', 401);
+    throw new ApplicationError('Неправильный refresh токен.', 401);
   }
   const user = await User.findOne({
     where: { id: userFormToken.id },

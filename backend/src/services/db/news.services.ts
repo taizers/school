@@ -66,17 +66,18 @@ export const deleteNews = async (id: string) => {
   if (result === 0) {
     throw new EntityNotFoundError(id, 'NewsModel');
   }
-
-  await fs.unlink(news.cover);
+  if (news.cover) {
+    await fs.unlink(news.cover);
+  }
 };
 
 export const findAllNews = async (page: number, limit: number) => {
   const { count, rows } = await News.findAndCountAll({
     offset: page * limit,
     limit,
-    // attributes: {
-    //   exclude: ['content'],
-    // },
+    attributes: {
+      exclude: ['content'],
+    },
     include: [
       {
         model: User,

@@ -13,6 +13,7 @@ export default class UserDto {
   post;
   group;
   role;
+  phone;
   created_at;
   updated_at;
 
@@ -22,7 +23,8 @@ export default class UserDto {
     this.post = model.post;
     this.role = model.role;
     this.group = model.users;
-    this.avatar = editPath(model.avatar);
+    this.phone = model.phone;
+    this.avatar = model.avatar && editPath(model.avatar);
     this.username = model.username;
     this.created_at = model.created_at;
     this.updated_at = model.updated_at;

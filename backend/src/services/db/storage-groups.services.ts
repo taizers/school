@@ -11,12 +11,6 @@ import {
 export const findStorageGroup = async (where: object) => {
   const group = await Storagegroup.findOne({
     where,
-    include: [
-      {
-        model: Storage,
-        as: 'files',
-      },
-    ],
     row: true,
   });
 
@@ -24,10 +18,20 @@ export const findStorageGroup = async (where: object) => {
     throw new ResourceNotFoundError('Группа');
   }
 
-  return group;
+  return group.dataValues;
 };
 
-export const findStorageGroupsList = async (page: number, limit: number) => {
+export const findStorageGroupsList = async () => {
+  const groups = await Storagegroup.findAll();
+
+  if (!groups.length) {
+    throw new ResourceNotFoundError('Группа');
+  }
+
+  return groups;
+};
+
+export const findStorageGroups = async (page: number, limit: number) => {
   const { count, rows } = await Storagegroup.findAndCountAll({
     subQuery: false,
     offset: page * limit,

@@ -19,16 +19,16 @@ export const createGroupAction = async (
   res: Response,
   next: NextFunction
 ) => {
-  const { title } = req.body;
+  const { title, created_at } = req.body;
   const { role } = req.user;
 
-  logger.info(`Create Group Action: { title: ${title} } `);
+  logger.info(`Create Group Action: { title: ${title}, created_at: ${created_at} } `);
 
   try {
     if (role !== 'admin') {
       throw new DontHaveAccessError();
     }
-    const group = await createGroup({ title });
+    const group = await createGroup({ title, created_at });
 
     return customResponse(res, 200, group);
   } catch (err) {
@@ -144,22 +144,22 @@ export const getGroupsListAction = async (
   }
 };
 
-export const updateGroupsAction = async (
+export const updateGroupAction = async (
   req: any,
   res: Response,
   next: NextFunction
 ) => {
-  const { title } = req.body;
+  const { title, created_at } = req.body;
   const { id } = req.params;
   const { role } = req.user;
 
-  logger.info(`Update Groups Action: { title: ${title} } `);
+  logger.info(`Update Groups Action: { title: ${title}, created_at: ${created_at} } `);
 
   try {
     if (role !== 'admin') {
       throw new DontHaveAccessError();
     }
-    const group = await updateGroup(id, { title });
+    const group = await updateGroup(id, { title, created_at });
 
     return customResponse(res, 200, group);
   } catch (err) {

@@ -28,14 +28,14 @@ export const signUpAction = async (
     user = await getUser({ activationkey });
   } catch (err) {
     logger.error('SignUp Action - Cannot find user', err);
-    next(err);
+    return next(err);
   }
 
   if (user.password !== null) {
     logger.info(`SignUp Action - User already exists`);
     return customResponse(res, 422, {
       code: 422,
-      message: 'User is already registered.',
+      message: 'Пользователь уже зарегитрировался',
     });
   }
 
@@ -48,7 +48,7 @@ export const signUpAction = async (
       username,
     });
 
-    return customResponse(res, 201, 'created');
+    return customResponse(res, 201, 'создано');
   } catch (err) {
     logger.error('SignUp Action - Cannot create user', err);
     next(err);

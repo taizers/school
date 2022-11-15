@@ -24,6 +24,14 @@ export const getUser = async (where: object) => {
   return user;
 };
 
+export const deleteUser = async (id: string) => {
+  const result = await User.destroy({ where: { id } });
+
+  if (result === 0) {
+    throw new EntityNotFoundError(id, 'Страница');
+  }
+};
+
 export const findUser = async (where: object) => {
   const user = await User.findOne({
     where,
@@ -46,6 +54,31 @@ export const findUser = async (where: object) => {
   }
 
   return dtosUser;
+};
+
+export const findUserExcludePassword = async (where: object) => {
+  const user = await User.findOne({
+    where,
+    row: true,
+    include: [
+      {
+        model: Group,
+        as: 'users'
+      },
+    ],
+    attributes: {
+      exclude: ['password'],
+    },
+  });
+
+  let resultUser;
+
+  if (user) {
+    const dtosUser = new UserDto(user);
+    resultUser = { activationkey: user.activationkey, ...dtosUser };
+  }
+
+  return resultUser;
 };
 
 export const findPaginatedUsers = async (page: number, limit: number) => {

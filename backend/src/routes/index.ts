@@ -6,7 +6,7 @@ import {
   refreshAction,
   logoutAction,
 } from '../controllers/auth.controller';
-import { uploadUserAvatarAction } from '../controllers/users.controller';
+import { getCEOAction, uploadUserAvatarAction } from '../controllers/users.controller';
 // import {
 //   searchProjectAction,
 //   getProjectsStatisticAction,
@@ -43,6 +43,7 @@ import {
   uploadAvatarMiddleware,
 } from '../middlewares/upload.middleware';
 import verifyToken from '../middlewares/auth.middleware';
+import { getStorageGroupsListAction } from '../controllers/storage-groups.controller';
 
 const router = express.Router();
 
@@ -63,6 +64,12 @@ router.use('/pages', verifyToken, pagesRouter);
 router.use('/news', verifyToken, newsRouter);
 router.use('/comments', verifyToken, commentsRouter);
 router.use('/users', verifyToken, usersRouter);
+
+router.get('/storage-groups-list', verifyToken, getStorageGroupsListAction);
+
+//No Auth requests
+
+router.get('/users-ceo', getCEOAction);
 
 // Search
 

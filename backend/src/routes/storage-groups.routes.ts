@@ -4,7 +4,7 @@ import {
   updateStorageGroupAction,
   deleteStorageGroupAction,
   getStorageGroupAction,
-  getStorageGroupsListAction,
+  getStorageGroupsAction,
 } from '../controllers/storage-groups.controller';
 import {
   createStorageGroupValidation,
@@ -18,6 +18,6 @@ router.post('/', createStorageGroupValidation, createStorageGroupAction);
 router.delete('/:id', paramsIdValidation, deleteStorageGroupAction);
 router.put('/:id', updateStorageGroupValidation, updateStorageGroupAction);
 router.get('/:id', paramsIdValidation, getStorageGroupAction);
-router.get('/', getStorageGroupsListAction);
+router.get('/', getStorageGroupsAction);
 
 export default router;

@@ -18,12 +18,10 @@ export const createNewsAction = async (
 ) => {
   const { title, content, created_at } = req.body;
   const { id } = req.user;
-  const cover = req.file?.path;
-
-  console.log(req.file);
+  const cover = req?.file?.path;
 
   logger.info(
-    `Create News Action: { title: ${title}, content: ${content}, userId: ${id}, path: ${cover}, created_at: ${created_at} } `
+    `Create News Action: { title: ${title}, content: ${content}, userId: ${id}, cover: ${cover}, created_at: ${created_at} } `
   );
 
   try {
@@ -106,17 +104,17 @@ export const updateNewsAction = async (
 ) => {
   const { title, content, created_at } = req.body;
   const { id } = req.params;
-  const { path } = req.file;
+  const cover = req.file?.path;
 
   logger.info(
-    `Update News Action: { title: ${title}, content: ${content}, path: ${path}, created_at: ${created_at} } `
+    `Update News Action: { title: ${title}, content: ${content}, cover: ${cover}, created_at: ${created_at} } `
   );
 
   try {
     const news = await updateNews(id, {
       title,
       content,
-      cover: path,
+      cover,
       created_at,
     });
 

@@ -5,6 +5,7 @@ import {
   getUsersAction,
   updateUserAction,
   updateUserProfileAction,
+  deleteUserAction,
 } from '../controllers/users.controller';
 import { paramsIdValidation } from '../validations/global.validation';
 import {
@@ -21,5 +22,6 @@ router.post('/', createUserValidation, createUserAction);
 router.get('/', getUsersValidation, getUsersAction);
 router.put('/', updateProfileValidation, updateUserProfileAction);
 router.put('/:id', updateUserValidation, updateUserAction);
+router.delete('/:id', paramsIdValidation, deleteUserAction);
 
 export default router;

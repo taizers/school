@@ -1,10 +1,12 @@
-import { NextFunction, Response } from 'express';
+import { NextFunction, Request, Response } from 'express';
 import {
   findPaginatedUsers,
   findUser,
   findUsers,
+  findUserExcludePassword,
   getUser,
   updateUser,
+  deleteUser,
 } from '../services/db/users.services';
 import { createUser } from '../services/db/auth.services';
 import { customResponse } from '../helpers/responce';
@@ -25,34 +27,65 @@ import uuid = require('uuid');
 import bcrypt from 'bcrypt';
 
 export const getUserAction = async (
-  req: ParamsIdRequest,
+  req: any,
   res: Response,
   next: NextFunction
 ) => {
   const { id } = req.params;
+  const { role: userRole } = req.user;
 
-  logger.info(`Get User Action: { id: ${id} } `);
+
+  logger.info(`Get User Action: { id: ${id}, userRole: ${userRole} } `);
 
   try {
-    const users: any = await findUser({ id });
+    let user: any;
 
-    return customResponse(res, 200, users);
+    if (userRole !== 'admin') {
+      user = await findUser({ id });
+    } else {
+      user = await findUserExcludePassword({ id });
+    }
+
+    return customResponse(res, 200, user);
   } catch (err) {
     logger.error('Get User Action - Cannot get users', err);
     next(err);
   }
 };
 
+export const getCEOAction = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  logger.info('Get CEO Action');
+
+  try {
+    const user = await findUser({ post: 'Директор' });
+
+    return customResponse(res, 200, user);
+  } catch (err) {
+    logger.error('Get CEO Action - Cannot CEO users', err);
+    next(err);
+  }
+};
+
 export const getUsersAction = async (
-  req: GetUsersRequest,
+  req: any,
   res: Response,
   next: NextFunction
 ) => {
   const { page, limit } = req.query;
+  const { role: userRole } = req.user;
+
 
   logger.info(`Get User Action: { page: ${page}, limit: ${limit} } `);
 
   try {
+    if (userRole !== 'admin') {
+      throw new Error('У вас нет доступа');
+    }
+
     const users = await findPaginatedUsers(Number(page) - 1, Number(limit));
 
     return customResponse(res, 200, users);
@@ -67,11 +100,11 @@ export const createUserAction = async (
   res: Response,
   next: NextFunction
 ) => {
-  const { role, post, username, group_id } = req.body;
+  const { role, post, username, group_id, activationkey, phone } = req.body;
   const { role: userRole } = req.user;
 
   logger.info(
-    `Create User Action: { userRole: ${userRole}, role: ${role}, post: ${post}, username: ${username}, group_id: ${group_id} }`
+    `Create User Action: { userRole: ${userRole}, role: ${role}, post: ${post}, phone: ${phone}, username: ${username}, group_id: ${group_id}, activationkey: ${activationkey} }`
   );
 
   try {
@@ -79,14 +112,15 @@ export const createUserAction = async (
       throw new Error('У вас нет доступа');
     }
 
-    const activationkey = await uuid.v4();
+    const key = await uuid.v4();
 
     await createUser({
       role,
       username,
       post,
+      phone,
       group_id,
-      activationkey,
+      activationkey: activationkey || key,
     });
 
     return customResponse(res, 201, 'created');
@@ -102,7 +136,7 @@ export const uploadUserAvatarAction = async (
   next: NextFunction
 ) => {
   if (!req.file) {
-    return next(new UnProcessableEntityError('File Not Found'));
+    return next(new UnProcessableEntityError('Файл не найден'));
   }
   const { id } = req.user;
   const { path } = req.file;
@@ -119,25 +153,54 @@ export const uploadUserAvatarAction = async (
   }
 };
 
-export const updateUserAction = async (
+export const deleteUserAction = async (
   req: any,
   res: Response,
   next: NextFunction
 ) => {
-  console.log('++++')
   const { id } = req.params;
-  const { role: userRole } = req.user;
-  const { post, role, username, group_id } = req.body;
+  const { id: userId , role: userRole } = req.user;
 
   logger.info(
-    `Update User Action: { userId: ${id}, post: ${post}, role: ${role}, username: ${username}, group_id: ${group_id} } `
+    `Delete User Action: { id: ${id}, userId: ${userId}, userRole: ${userRole} }`
   );
 
   try {
     if (userRole !== 'admin') {
       throw new DontHaveAccessError();
     }
-    const user = await updateUser(id, { post, role, username, group_id });
+
+    if (id === userId) {
+      throw new Error('Вы не можете удалить себя');
+    }
+
+    await deleteUser(id);
+
+    return customResponse(res, 200, { id });
+  } catch (err) {
+    logger.error('delete User Action - Cannot delete user', err);
+    next(err);
+  }
+};
+
+export const updateUserAction = async (
+  req: any,
+  res: Response,
+  next: NextFunction
+) => {
+  const { id } = req.params;
+  const { role: userRole } = req.user;
+  const { post, role, username, group_id, activationkey } = req.body;
+
+  logger.info(
+    `Update User Action: { userId: ${id}, post: ${post}, role: ${role}, username: ${username}, group_id: ${group_id}, activationkey: ${activationkey} } `
+  );
+
+  try {
+    if (userRole !== 'admin') {
+      throw new DontHaveAccessError();
+    }
+    const user = await updateUser(id, { post, role, username, group_id, activationkey });
 
     return customResponse(res, 200, user);
   } catch (err) {
@@ -165,7 +228,7 @@ export const updateUserProfileAction = async (
     );
 
     if (!isPasswordsEqual) {
-      throw new BadCredentialsError('Bad password');
+      throw new BadCredentialsError('Неверный пароль');
     }
 
     const encryptedNewPassword = await bcrypt.hash(new_password, 10);

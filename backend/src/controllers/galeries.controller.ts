@@ -40,8 +40,6 @@ export const createGaleryAction = async (
       galery_id: createdGalery.id,
     }));
 
-    console.log(photos);
-
     if (photos) {
       await createGaleryPhotos(photos);
     }

@@ -24,6 +24,9 @@ export const findGroup = async (where: object) => {
       {
         model: User,
         as: 'users',
+        attributes: {
+          exclude: ['password, activationkey'],
+        },
       },
     ],
     row: true,
@@ -43,14 +46,13 @@ export const findGroups = async () => {
       {
         model: User,
         as: 'users',
+        attributes: {
+          exclude: ['password, activationkey'],
+        },
       },
     ],
     row: true,
   });
-
-  if (!groups.length) {
-    throw new ResourceNotFoundError('Группы');
-  }
 
   return groups;
 };
@@ -59,10 +61,6 @@ export const findGroupsList = async () => {
   const groups = await Group.findAll({
     row: true,
   });
-
-  if (!groups.length) {
-    throw new ResourceNotFoundError('Группы');
-  }
 
   return groups;
 };

@@ -2,7 +2,7 @@ export class ApplicationError extends Error {
   status: number;
 
   constructor(message: string, status: number) {
-    super(message || 'Internal Server Error');
+    super(message || 'Ошибка сервера');
     this.name = this.constructor.name;
     this.status = status || 500;
     Error.captureStackTrace(this, this.constructor);
@@ -13,13 +13,13 @@ export class ResourceNotFoundError extends ApplicationError {
   data: object;
 
   constructor(resource: string) {
-    super(`Resource ${resource} not found.`, 404);
+    super(`Ресурс ${resource} не найден.`, 404);
     this.data = { resource };
   }
 }
 export class DontHaveAccessError extends ApplicationError {
   constructor() {
-    super('You dont have access', 403);
+    super('У вас нет доступа', 403);
   }
 }
 
@@ -27,26 +27,26 @@ export class EntityNotFoundError extends ApplicationError {
   data: object;
 
   constructor(id: string, entity: string) {
-    super(`Entity ${entity}, id=${id} not found in the database.`, 404);
+    super(`Сущность ${entity}, id=${id} не найдена в базе данных.`, 404);
     this.data = { id };
   }
 }
 
 export class UnAuthorizedError extends ApplicationError {
   constructor() {
-    super(`UnAuthorized Error.`, 401);
+    super(`Ошибка авторизации.`, 401);
   }
 }
 
 export class BadCredentialsError extends ApplicationError {
   constructor(message: string) {
-    super(`Bad Credentials Error: ${message}`, 401);
+    super(`Неверные данные ${message}`, 401);
   }
 }
 
 export class UnProcessableEntityError extends ApplicationError {
   constructor(message: string) {
-    super(`UnProcessable Entity Error: ${message}`, 422);
+    super(`Ошибка необрабатываемых данных: ${message}`, 422);
   }
 }
 

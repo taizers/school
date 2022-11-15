@@ -10,6 +10,7 @@ export interface CreateStorageGroupRequest extends Request {
 export interface UpdateStorageGroupRequest extends Request {
   body: {
     title: string;
+    created_at?: Date;
   };
   params: {
     id: string;

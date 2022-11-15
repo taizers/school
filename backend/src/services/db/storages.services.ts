@@ -1,5 +1,5 @@
 // eslint-disable-next-line @typescript-eslint/no-var-requires
-const { Storagegroup, Storage } = require('../../db/models/index');
+const { User, Storage } = require('../../db/models/index');
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const sequelize = require('sequelize');
 // eslint-disable-next-line @typescript-eslint/no-var-requires
@@ -19,6 +19,13 @@ export const findStorageList = async (
   const { count, rows } = await Storage.findAndCountAll({
     offset: page * limit,
     limit,
+    include: [
+      {
+        model: User,
+        as: 'user',
+        attributes: ['username', 'id', 'avatar'],
+      },
+    ],
     where: { storagegroup_id: group_id },
     order: [['created_at', 'DESC']],
   });
@@ -41,6 +48,7 @@ export const createStorage = async (payload: object) => {
     storage = await Storage.create(payload);
     storage.name = editPath(storage.name);
   } catch (error) {
+    console.log(error);
     throw new Error('Файл не создан');
   }
 

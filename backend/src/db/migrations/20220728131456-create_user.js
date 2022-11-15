@@ -29,6 +29,11 @@ module.exports = {
         unique: true,
         type: Sequelize.DataTypes.STRING,
       },
+      phone: {
+        allowNull: true,
+        defaultValue: null,
+        type: Sequelize.DataTypes.STRING,
+      },
       avatar: {
         type: Sequelize.DataTypes.STRING,
         allowNull: true,
