@@ -20,6 +20,7 @@ export const updateGaleryValidation = validate(
   {
     body: Joi.object({
       title: Joi.string().max(256).required(),
+      cover: Joi.number().allow(null),
       deleted: Joi.string().max(256).allow(''),
       created_at: Joi.date(),
     }),

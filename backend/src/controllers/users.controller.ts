@@ -220,22 +220,25 @@ export const updateUserProfileAction = async (
   logger.info(`Update User Action: { userId: ${id}, username: ${username} } `);
 
   try {
-    const oldUser = await getUser({ id });
+    let password;
+    if (new_password && old_password) {
+      const oldUser = await getUser({ id });
 
-    const isPasswordsEqual = await bcrypt.compare(
-      old_password,
-      oldUser.password
-    );
+      const isPasswordsEqual = await bcrypt.compare(
+        old_password,
+        oldUser.password
+      );
+  
+      if (!isPasswordsEqual) {
+        throw new BadCredentialsError('Неверный пароль');
+      }
 
-    if (!isPasswordsEqual) {
-      throw new BadCredentialsError('Неверный пароль');
+      password = await bcrypt.hash(new_password, 10);
     }
-
-    const encryptedNewPassword = await bcrypt.hash(new_password, 10);
 
     const user = await updateUser(id, {
       username,
-      password: encryptedNewPassword,
+      password,
     });
 
     return customResponse(res, 200, user);

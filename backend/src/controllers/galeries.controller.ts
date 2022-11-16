@@ -10,6 +10,7 @@ import {
   createGaleryPhotos,
   deleteGaleryPhotos,
   deleteGalerysPhotos,
+  findGaleryPhoto,
 } from '../services/db/galeries-photos.services';
 import { customResponse } from '../helpers/responce';
 import { ParamsIdRequest } from '../types/requests/global.request.type';
@@ -124,8 +125,28 @@ export const updateGaleryAction = async (
   );
 
   try {
-    if (title || cover || created_at) {
-      await updateGalery(id, { title, cover, created_at });
+    let updatedGalery;
+
+    if (cover) {
+      const ids = deleted.split(' ');
+
+      if (ids.includes(cover.toString())) {
+        throw new Error('Нельзя удалить обложку')
+      }
+
+      const galeryPhoto = await findGaleryPhoto({id: cover});
+
+      if (!galeryPhoto?.name) {
+        throw new Error('Фото обложки не найдено')
+      }
+
+      if (title || created_at) {
+        updatedGalery = await updateGalery(id, { title, cover: galeryPhoto.name, created_at });
+      }
+    } else {
+      if (title || created_at) {
+        updatedGalery = await updateGalery(id, { title, created_at });
+      }
     }
 
     if (req.files) {

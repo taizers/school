@@ -2,10 +2,12 @@ import { NextFunction, Request, Response } from 'express';
 import {
   deletePage,
   createPage,
-  findPagesList,
+  findPages,
   findPage,
   updatePage,
   checkPage,
+  findPagesList,
+  checkSubPages,
 } from '../services/db/pages.services';
 import { customResponse } from '../helpers/responce';
 import logger from '../helpers/logger';
@@ -42,7 +44,24 @@ export const createPageAction = async (
   }
 };
 
-export const getPagesListAction = async (
+export const getPagesAction = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  logger.info('Get Pages List Action');
+
+  try {
+    const pages = await findPages();
+
+    return customResponse(res, 200, pages);
+  } catch (err) {
+    logger.error('Get Pages List Action - Cannot get Pages List', err);
+    next(err);
+  }
+};
+
+export const getPagesdListAction = async (
   req: Request,
   res: Response,
   next: NextFunction
@@ -111,7 +130,7 @@ export const updatePageAction = async (
 
   try {
     if (mainpage_id) {
-      await checkPage(mainpage_id);
+      await checkSubPages(mainpage_id);
     }
 
     const page = await updatePage(id, {

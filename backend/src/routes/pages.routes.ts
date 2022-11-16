@@ -1,6 +1,6 @@
 import express from 'express';
 import {
-  getPagesListAction,
+  getPagesAction,
   deletePageAction,
   updatePageAction,
   createPageAction,
@@ -15,7 +15,7 @@ import { paramsIdValidation } from '../validations/global.validation';
 const router = express.Router();
 
 router.delete('/:id', paramsIdValidation, deletePageAction);
-router.get('/', getPagesListAction);
+router.get('/', getPagesAction);
 router.get('/:id', getPageAction);
 router.put('/:id', updatePageValidation, updatePageAction);
 router.post('/', createPageValidation, createPageAction);

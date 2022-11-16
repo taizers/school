@@ -44,6 +44,7 @@ import {
 } from '../middlewares/upload.middleware';
 import verifyToken from '../middlewares/auth.middleware';
 import { getStorageGroupsListAction } from '../controllers/storage-groups.controller';
+import { getPagesdListAction } from '../controllers/pages.controller';
 
 const router = express.Router();
 
@@ -66,6 +67,7 @@ router.use('/comments', verifyToken, commentsRouter);
 router.use('/users', verifyToken, usersRouter);
 
 router.get('/storage-groups-list', verifyToken, getStorageGroupsListAction);
+router.get('/pages-list', verifyToken, getPagesdListAction);
 
 //No Auth requests
 

@@ -12,7 +12,28 @@ export const checkPage = async (where: object) => {
   const group = await Page.findOne({ where });
 
   if (!group) {
-    throw new ResourceNotFoundError('Page');
+    throw new ResourceNotFoundError('Страница');
+  }
+};
+
+export const checkSubPages = async (id: string) => {
+  const group = await Page.findOne({ 
+    where: {id},
+    include: [
+      {
+        model: Page,
+        as: 'subpages',
+        attributes: ['title'],
+      },
+    ],
+  });
+
+  if (!group) {
+    throw new ResourceNotFoundError('Страница');
+  }
+
+  if (group?.subpages?.length) {
+    throw new Error('Страница имеет подстраницы');
   }
 };
 
@@ -38,7 +59,7 @@ export const findPage = async (where: object) => {
   return page;
 };
 
-export const findPagesList = async () => {
+export const findPages = async () => {
   const pages = await Page.findAll({
     row: true,
     where: { mainpage_id: null },
@@ -49,11 +70,20 @@ export const findPagesList = async () => {
         as: 'subpages',
       },
     ],
+    attributes: {
+      exclude: ['content', 'creator_id', 'mainpage_id'],
+    },
   });
 
-  if (!pages.length) {
-    throw new ResourceNotFoundError('Страницы');
-  }
+  return pages;
+};
+
+export const findPagesList = async () => {
+  const pages = await Page.findAll({
+    row: true,
+    where: { mainpage_id: null },
+    order: [['title', 'DESC']],
+  });
 
   return pages;
 };

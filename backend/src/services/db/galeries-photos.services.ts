@@ -16,6 +16,21 @@ export const createGaleryPhotos = async (payload: object) => {
   return galeryPhotos;
 };
 
+export const findGaleryPhoto = async (where: object) => {
+  let galeryPhoto;
+
+  try {
+    galeryPhoto = await Galeryphoto.findOne({
+      where,
+      attributes: ['name'],
+    });
+  } catch (error) {
+    throw new Error('Фото не созданы');
+  }
+
+  return galeryPhoto;
+};
+
 export const deleteGaleryPhotos = async (ids: Array<string>) => {
   await Promise.all(
     ids.map(async (item) => {
