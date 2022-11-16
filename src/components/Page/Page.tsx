@@ -62,7 +62,7 @@ export const Page: FC<PageType> = ({ getPage, page, isOpen, isAuth, isLoading, d
       >
         Редактировать страницу
       </Button>}
-      <Button
+      {isAuth && <Button
         sx={{ m: 1 }}
         variant="contained"
         onClick={() => {
@@ -70,7 +70,7 @@ export const Page: FC<PageType> = ({ getPage, page, isOpen, isAuth, isLoading, d
         }}
       >
         <DeleteIcon />
-      </Button>
+      </Button>}
       {isOpen && (
         <UpdatePageModal
           isOpen={isOpen}

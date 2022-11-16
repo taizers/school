@@ -11,51 +11,6 @@ import { Link } from 'react-router-dom';
 import moment from 'moment';
 import { apiUrl } from '../../constants/constants';
 
-const news = [
-  {
-    id: 1,
-    title: 'Новость 1',
-    published: Date.now(),
-    cover: '/static/images/school.jpg',
-  },
-  {
-    id: 2,
-    title: 'Новость 1',
-    published: Date.now(),
-    cover: '/static/images/school.jpg',
-  },
-  {
-    id: 3,
-    title: 'Новость 1',
-    published: Date.now(),
-    cover: '/static/images/school.jpg',
-  },
-  {
-    id: 4,
-    title: 'Новость 1',
-    published: Date.now(),
-    cover: '/static/images/school.jpg',
-  },
-  {
-    id: 5,
-    title: 'Новость 1',
-    published: Date.now(),
-    cover: '/static/images/school.jpg',
-  },
-  {
-    id: 6,
-    title: 'Новость 1',
-    published: Date.now(),
-    cover: '/static/images/school.jpg',
-  },
-  {
-    id: 7,
-    title: 'Новость 1 fdsfs f dfs dfsd fsdfsdf sdfsdfsdfsd dsf sdf dsf',
-    published: Date.now(),
-    cover: '/static/images/school.jpg',
-  },
-];
-
 type NewsWidgetType = {
   newsWidget: any;
   getNewsWidget: (count: number) => Promise<any>;
@@ -73,15 +28,22 @@ export const NewsWidget: FC<NewsWidgetType> = ({
 
   moment().locale('ru');
   return (
-    <Box>
+    <Box sx={{display: 'flex', flexDirection: 'column',}}>
       <StyledTitle>Новости</StyledTitle>
-      <Box sx={{ display: 'flex', flexDirection: 'column', maxWidth: '800px' }}>
+      <Box sx={{ 
+        display: 'flex',
+        flexWrap: 'wrap',
+        gap: '10px',
+        justifyContent: 'center',
+        '@media screen and (max-width: 800px)': {flexDirection: 'column', maxWidth: '800px', alignItems: 'center'}
+      }}>
         {newsWidget &&
           newsWidget.news?.map((item: any, index: number) => (
             <Box
               key={`news ${item.title} ${index}`}
               sx={{
                 display: 'flex',
+                '@media screen and (max-width: 800px)': {flexDirection: 'column', maxWidth: '400px', alignItems: 'center'},
                 gap: '10px',
                 mb: '10px',
                 p: '5px',
@@ -116,14 +78,15 @@ export const NewsWidget: FC<NewsWidgetType> = ({
               </Box>
             </Box>
           ))}
-        <Button
-          sx={{ fontWeigth: 500, alignSelf: 'center' }}
+
+      </Box>
+      <Button
+          sx={{ fontWeigth: 500, alignSelf: 'center', mt: 1 }}
           href="/news"
           variant="contained"
-        >
+      >
           Все новости
-        </Button>
-      </Box>
+      </Button>
     </Box>
   );
 };
