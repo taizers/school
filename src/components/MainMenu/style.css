@@ -1,6 +1,6 @@
 .mainnav {
   overflow: hidden;
-  background-color: #333;
+  background-color: #073875;
 } 
 
 .mainnav a {
@@ -10,7 +10,7 @@
   text-align: center;
   padding: 14px 16px;
   text-decoration: none;
-  font-size: 17px;
+  font-size: 15px;
 } 
 
 .mainnav .icon {
@@ -26,7 +26,7 @@
     font-size:15px;
 }
 
-.dropdown .dropbtn {
+.mainnav .dropdown .dropbtn {
     font-size: 17px;    
     border: none;
     outline: none;
@@ -46,7 +46,7 @@
     z-index: 1;
 }
   
-.dropdown-content a {
+.mainnav .dropdown-content a {
     float: none;
     color: black;
     padding: 12px 16px;
@@ -55,8 +55,8 @@
     text-align: left;
 }
   
-.mainnav a:hover, .dropdown:hover .dropbtn { 
-    background-color: #555;
+.mainnav a:hover, .mainnav .dropdown:hover .dropbtn { 
+    background-color: #0a4894;
     color: white;
 }
   
@@ -77,10 +77,7 @@
 
 .dropbtn a {
     padding: 0;
-}
-
-.dropbtn-text {
-    padding-right: 15px;
+    padding-right: 18px;
 }
 
 .fa-caret-down {

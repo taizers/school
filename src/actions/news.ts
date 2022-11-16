@@ -11,12 +11,15 @@ import {
   CREATE_NEWS_SUCCESSED,
   CREATE_NEWS,
   SET_NEWS_MODAL_STATUS,
+  CLEAR_NEWS,
+  GET_NEWS_WIDGET,
+  GET_NEWS_WIDGET_SUCCESSED,
 } from '../constants/types';
 import { UpdateUserType, UserType, UsersType } from '../constants/tsSchemes';
 
 export const getAllNewsPaginated = (page: number, limit: number) => ({
   type: GET_ALL_NEWS_PAGINATED,
-  payload: { page, limit }
+  payload: { page, limit },
 });
 
 export const getAllNewsPaginatedSuccessed = (data: any) => ({
@@ -34,9 +37,19 @@ export const getNewsSuccessed = (data: any) => ({
   payload: data,
 });
 
-export const updateNews = (data: any) => ({
-  type: UPDATE_NEWS,
+export const getNewsWidget = (count: number) => ({
+  type: GET_NEWS_WIDGET,
+  payload: { page: 1, limit: count },
+});
+
+export const getNewsWidgetSuccessed = (data: any) => ({
+  type: GET_NEWS_WIDGET_SUCCESSED,
   payload: data,
+});
+
+export const updateNews = (data: any, id: string) => ({
+  type: UPDATE_NEWS,
+  payload: { data, id },
 });
 
 export const updateNewsSuccessed = (data: any) => ({
@@ -68,8 +81,11 @@ export const setNewsModalStatus = (isOpen: boolean) => ({
   payload: isOpen,
 });
 
-
 export const setNewsLoading = (is_loading: boolean) => ({
   type: SET_NEWS_LOADING,
   payload: is_loading,
+});
+
+export const clearNews = () => ({
+  type: CLEAR_NEWS,
 });

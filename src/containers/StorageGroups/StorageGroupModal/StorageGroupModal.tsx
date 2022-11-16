@@ -1,0 +1,87 @@
+import React, { FC, useState, useEffect } from 'react';
+import Button from '@mui/material/Button';
+import TextField from '@mui/material/TextField';
+import Dialog from '@mui/material/Dialog';
+import DialogActions from '@mui/material/DialogActions';
+import DialogContent from '@mui/material/DialogContent';
+import DialogContentText from '@mui/material/DialogContentText';
+import DialogTitle from '@mui/material/DialogTitle';
+import InputLabel from '@mui/material/InputLabel';
+import MenuItem from '@mui/material/MenuItem';
+import FormControl from '@mui/material/FormControl';
+import Select, { SelectChangeEvent } from '@mui/material/Select';
+import { UserType, UpdateUserType } from '../../../constants/tsSchemes';
+import DatePicker from '../../../components/DatePicker';
+import dayjs from 'dayjs';
+import { createToast } from '../../../utils/toasts';
+
+type StorageGroupModalType = {
+  group: any;
+  isOpen: boolean;
+  modalAction: (data: any) => void;
+  setGroup: (data: any) => void;
+  setModalStatus: (data: boolean) => void;
+};
+
+export const StorageGroupModal: FC<StorageGroupModalType> = ({
+  isOpen,
+  group,
+  modalAction,
+  setGroup,
+  setModalStatus,
+}) => {
+  const [title, setTitle] = useState<any>('');
+  const [date, setDate] = useState<any>(dayjs(Date.now()));
+
+  useEffect(() => {
+    if (group) {
+      setTitle(group?.title);
+      setDate(group?.created_at);
+    }
+  }, [group]);
+
+  const handleClose = () => {
+    setModalStatus(false);
+    setGroup(null);
+  };
+
+  const onSubmitForm = () => {
+    if (!title) {
+      createToast.error('Название не должно быть пустым');
+      return;
+    }
+
+    const data = {
+      title,
+      created_at: date,
+    };
+
+    modalAction(data);
+  };
+
+  return (
+    <Dialog open={isOpen} onClose={handleClose}>
+      <DialogTitle>Редактирование профиля</DialogTitle>
+      <DialogContent
+        sx={{ display: 'flex', flexDirection: 'column', gap: '10px' }}
+      >
+        <TextField
+          autoFocus
+          margin="dense"
+          id="name"
+          label="Имя"
+          type="text"
+          fullWidth
+          variant="standard"
+          value={title}
+          onChange={(evt: any) => setTitle(evt.target.value)}
+        />
+        <DatePicker date={date} setDate={setDate} />
+      </DialogContent>
+      <DialogActions>
+        <Button onClick={handleClose}>Отмена</Button>
+        <Button onClick={onSubmitForm}>Сохранить</Button>
+      </DialogActions>
+    </Dialog>
+  );
+};

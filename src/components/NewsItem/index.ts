@@ -10,7 +10,7 @@ const mapStateToProps = (state: {
 });
 
 const mapDispatchToProps = (dispatch: any) => ({
-    getNews: (id: string) => dispatch(getNews(id)),
+  getNews: (id: string) => dispatch(getNews(id)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(NewsItem);

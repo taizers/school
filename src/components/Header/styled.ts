@@ -7,7 +7,7 @@ export const StyledHeader = styled.header`
   align-items: center;
   justify-content: space-between;
   font-weight: 500;
-  background-color: #a2cffc;
+  background-color: #0572f7;
 
   @media screen and (max-width: 600px) {
     flex-direction: column;

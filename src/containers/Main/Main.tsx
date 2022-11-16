@@ -11,11 +11,13 @@ import Footer from '../../components/Footer/index';
 import HaventAccess from '../../components/HaventAccess';
 import HomePage from '../../components/HomePage';
 import NotFound from '../../components/NotFound/index';
-import TeachersPage from '../../containers/TeachersPage/index';
-import Galeries from '../../containers/Galeries/index';
+import TeachersPage from '../TeachersPage/index';
+import AdministrationPage from '../AdministrationPage/index';
+import Galeries from '../Galeries/index';
 import Galery from '../../components/Galery/index';
-import News from '../../containers/News/index';
-import Profile from '../../containers/Profile/index';
+import News from '../News/index';
+import Users from '../Users/index';
+import Profile from '../Profile/index';
 import NewsItem from '../../components/NewsItem/index';
 import {
   PublicRoute,
@@ -24,6 +26,9 @@ import {
 } from '../../router/components/index';
 import { Link } from 'react-router-dom';
 import { StyledLink, StyledImage } from './styled';
+import StorageFiles from '../StorageFiles/index';
+import StorageGroups from '../StorageGroups/index';
+import Page from '../../components/Page/index';
 
 type MainType = {};
 
@@ -87,21 +92,25 @@ export const Main: FC<MainType> = ({}) => {
       <Box
         sx={{
           display: 'flex',
-          '@media screen and (max-width: 600px)': {
+          '@media screen and (max-width: 1000px)': {
             flexDirection: 'column',
             alignItems: 'center',
           },
         }}
       >
         <SubMenu />
-        <Box sx={{ width: '100%', p: '5px' }}>
+        <Box sx={{ width: '100%', p: '5px', overflow: 'hidden' }}>
           <Routes>
             <Route path="/" element={<HomePage />} />
-            <Route path="/administration" element={<HaventAccess />} />
+            <Route path="/administration" element={<AdministrationPage />} />
             <Route path="/teachers" element={<TeachersPage />} />
             <Route path="/profile" element={<Profile />} />
             <Route path="/galeries" element={<Galeries />} />
             <Route path="/galeries/:id" element={<Galery />} />
+            <Route path="/users" element={<Users />} />
+            <Route path="/storages" element={<StorageGroups />} />
+            <Route path="/storages/:id" element={<StorageFiles />} />
+            <Route path="/pages/:id" element={<Page />} />
             <Route path="/news" element={<News />} />
             <Route path="/news/:id" element={<NewsItem />} />
             <Route path="*" element={<NotFound />} />

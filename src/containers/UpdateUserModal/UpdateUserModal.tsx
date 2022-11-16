@@ -10,12 +10,12 @@ import { UserType, UpdateUserType } from '../../constants/tsSchemes';
 
 type UpdateUserModalType = {
   user: UserType;
-  updateUser: (data: UpdateUserType) => Promise<any>;
+  updateProfile: (data: UpdateUserType) => Promise<any>;
 };
 
 export const UpdateUserModal: FC<UpdateUserModalType> = ({
   user,
-  updateUser,
+  updateProfile,
 }) => {
   const [open, setOpen] = useState(false);
   const [name, setName] = useState('');
@@ -62,7 +62,7 @@ export const UpdateUserModal: FC<UpdateUserModalType> = ({
     }
 
     console.log(data);
-    updateUser(data);
+    updateProfile(data);
   };
 
   return (

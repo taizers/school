@@ -1,14 +1,22 @@
 import { call, put, takeEvery, all, fork } from 'redux-saga/effects';
 
 import { galeries as galeriesAction } from '../actions/index';
-import { GET_ALL_GALERIES_PAGINATED, GET_GALERY, CREATE_GALERY, UPDATE_GALERY, DELETE_GALERY } from '../constants/types';
+import {
+  GET_ALL_GALERIES_PAGINATED,
+  GET_GALERY,
+  CREATE_GALERY,
+  UPDATE_GALERY,
+  DELETE_GALERY,
+} from '../constants/types';
 import { createToast } from '../utils/toasts';
 import { galeries as galeriesApi } from '../api/index';
 
 function* getGalery({ payload }) {
   yield put(galeriesAction.setGaleriesLoading(true));
   try {
-    const { data: {data} } = yield call(galeriesApi.getGalery, payload);
+    const {
+      data: { data },
+    } = yield call(galeriesApi.getGalery, payload);
 
     yield put(galeriesAction.getGalerySuccessed(data));
   } catch (error) {
@@ -19,26 +27,30 @@ function* getGalery({ payload }) {
 }
 
 function* getGaleriesPaginated({ payload }) {
-    yield put(galeriesAction.setGaleriesLoading(true));
-    try {
-        const {data: {data}} = yield call(galeriesApi.getAllGaleriesPaginated, payload);
+  yield put(galeriesAction.setGaleriesLoading(true));
+  try {
+    const {
+      data: { data },
+    } = yield call(galeriesApi.getAllGaleriesPaginated, payload);
 
-        yield put(galeriesAction.getAllGaleriesPaginatedSuccessed(data));
-    } catch (error) {
-      yield createToast.error(error?.response?.data?.data?.message);
-    } finally {
-        yield put(galeriesAction.setGaleriesLoading(false));
-    }
+    yield put(galeriesAction.getAllGaleriesPaginatedSuccessed(data));
+  } catch (error) {
+    yield createToast.error(error?.response?.data?.data?.message);
+  } finally {
+    yield put(galeriesAction.setGaleriesLoading(false));
+  }
 }
 
 function* createGalery({ payload }) {
   yield put(galeriesAction.setGaleriesLoading(true));
   try {
-    const { data: {data} } = yield call(galeriesApi.createGalery, payload);
+    const {
+      data: { data },
+    } = yield call(galeriesApi.createGalery, payload);
 
     yield put(galeriesAction.createGalerySuccessed(data));
     yield put(galeriesAction.getAllGaleriesPaginated(1, 10));
-    yield put(galeriesAction.setGaleriesModalStatus(false));
+    yield put(galeriesAction.setCreateGaleryModalStatus(false));
   } catch (error) {
     yield createToast.error(error?.response?.data?.data?.message);
   } finally {
@@ -49,24 +61,30 @@ function* createGalery({ payload }) {
 function* updateGalery({ payload }) {
   yield put(galeriesAction.setGaleriesLoading(true));
   try {
-    const { data: {data} } = yield call(galeriesApi.updateGalery, payload);
+    const {
+      data: { data },
+    } = yield call(galeriesApi.updateGalery, payload);
 
     yield put(galeriesAction.updateGalerySuccessed(data));
     yield put(galeriesAction.getAllGaleriesPaginated(1, 10));
-    yield put(galeriesAction.setGaleriesModalStatus(false));
+    yield put(galeriesAction.setUpdateGaleryModalStatus(false));
   } catch (error) {
     yield createToast.error(error?.response?.data?.data?.message);
   } finally {
     yield put(galeriesAction.setGaleriesLoading(false));
+    yield put(galeriesAction.clearGalery());
   }
 }
 
 function* deleteGalery({ payload }) {
   yield put(galeriesAction.setGaleriesLoading(true));
   try {
-    const { data: {data} } = yield call(galeriesApi.deleteGalery, payload);
+    const {
+      data: { data },
+    } = yield call(galeriesApi.deleteGalery, payload);
 
     yield put(galeriesAction.deleteGalerySuccessed(data));
+    yield put(galeriesAction.getAllGaleriesPaginated(1, 10));
   } catch (error) {
     yield createToast.error(error?.response?.data?.data?.message);
   } finally {
@@ -79,19 +97,19 @@ function* watchGetGalery() {
 }
 
 function* watchGetGaleriesPaginated() {
-    yield takeEvery(GET_ALL_GALERIES_PAGINATED, getGaleriesPaginated);
+  yield takeEvery(GET_ALL_GALERIES_PAGINATED, getGaleriesPaginated);
 }
 
 function* watchCreateGalery() {
-    yield takeEvery(CREATE_GALERY, createGalery);
+  yield takeEvery(CREATE_GALERY, createGalery);
 }
 
 function* watchUpdateGalery() {
-    yield takeEvery(UPDATE_GALERY, updateGalery);
+  yield takeEvery(UPDATE_GALERY, updateGalery);
 }
 
 function* watchDeleteGalery() {
-    yield takeEvery(DELETE_GALERY, deleteGalery);
+  yield takeEvery(DELETE_GALERY, deleteGalery);
 }
 
 export default function* rootSaga() {

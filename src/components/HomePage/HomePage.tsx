@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { FC, useEffect } from 'react';
 import { Box } from '@mui/system';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
@@ -48,9 +48,7 @@ const tableInfo = [
 ];
 
 const human = {
-  name: 'Василиса',
-  lastName: 'Ивановна',
-  family: 'Иванова',
+  username: 'Василиса',
   avatar: '/static/images/school.jpg',
   phone: '8(01512) 3-29-94',
   post: 'Директор школы',
@@ -58,7 +56,7 @@ const human = {
 
 const getColumnValues = (arr: Array<string>) => {
   return (
-    <Box sx={{ display: 'flex', flexDirection: 'column' }} >
+    <Box sx={{ display: 'flex', flexDirection: 'column' }}>
       {arr.map((item, index) => (
         <StyledValue key={`${item} ${index}`}>{item}</StyledValue>
       ))}
@@ -66,7 +64,16 @@ const getColumnValues = (arr: Array<string>) => {
   );
 };
 
-export const HomePage = () => {
+type HomePageType = {
+  ceo: any;
+  getCEO: () => Promise<any>;
+};
+
+export const HomePage: FC<HomePageType> = ({ ceo, getCEO }) => {
+  useEffect(() => {
+    getCEO();
+  }, []);
+
   return (
     <Box sx={{ width: '100%' }}>
       <Box
@@ -95,7 +102,10 @@ export const HomePage = () => {
                   >
                     {row.title}
                   </TableCell>
-                  <TableCell sx={{ p: '8px' }} key={`${row.title} ${index} cell 2`}>
+                  <TableCell
+                    sx={{ p: '8px' }}
+                    key={`${row.title} ${index} cell 2`}
+                  >
                     {isArray(row.value)
                       ? getColumnValues(row.value)
                       : row.value}
@@ -105,7 +115,7 @@ export const HomePage = () => {
             </TableBody>
           </Table>
         </TableContainer>
-        <PersonalCard human={human} />
+        {ceo && <PersonalCard human={ceo} />}
       </Box>
       <Box sx={{ width: '100%' }}>
         <NewsWidget />

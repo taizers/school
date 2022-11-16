@@ -62,7 +62,7 @@ export const SignUp: FC<LoginTypes> = ({ signUp, isLoading }) => {
       data.activationkey &&
       data.password === secondPassword
     ) {
-      console.log('+++++++')
+      console.log('+++++++');
       signUp({ data, history });
     } else {
       createToast.error('Проверьте заполнение полей');

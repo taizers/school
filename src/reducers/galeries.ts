@@ -1,15 +1,18 @@
-import { 
-  GET_GALERY_SUCCESSED, 
-  GET_ALL_GALERIES_PAGINATED_SUCCESSED, 
+import {
+  GET_GALERY_SUCCESSED,
+  GET_ALL_GALERIES_PAGINATED_SUCCESSED,
   SET_GALERIES_LOADING,
-  SET_GALERIES_MODAL_STATUS
+  SET_CREATE_GALERY_MODAL_STATUS,
+  SET_UPDATE_GALERY_MODAL_STATUS,
+  CLEAR_GALERY,
 } from '../constants/types';
 
 const initialState = {
-  galeries: {},
+  galeries: null,
   isLoading: false,
-  galery: {},
-  galeriesModalIsOpen: false,
+  galery: null,
+  isOpenCreateGaleryModal: false,
+  isOpenUpdateGaleryModal: false,
 };
 
 const reducer = (
@@ -29,10 +32,20 @@ const reducer = (
         ...state,
         galeries: payload,
       };
-    case SET_GALERIES_MODAL_STATUS:
+    case SET_CREATE_GALERY_MODAL_STATUS:
       return {
         ...state,
-        galeriesModalIsOpen: payload,
+        isOpenCreateGaleryModal: payload,
+      };
+    case SET_UPDATE_GALERY_MODAL_STATUS:
+      return {
+        ...state,
+        isOpenUpdateGaleryModal: payload,
+      };
+    case CLEAR_GALERY:
+      return {
+        ...state,
+        galery: null,
       };
     case SET_GALERIES_LOADING:
       return {

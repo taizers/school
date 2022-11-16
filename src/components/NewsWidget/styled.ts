@@ -3,6 +3,8 @@ import { Link } from 'react-router-dom';
 
 export const StyledImage = styled.img`
   border: solid 1px gray;
+  max-width: 300px;
+  max-height: 200px;
   width: 100%;
   height: 90%;
 `;

@@ -12,15 +12,31 @@ import {
   UPDATE_USER,
   UPDATE_USER_FAILED,
   UPDATE_USER_SUCCESSED,
+  UPDATE_PROFILE_SUCCESSED,
+  UPDATE_PROFILE,
+  SET_PROFILE_MODAL_STATUS,
+  SET_USER_MODAL_STATUS,
+  CREATE_USER,
+  CREATE_USER_SUCCESSED,
+  CLEAR_USER,
+  GET_CEO_SUCCESSED,
+  GET_CEO,
 } from '../constants/types';
 import { UpdateUserType, UserType, UsersType } from '../constants/tsSchemes';
 
-export const getAllUsers = () => ({
-  type: GET_ALL_USERS,
+export const createUser = (data: UsersType) => ({
+  type: CREATE_USER,
+  payload: data,
 });
 
-export const getAllUsersFailed = () => ({
-  type: GET_ALL_USERS_FAILED,
+export const createUserSuccessed = (data: UsersType) => ({
+  type: CREATE_USER_SUCCESSED,
+  payload: data,
+});
+
+export const getAllUsers = (page: number, limit: number) => ({
+  type: GET_ALL_USERS,
+  payload: { page, limit },
 });
 
 export const getAllUsersSuccessed = (data: UsersType) => ({
@@ -33,40 +49,42 @@ export const getUser = (id: string) => ({
   payload: id,
 });
 
-export const getUserFailed = () => ({
-  type: GET_USER_FAILED,
-});
-
 export const getUserSuccessed = (data: UserType) => ({
   type: GET_USER_SUCCESSED,
   payload: data,
 });
 
-export const updateUser = (data: UpdateUserType) => ({
-  type: UPDATE_USER,
+export const getCEO = () => ({
+  type: GET_CEO,
+});
+
+export const getCEOSuccessed = (data: UserType) => ({
+  type: GET_CEO_SUCCESSED,
   payload: data,
 });
 
-export const updateUserFailed = () => ({
-  type: UPDATE_USER_FAILED,
+export const updateUser = (data: UpdateUserType, id: string) => ({
+  type: UPDATE_USER,
+  payload: { data, id },
 });
 
-export const updateUserSuccessed = (data: {
+export const updateProfile = (data: UpdateUserType) => ({
+  type: UPDATE_PROFILE,
+  payload: data,
+});
+
+export const updateProfileSuccessed = (data: {
   id: string;
   name: string;
   email: string;
 }) => ({
-  type: UPDATE_USER_SUCCESSED,
+  type: UPDATE_PROFILE_SUCCESSED,
   payload: data,
 });
 
 export const deleteUser = (id: string) => ({
   type: DELETE_USER,
   payload: id,
-});
-
-export const deleteUserFailed = () => ({
-  type: DELETE_USER_FAILED,
 });
 
 export const deleteUserSuccessed = () => ({
@@ -76,4 +94,18 @@ export const deleteUserSuccessed = () => ({
 export const setUsersLoading = (bool: boolean) => ({
   type: SET_USERS_LOADING,
   payload: bool,
+});
+
+export const setUserModalStatus = (bool: boolean) => ({
+  type: SET_USER_MODAL_STATUS,
+  payload: bool,
+});
+
+export const setProfileModal = (bool: boolean) => ({
+  type: SET_PROFILE_MODAL_STATUS,
+  payload: bool,
+});
+
+export const clearUser = () => ({
+  type: CLEAR_USER,
 });

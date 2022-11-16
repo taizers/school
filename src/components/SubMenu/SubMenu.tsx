@@ -1,42 +1,82 @@
+import React, { FC, useState, useEffect } from 'react';
 import './style.css';
+import Box from '@mui/material/Box';
+import Button from '@mui/material/Button';
+import { Link } from 'react-router-dom';
+import CreatePageModal from './CreatePageModal/index';
 
-export const SubMenu = () => {
+type SubMenuType = {
+  isLoading: boolean;
+  isOpen: boolean;
+  isAuth: boolean;
+  pagesList: any;
+  pages: any;
+  getPages: () => Promise<any>;
+  setCreatePageModalStatus: (data: boolean) => void;
+  createPage: (data: any) => Promise<any>;
+  getPagesList: () => Promise<any>;
+};
+
+export const SubMenu: FC<SubMenuType> = ({
+  isLoading,
+  isOpen,
+  isAuth,
+  pages,
+  getPages,
+  pagesList,
+  setCreatePageModalStatus,
+  createPage,
+  getPagesList,
+}) => {
+  useEffect(() => {
+    getPages();
+  }, []);
+
   return (
-    <div className="subnav" id="subnav">
-      <a href="/home">Главная</a>
-      <a href="/administration">Администрация</a>
-      <a href="/teachers">Учительская</a>
-      <a href="/news">Новости</a>
-      <div className="dropdown">
-        <button className="dropbtn">
-          <a href="/schedule">
-            <span className="dropbtn-text">Расписание</span>
-            <span className="caret-down">&#x25BC;</span>
-          </a>
-        </button>
-        <div className="dropdown-content">
-          <a href="/schedule/rings">Расписание звонков</a>
-          <a href="/schedule/vacations">Расписание четвертей и каникул</a>
-          <a href="/schedule/class">Расписание классов</a>
+    <Box
+      sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}
+    >
+      {isAuth && <Button
+        variant="outlined"
+        sx={{ m: 1 }}
+        onClick={() => setCreatePageModalStatus(true)}
+      >
+        Создать страницу
+      </Button>}
+      {isOpen && (
+        <CreatePageModal
+          isOpen={isOpen}
+          modalAction={createPage}
+          getPagesList={getPagesList}
+          pagesList={pagesList}
+          setModalStatus={setCreatePageModalStatus}
+        />
+      )}
+      {
+        pages && <div className="subnav" id="subnav">
+          {pages.map((page: any) => {
+              if (page.subpages?.length) {
+                return (
+                  <div key={`page ${page.id}`} className="dropdown">
+                    <button className="dropbtn">
+                      <Link to={`/pages/${page.id}`}>
+                        <span className="dropbtn-text">{page.title}</span>
+                        <span className="caret-down">&#x25BC;</span>
+                      </Link>
+                    </button>
+                    <div className="dropdown-content">
+                      {
+                        page.subpages?.map((subpage: any) => <Link key={`subpage ${subpage.id}`} to={`/pages/${subpage.id}`}>{subpage.title}</Link>)
+                      }
+                    </div>
+                  </div>
+                )
+              } else {
+                return <Link key={`page ${page.id}`} to={`/pages/${page.id}`}>{page.title}</Link>
+              }
+          })}
         </div>
-      </div>
-      <div className="dropdown">
-        <button className="dropbtn">
-          <a href="/el-">
-            <span className="dropbtn-text">Электронные обращения</span>
-            <span className="caret-down">&#x25BC;</span>
-          </a>
-        </button>
-        <div className="dropdown-content">
-          <a href="/link/1">Физического лица</a>
-          <a href="/link/2">
-            Юридического лица и индивидуального предпринимателя
-          </a>
-          <a href="/link/3">
-            Требования к оформлению и порядок рассмотрения обращений
-          </a>
-        </div>
-      </div>
-    </div>
+      }
+    </Box>
   );
 };

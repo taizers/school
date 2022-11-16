@@ -6,26 +6,37 @@ import 'filepond/dist/filepond.min.css';
 
 import FilePondPluginImageExifOrientation from 'filepond-plugin-image-exif-orientation';
 import FilePondPluginImagePreview from 'filepond-plugin-image-preview';
+import FilePondPluginFileValidateType from 'filepond-plugin-file-validate-type';
 import 'filepond-plugin-image-preview/dist/filepond-plugin-image-preview.css';
 
-registerPlugin(FilePondPluginImageExifOrientation, FilePondPluginImagePreview);
+registerPlugin(
+  FilePondPluginImageExifOrientation,
+  FilePondPluginImagePreview,
+  FilePondPluginFileValidateType
+);
 
 type UploadFileType = {
   files: any;
   setFiles: (data: any) => void;
   maxFiles?: number;
-  accepted?: string;
+  accepted?: Array<string>;
   isMultiply?: boolean;
-}
+};
 
-export const UploadFile: FC<UploadFileType> = ({files, setFiles, maxFiles = 15, accepted = "image/jpeg, image/png", isMultiply = false}) => {
+export const UploadFile: FC<UploadFileType> = ({
+  files,
+  setFiles,
+  maxFiles = 15,
+  accepted = ['image/*'],
+  isMultiply = false,
+}) => {
   return (
     <FilePond
       files={files}
       onupdatefiles={setFiles}
       maxFiles={maxFiles}
       allowMultiple={isMultiply}
-      accepted-file-types={accepted}
+      acceptedFileTypes={accepted}
       name="files"
       labelIdle='Ператащите изображения либо <span class="filepond--label-action">Откройте</span>'
     />

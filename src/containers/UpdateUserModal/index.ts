@@ -1,6 +1,6 @@
 import { UpdateUserModal } from './UpdateUserModal';
 import { connect } from 'react-redux';
-import { updateUser } from '../../actions/users';
+import { updateProfile } from '../../actions/users';
 import { UserType, UpdateUserType } from '../../constants/tsSchemes';
 
 const mapStateToProps = (state: {
@@ -11,7 +11,7 @@ const mapStateToProps = (state: {
 });
 
 const mapDispatchToProps = (dispatch: any) => ({
-  updateUser: (data: UpdateUserType) => dispatch(updateUser(data)),
+  updateProfile: (data: UpdateUserType) => dispatch(updateProfile(data)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(UpdateUserModal);

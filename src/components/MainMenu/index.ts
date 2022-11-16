@@ -3,7 +3,9 @@ import { connect } from 'react-redux';
 import { logout, login } from '../../actions/auth';
 import { LoginUserType } from '../../constants/tsSchemes';
 
-const mapStateToProps = (state: { auth: { isAuth: boolean, role: string } }) => ({
+const mapStateToProps = (state: {
+  auth: { isAuth: boolean; role: string };
+}) => ({
   isAuth: state.auth.isAuth,
   role: state.auth.role,
 });

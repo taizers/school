@@ -20,10 +20,14 @@ import DatePicker from '../../../components/DatePicker/index';
 type CreateGaleryModalType = {
   isOpen: boolean;
   createGalery: (data: any) => Promise<any>;
-  setGaleriesModalStatus: (data: boolean) => void;
-}
+  setModalStatus: (data: boolean) => void;
+};
 
-export const CreateGaleryModal: FC<CreateGaleryModalType> = ({isOpen, createGalery, setGaleriesModalStatus}) => {
+export const CreateGaleryModal: FC<CreateGaleryModalType> = ({
+  isOpen,
+  createGalery,
+  setModalStatus,
+}) => {
   const [title, setTitle] = useState('');
   const [files, setFiles] = useState<any>([]);
   const [date, setDate] = useState<any>(dayjs(Date.now()));
@@ -32,7 +36,7 @@ export const CreateGaleryModal: FC<CreateGaleryModalType> = ({isOpen, createGale
   const fullScreen = useMediaQuery(theme.breakpoints.down('md'));
 
   const handleClose = () => {
-    setGaleriesModalStatus(false);
+    setModalStatus(false);
   };
 
   const onModalSubmit = () => {
@@ -46,7 +50,7 @@ export const CreateGaleryModal: FC<CreateGaleryModalType> = ({isOpen, createGale
     });
 
     createGalery(formData);
-    // setGaleriesModalStatus(false);
+    // setModalStatus(false);
   };
 
   return (

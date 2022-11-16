@@ -1,9 +1,14 @@
 import { Galery } from './Galery';
 import { connect } from 'react-redux';
-import { getGalery,  } from '../../actions/galeries';
+import { getGalery } from '../../actions/galeries';
 
 const mapStateToProps = (state: {
-    galeries: { isLoading: boolean; galeries: any; galery: any; galeriesModalIsOpen: boolean };
+  galeries: {
+    isLoading: boolean;
+    galeries: any;
+    galery: any;
+    isOpenCreateGaleryModal: boolean;
+  };
 }) => ({
   isLoading: state.galeries.isLoading,
   galery: state.galeries.galery,

@@ -4,11 +4,13 @@ export type UserType = {
   email: string;
   role: string;
   post: string;
+  avatar: string | null;
+  phone?: string;
   activationkey?: string;
   group: {
     id: number;
     title: string;
-    created_at: Date,
+    created_at: Date;
     updated_at: Date;
   };
   created_at: Date;

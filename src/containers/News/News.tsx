@@ -12,22 +12,40 @@ import {
   StyledNoteLink,
 } from './styled';
 import { apiUrl } from '../../constants/constants';
+import DeleteModal from '../../components/DeleteModal';
+import DeleteIcon from '@mui/icons-material/Delete';
+import EditIcon from '@mui/icons-material/Edit';
 
 type NewsType = {
   getAllNewsPaginated: (page: number, limit: number) => Promise<any>;
   createNews: (data: any) => Promise<any>;
-  updateNews: (data: any) => Promise<any>;
+  updateNews: (data: any, id: string) => Promise<any>;
   deleteNews: (id: string) => Promise<any>;
+  getNews: (id: string) => Promise<any>;
   setNewsModalStatus: (data: boolean) => void;
   isLoading: boolean;
   allNews: any;
+  news: any;
   isOpen: boolean;
 };
 
-export const News: FC<NewsType> = ({ isLoading, allNews, deleteNews, getAllNewsPaginated, createNews, updateNews, setNewsModalStatus, isOpen }) => {
+export const News: FC<NewsType> = ({
+  isLoading,
+  allNews,
+  deleteNews,
+  getNews,
+  getAllNewsPaginated,
+  createNews,
+  updateNews,
+  setNewsModalStatus,
+  isOpen,
+  news,
+}) => {
   moment().locale('ru');
   const [page, setPage] = useState(1);
-  const [news, setNews] = useState();
+  const [newsId, setNewsId] = useState(null);
+  const [isDeleteModalOpen, setDeleteModalStatus] = useState(false);
+  const [deleteId, setDeleteId] = useState(null);
   const [totalPages, setTotalPages] = useState(1);
   const [limit, setLimit] = useState(10);
 
@@ -36,8 +54,10 @@ export const News: FC<NewsType> = ({ isLoading, allNews, deleteNews, getAllNewsP
   }, []);
 
   useEffect(() => {
-    setPage(allNews.page);
-    setTotalPages(allNews.totalPages);
+    if (allNews) {
+      setPage(allNews.page);
+      setTotalPages(allNews.totalPages);
+    }
   }, [allNews]);
 
   const onPaginationChange = (
@@ -47,6 +67,20 @@ export const News: FC<NewsType> = ({ isLoading, allNews, deleteNews, getAllNewsP
     if (true) {
       window.scrollTo(0, 0);
       getAllNewsPaginated(value, limit);
+    }
+  };
+
+  const modalAction = (data: any) => {
+    if (news) {
+      updateNews(data, news.id);
+    } else {
+      createNews(data);
+    }
+  };
+
+  const onDelete = () => {
+    if (deleteId) {
+      deleteNews(deleteId);
     }
   };
 
@@ -60,10 +94,28 @@ export const News: FC<NewsType> = ({ isLoading, allNews, deleteNews, getAllNewsP
           variant="contained"
           sx={{ mt: 3, mb: 2 }}
           onClick={() => setNewsModalStatus(true)}
-        > 
+        >
           {'Создать новость'}
         </Button>
-        {isOpen && <CreateNewsModal modalAction={news ? updateNews : createNews} isOpen={isOpen} news={news} setNews={setNews} setModalStatus={setNewsModalStatus}  />}
+        {isDeleteModalOpen && (
+          <DeleteModal
+            item={'новость'}
+            isOpen={isDeleteModalOpen}
+            deleteAction={onDelete}
+            setModalStatus={setDeleteModalStatus}
+          />
+        )}
+        {isOpen && (
+          <CreateNewsModal
+            modalAction={modalAction}
+            isOpen={isOpen}
+            news={news}
+            getNews={getNews}
+            setNewsId={setNewsId}
+            newsId={newsId}
+            setModalStatus={setNewsModalStatus}
+          />
+        )}
       </Box>
       <Box
         sx={{
@@ -75,7 +127,7 @@ export const News: FC<NewsType> = ({ isLoading, allNews, deleteNews, getAllNewsP
           mr: '-10px',
         }}
       >
-        {allNews?.news?.map((item:any) => (
+        {allNews?.news?.map((item: any) => (
           <Box
             key={`${item.title} ${item.id}`}
             sx={{
@@ -91,7 +143,11 @@ export const News: FC<NewsType> = ({ isLoading, allNews, deleteNews, getAllNewsP
           >
             <StyledLink to={`/news/${item.id}`}>
               <StyledImage
-                src={item.cover ? `${apiUrl}${item.cover}` : 'static/images/no-image.jpg'}
+                src={
+                  item.cover
+                    ? `${apiUrl}${item.cover}`
+                    : 'static/images/no-image.jpg'
+                }
                 alt="Обложка альбома"
                 width="150"
                 height="150"
@@ -104,23 +160,28 @@ export const News: FC<NewsType> = ({ isLoading, allNews, deleteNews, getAllNewsP
             <StyledNoteLink to={`/news/${item.id}`}>
               Подробнее...
             </StyledNoteLink>
-            <Button
-              fullWidth
-              variant="contained"
-              sx={{m:1}}
-              onClick={() => {setNewsModalStatus(true); setNews(item)}}
-            > 
-              {'Редактировать новость'}
-            </Button>
-            <Button
-              fullWidth
-              sx={{m:1}}
-              variant="contained"
-              onClick={() => deleteNews(item.id)}
-            > 
-              {'Удалить'}
-            </Button>
-            {/* <CreateNewsModal modalAction={createNews}  news={item} /> */}
+            <Box sx={{ display: 'flex', gap: '10px' }}>
+              <Button
+                variant="contained"
+                sx={{ m: 1 }}
+                onClick={() => {
+                  setNewsModalStatus(true);
+                  setNewsId(item.id);
+                }}
+              >
+                <EditIcon />
+              </Button>
+              <Button
+                sx={{ m: 1 }}
+                variant="contained"
+                onClick={() => {
+                  setDeleteModalStatus(true);
+                  setDeleteId(item.id);
+                }}
+              >
+                <DeleteIcon />
+              </Button>
+            </Box>
           </Box>
         ))}
       </Box>

@@ -5,14 +5,12 @@ import { MobileDatePicker } from '@mui/x-date-pickers/MobileDatePicker';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import TextField from '@mui/material/TextField';
 
-
-
 type DatePickerType = {
   date: any;
   setDate: (data: any) => void;
-}
+};
 
-export const DatePicker: FC<DatePickerType> = ({date, setDate}) => {
+export const DatePicker: FC<DatePickerType> = ({ date, setDate }) => {
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs}>
       <MobileDatePicker
@@ -22,6 +20,6 @@ export const DatePicker: FC<DatePickerType> = ({date, setDate}) => {
         onChange={(value) => setDate(value)}
         renderInput={(params) => <TextField {...params} />}
       />
-  </LocalizationProvider>
+    </LocalizationProvider>
   );
 };

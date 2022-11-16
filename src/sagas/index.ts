@@ -5,13 +5,19 @@ import usersSaga from './users';
 import booksSaga from './books';
 import newsSaga from './news';
 import galeriesSaga from './galeries';
+import groupsSaga from './groups';
+import storagesSaga from './storages';
+import pagesSaga from './pages';
 
 export default function* rootSaga() {
   yield all([
-    authSaga(), 
-    usersSaga(), 
+    authSaga(),
+    usersSaga(),
     booksSaga(),
     newsSaga(),
     galeriesSaga(),
+    groupsSaga(),
+    storagesSaga(),
+    pagesSaga(),
   ]);
 }

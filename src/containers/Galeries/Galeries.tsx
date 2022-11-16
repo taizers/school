@@ -3,29 +3,48 @@ import Box from '@mui/material/Box';
 import moment from 'moment';
 import Pagination from '@mui/material/Pagination';
 import CreateGaleryModal from './CreateGaleryModal';
+import UpdateGaleryModal from './UpdateGaleryModal';
 import { StyledTitle, StyledImage, StyledDate, StyledLink } from './styled';
 import Button from '@mui/material/Button';
 import { apiUrl } from '../../constants/constants';
 import DeleteModal from '../../components/DeleteModal/index';
+import DeleteIcon from '@mui/icons-material/Delete';
+import EditIcon from '@mui/icons-material/Edit';
 
 type GaleriesType = {
   getAllGaleriesPaginated: (page: number, limit: number) => Promise<any>;
   createGalery: (data: any) => Promise<any>;
-  updateGalery: (data: any) => Promise<any>;
+  updateGalery: (data: any, id: string) => Promise<any>;
   deleteGalery: (id: string) => Promise<any>;
-  setGaleriesModalStatus: (data: boolean) => void;
+  getGalery: (id: string) => Promise<any>;
+  setCreateGaleryModalStatus: (data: boolean) => void;
+  setUpdateGaleryModalStatus: (data: boolean) => void;
   isLoading: boolean;
   galeries: any;
-  isOpen: boolean;
+  galery: any;
+  isCreateModalOpen: boolean;
+  isUpdateModalOpen: boolean;
 };
 
-
-export const Galeries: FC<GaleriesType> = ({setGaleriesModalStatus, createGalery, deleteGalery, isOpen, galeries, getAllGaleriesPaginated}) => {
+export const Galeries: FC<GaleriesType> = ({
+  setCreateGaleryModalStatus,
+  setUpdateGaleryModalStatus,
+  updateGalery,
+  createGalery,
+  deleteGalery,
+  getGalery,
+  galery,
+  isCreateModalOpen,
+  isUpdateModalOpen,
+  galeries,
+  getAllGaleriesPaginated,
+}) => {
   moment().locale('ru');
 
   const [page, setPage] = useState(1);
   const [isDelteModalOpen, setDelteModalOpen] = useState(false);
   const [deleteId, setDeleteId] = useState(null);
+  const [galeryId, setGaleryId] = useState(null);
   const [totalPages, setTotalPages] = useState(1);
   const [limit, setLimit] = useState(10);
 
@@ -53,18 +72,45 @@ export const Galeries: FC<GaleriesType> = ({setGaleriesModalStatus, createGalery
     if (deleteId) {
       deleteGalery(deleteId);
     }
-  }
+  };
 
   return (
     <Box
       sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}
     >
       <Box sx={{ m: '10px' }}>
-        <Button variant="outlined" onClick={() => setGaleriesModalStatus(true)}>
+        <Button
+          variant="outlined"
+          onClick={() => setCreateGaleryModalStatus(true)}
+        >
           Создать альбом
         </Button>
-        {isOpen && <CreateGaleryModal isOpen={isOpen} createGalery={createGalery} setGaleriesModalStatus={setGaleriesModalStatus} />}
-        {isDelteModalOpen && <DeleteModal isOpen={isDelteModalOpen} item={'галерею'} setModalStatus={setDelteModalOpen} deleteAction={onDeleteGalery} />}
+        {isCreateModalOpen && (
+          <CreateGaleryModal
+            isOpen={isCreateModalOpen}
+            createGalery={createGalery}
+            setModalStatus={setCreateGaleryModalStatus}
+          />
+        )}
+        {isUpdateModalOpen && (
+          <UpdateGaleryModal
+            isOpen={isUpdateModalOpen}
+            getGalery={getGalery}
+            setGaleryId={setGaleryId}
+            galeryId={galeryId}
+            galery={galery}
+            updateGalery={updateGalery}
+            setModalStatus={setUpdateGaleryModalStatus}
+          />
+        )}
+        {isDelteModalOpen && (
+          <DeleteModal
+            isOpen={isDelteModalOpen}
+            item={'галерею'}
+            setModalStatus={setDelteModalOpen}
+            deleteAction={onDeleteGalery}
+          />
+        )}
       </Box>
       <Box
         sx={{
@@ -93,7 +139,11 @@ export const Galeries: FC<GaleriesType> = ({setGaleriesModalStatus, createGalery
           >
             <StyledLink to={`/galeries/${item.id}`}>
               <StyledImage
-                src={item.cover ? `${apiUrl}${item.cover}` : 'static/images/no-image.jpg'}
+                src={
+                  item.cover
+                    ? `${apiUrl}${item.cover}`
+                    : 'static/images/no-image.jpg'
+                }
                 alt="Обложка альбома"
                 width="150"
                 height="150"
@@ -103,26 +153,32 @@ export const Galeries: FC<GaleriesType> = ({setGaleriesModalStatus, createGalery
                 'DD.MM.YY'
               )}`}</StyledDate>
             </StyledLink>
-            <Button 
-              fullWidth
-              sx={{m:1}}
-              variant="contained"
-              onClick={() => {setGaleriesModalStatus(true)}}
-            >
-              Редактировать
-            </Button>
-            <Button 
-              fullWidth
-              sx={{m:1}}
-              variant="contained"
-              onClick={() => {setDeleteId(item.id); setDelteModalOpen(true)}}
-            >
-              Удалить
-            </Button>
+            <Box sx={{ display: 'flex', gap: '10px' }}>
+              <Button
+                sx={{ m: 1 }}
+                variant="contained"
+                onClick={() => {
+                  setUpdateGaleryModalStatus(true);
+                  setGaleryId(item.id);
+                }}
+              >
+                <EditIcon />
+              </Button>
+              <Button
+                sx={{ m: 1 }}
+                variant="contained"
+                onClick={() => {
+                  setDeleteId(item.id);
+                  setDelteModalOpen(true);
+                }}
+              >
+                <DeleteIcon />
+              </Button>
+            </Box>
           </Box>
         ))}
       </Box>
-      {galeries && (
+      {!!galeries?.galeries?.length && (
         <Pagination
           count={totalPages || 1}
           sx={{ mt: '10px' }}

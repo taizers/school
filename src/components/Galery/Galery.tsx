@@ -37,9 +37,9 @@ type GaleryType = {
   isLoading: boolean;
   galery: any;
   getGalery: (data: any) => Promise<any>;
-}
+};
 
-export const Galery: FC<GaleryType> = ({getGalery, isLoading, galery}) => {
+export const Galery: FC<GaleryType> = ({ getGalery, isLoading, galery }) => {
   const [currentImage, setCurrentImage] = useState(0);
   const [isViewerOpen, setIsViewerOpen] = useState(false);
   const { id } = useParams();
@@ -62,7 +62,7 @@ export const Galery: FC<GaleryType> = ({getGalery, isLoading, galery}) => {
 
   return (
     <Box>
-      <StyledTitle>{galery.title}</StyledTitle>
+      <StyledTitle>{galery?.title}</StyledTitle>
       <Box
         sx={{
           display: 'flex',

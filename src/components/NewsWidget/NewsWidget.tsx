@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import React, { FC, useEffect } from 'react';
 import {
   StyledTitle,
   StyledImage,
@@ -9,6 +9,7 @@ import {
 import { Box, Button } from '@mui/material';
 import { Link } from 'react-router-dom';
 import moment from 'moment';
+import { apiUrl } from '../../constants/constants';
 
 const news = [
   {
@@ -55,47 +56,66 @@ const news = [
   },
 ];
 
-export const NewsWidget: FC<any> = () => {
+type NewsWidgetType = {
+  newsWidget: any;
+  getNewsWidget: (count: number) => Promise<any>;
+};
+
+const countItemsInWidget = 5;
+
+export const NewsWidget: FC<NewsWidgetType> = ({
+  getNewsWidget,
+  newsWidget,
+}) => {
+  useEffect(() => {
+    getNewsWidget(countItemsInWidget);
+  }, []);
+
   moment().locale('ru');
   return (
     <Box>
       <StyledTitle>Новости</StyledTitle>
       <Box sx={{ display: 'flex', flexDirection: 'column', maxWidth: '800px' }}>
-        {news.map((item, index) => (
-          <Box
-            key={`news ${item.title} ${index}`}
-            sx={{
-              display: 'flex',
-              gap: '10px',
-              mb: '10px',
-              p: '5px',
-              backgroundColor: '#f0eaea',
-              '&:hover': { boxShadow: '0px 0px 6px 0px rgb(0 0 0 / 50%)' },
-              '@media screen and (max-width: 600px)': {
-                flexDirection: 'column',
-                alignItems: 'center',
-              },
-            }}
-          >
-            <Link to={`/news/${item.id}`}>
-              <StyledImage
-                alt="Обложка новости"
-                src={item.cover}
-                width="200"
-                height="200"
-              />
-            </Link>
-            <Box sx={{ width: '100%' }}>
-              <StyledNewsTitle>{item.title}</StyledNewsTitle>
-              <StyledDate>{`Опубликовано: ${moment(item.published).format(
-                'DD.MM.YY'
-              )}`}</StyledDate>
-              <StyledNoteLink to={`/news/${item.id}`}>
-                Подробнее...
-              </StyledNoteLink>
+        {newsWidget &&
+          newsWidget.news?.map((item: any, index: number) => (
+            <Box
+              key={`news ${item.title} ${index}`}
+              sx={{
+                display: 'flex',
+                gap: '10px',
+                mb: '10px',
+                p: '5px',
+                backgroundColor: '#f0eaea',
+                '&:hover': { boxShadow: '0px 0px 6px 0px rgb(0 0 0 / 50%)' },
+                '@media screen and (max-width: 600px)': {
+                  flexDirection: 'column',
+                  alignItems: 'center',
+                },
+              }}
+            >
+              <Link to={`/news/${item.id}`}>
+                <StyledImage
+                  alt="Обложка новости"
+                  src={
+                    item.cover
+                      ? `${apiUrl}${item.cover}`
+                      : 'static/images/no-image.jpg'
+                  }
+                  width="200"
+                  height="200"
+                />
+              </Link>
+              <Box sx={{ width: '100%' }}>
+                <StyledNewsTitle>{item.title}</StyledNewsTitle>
+                <StyledDate>{`Опубликовано: ${moment(item.created_at).format(
+                  'DD.MM.YY'
+                )}`}</StyledDate>
+                <StyledNoteLink to={`/news/${item.id}`}>
+                  Подробнее...
+                </StyledNoteLink>
+              </Box>
             </Box>
-          </Box>
-        ))}
+          ))}
         <Button
           sx={{ fontWeigth: 500, alignSelf: 'center' }}
           href="/news"

@@ -1,4 +1,8 @@
-import { LOGIN_SUCCESSED, SET_AUTH_LOADING, CLEAR_AUTH } from '../constants/types';
+import {
+  LOGIN_SUCCESSED,
+  SET_AUTH_LOADING,
+  CLEAR_AUTH,
+} from '../constants/types';
 
 const initialState = {
   authUser: {},

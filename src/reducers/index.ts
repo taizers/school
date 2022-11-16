@@ -7,6 +7,9 @@ import users from './users';
 import books from './books';
 import news from './news';
 import galeries from './galeries';
+import groups from './groups';
+import storages from './storages';
+import pages from './pages';
 import { clearToken } from '../utils';
 
 const appReducer = combineReducers({
@@ -15,6 +18,9 @@ const appReducer = combineReducers({
   books,
   news,
   galeries,
+  groups,
+  storages,
+  pages,
   // eslint-disable-next-line no-restricted-globals
   router: connectRouter(history),
 });
