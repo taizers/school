@@ -19,6 +19,7 @@ import DotMenu from '../../components/DotMenu/index';
 import { UsersType } from '../../constants/tsSchemes';
 import { apiUrl } from '../../constants/constants';
 import { formatBytes } from '../../utils/convert';
+import { StyledPageTitle } from '../../styled';
 
 type StorageFilesTypes = {
   setStorageGroupsModalStatus: (data: boolean) => void;
@@ -89,6 +90,7 @@ export const StorageFiles: FC<StorageFilesTypes> = ({
     <Box
       sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}
     >
+      <StyledPageTitle>Файлы</StyledPageTitle>
       <Button
         variant="contained"
         sx={{ m: 1 }}

@@ -10,6 +10,9 @@ import {
 } from '../../actions/news';
 
 const mapStateToProps = (state: {
+  auth: {
+    isAuth: boolean;
+  };
   news: {
     isLoading: boolean;
     allNews: any;
@@ -17,6 +20,7 @@ const mapStateToProps = (state: {
     newsModalIsOpen: boolean;
   };
 }) => ({
+  isAuth: state.auth.isAuth,
   isLoading: state.news.isLoading,
   allNews: state.news.allNews,
   news: state.news.news,

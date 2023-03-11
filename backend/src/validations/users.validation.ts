@@ -37,20 +37,6 @@ export const updateUserValidation = validate(
   }
 );
 
-export const updateProfileValidation = validate(
-  {
-    body: Joi.object({
-      username: Joi.string().max(256),
-    }),
-  },
-  {
-    context: true,
-  },
-  {
-    stripUnknown: true,
-  }
-);
-
 export const getUsersValidation = validate(
   {
     query: Joi.object({

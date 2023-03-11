@@ -37,14 +37,14 @@ export const findStorageGroups = async (page: number, limit: number) => {
     offset: page * limit,
     limit,
     row: true,
-    attributes: { 
-      include: [[sequelize.fn("COUNT", sequelize.col("files.id")), "items"]] 
+    attributes: {
+      include: [[sequelize.fn('COUNT', sequelize.col('files.id')), 'items']],
     },
     include: [
       {
         model: Storage,
         as: 'files',
-        attributes: []
+        attributes: [],
       },
     ],
     order: [['created_at', 'DESC']],

@@ -34,7 +34,6 @@ export const getUserAction = async (
   const { id } = req.params;
   const { role: userRole } = req.user;
 
-
   logger.info(`Get User Action: { id: ${id}, userRole: ${userRole} } `);
 
   try {
@@ -77,7 +76,6 @@ export const getUsersAction = async (
 ) => {
   const { page, limit } = req.query;
   const { role: userRole } = req.user;
-
 
   logger.info(`Get User Action: { page: ${page}, limit: ${limit} } `);
 
@@ -159,7 +157,7 @@ export const deleteUserAction = async (
   next: NextFunction
 ) => {
   const { id } = req.params;
-  const { id: userId , role: userRole } = req.user;
+  const { id: userId, role: userRole } = req.user;
 
   logger.info(
     `Delete User Action: { id: ${id}, userId: ${userId}, userRole: ${userRole} }`
@@ -200,7 +198,13 @@ export const updateUserAction = async (
     if (userRole !== 'admin') {
       throw new DontHaveAccessError();
     }
-    const user = await updateUser(id, { post, role, username, group_id, activationkey });
+    const user = await updateUser(id, {
+      post,
+      role,
+      username,
+      group_id,
+      activationkey,
+    });
 
     return customResponse(res, 200, user);
   } catch (err) {
@@ -217,10 +221,13 @@ export const updateUserProfileAction = async (
   const { id } = req.user;
   const { username, new_password, old_password } = req.body;
 
+
   logger.info(`Update User Action: { userId: ${id}, username: ${username} } `);
 
   try {
     let password;
+    let avatar;
+
     if (new_password && old_password) {
       const oldUser = await getUser({ id });
 
@@ -228,7 +235,7 @@ export const updateUserProfileAction = async (
         old_password,
         oldUser.password
       );
-  
+
       if (!isPasswordsEqual) {
         throw new BadCredentialsError('Неверный пароль');
       }
@@ -236,9 +243,14 @@ export const updateUserProfileAction = async (
       password = await bcrypt.hash(new_password, 10);
     }
 
+    if (req.file) {
+      avatar = req.file.path;
+    }
+
     const user = await updateUser(id, {
       username,
       password,
+      avatar,
     });
 
     return customResponse(res, 200, user);

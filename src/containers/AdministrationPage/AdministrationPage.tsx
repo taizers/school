@@ -3,6 +3,7 @@ import React, { FC, useEffect, useState } from 'react';
 import Box from '@mui/material/Box';
 import PersonalCard from '../../components/PersonalCard/index';
 import { StyledGroupName } from './styled';
+import { StyledPageTitle } from '../../styled';
 
 type AdministartionPageType = {
   group: any;
@@ -21,6 +22,7 @@ export const AdministrationPage: FC<AdministartionPageType> = ({
 
   return (
     <Box>
+      <StyledPageTitle>Администрация</StyledPageTitle>
       {group && (
         <Box
           key={`${group.title} ${group.id}`}
@@ -31,9 +33,6 @@ export const AdministrationPage: FC<AdministartionPageType> = ({
             p: '0 20px',
           }}
         >
-          <Box sx={{ display: 'flex' }}>
-            <StyledGroupName>{group.title}</StyledGroupName>
-          </Box>
           <Box
             sx={{
               display: 'flex',

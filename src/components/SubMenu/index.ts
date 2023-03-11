@@ -28,7 +28,8 @@ const mapDispatchToProps = (dispatch: any) => ({
   logout: (history: any) => dispatch(logout(history)),
   getPages: () => dispatch(getPages()),
   createPage: (data: any) => dispatch(createPage(data)),
-  setCreatePageModalStatus: (data: boolean) => dispatch(setCreatePageModalStatus(data)),
+  setCreatePageModalStatus: (data: boolean) =>
+    dispatch(setCreatePageModalStatus(data)),
   getPagesList: () => dispatch(getPagesList()),
 });
 

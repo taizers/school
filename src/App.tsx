@@ -4,20 +4,9 @@ import { connect } from 'react-redux';
 import { Toaster } from 'react-hot-toast';
 
 import Main from './containers/Main/index';
-import Header from './components/Header/index';
-import NotFound from './components/NotFound/index';
 import Login from './containers/Login/index';
 import SignUp from './containers/SignUp/index';
-import Users from './containers/Users/index';
-import SingleUser from './containers/SingleUser/index';
-import Profile from './containers/Profile/index';
-import Books from './containers/Books/index';
-import Book from './containers/Book/index';
-import {
-  PublicRoute,
-  PrivateRoute,
-  PublicRouteWithSideBar,
-} from './router/components/index';
+import { PublicRoute, PrivateRoute } from './router/components/index';
 import { getToken } from './utils/index';
 import { checkAuth } from './actions/auth';
 import { StyledApp } from './styled';
@@ -33,7 +22,6 @@ const App: FC<AppType> = ({ checkAuth }) => {
     const token = getToken();
 
     if (token) {
-      console.log('555');
       checkAuth(history);
     }
   }, []);

@@ -31,7 +31,10 @@ export const findGalery = async (where: object) => {
     throw new ResourceNotFoundError('Галерея');
   }
 
-  const items = jsonGalery.items?.map((item: any) => ({...item, name: editPath(item?.name)}));
+  const items = jsonGalery.items?.map((item: any) => ({
+    ...item,
+    name: editPath(item?.name),
+  }));
 
   const cover = editPath(jsonGalery.cover);
 
@@ -76,7 +79,10 @@ export const findGaleries = async (page: number, limit: number) => {
     order: [['created_at', 'DESC']],
   });
 
-  const galeries = rows.map((item: any) => ({...item?.dataValues, cover: editPath(item?.dataValues?.cover)}));
+  const galeries = rows.map((item: any) => ({
+    ...item?.dataValues,
+    cover: editPath(item?.dataValues?.cover),
+  }));
 
   const totalPages = !count ? 1 : Math.ceil(count / limit);
 
@@ -101,7 +107,7 @@ export const updateGalery = async (id: string, payload: object) => {
   }
 
   const cover = editPath(galery[1].cover);
-  const resultGalery = {...galery[1], cover};
+  const resultGalery = { ...galery[1], cover };
 
   return resultGalery;
 };

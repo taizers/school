@@ -1,7 +1,11 @@
 import styled from 'styled-components';
 
 export const StyledApp = styled.div`
-  width: 90%;
   height: 100%;
-  margin: 0 auto;
+`;
+
+export const StyledPageTitle = styled.h2`
+  font-weight: 650;
+  align-self: flex-start;
+  text-align: left;
 `;

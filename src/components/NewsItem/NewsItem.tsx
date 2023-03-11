@@ -28,9 +28,7 @@ export const NewsItem: FC<NewsItemType> = ({ getNews, news, isLoading }) => {
       <StyledImage
         alt="Обложка новости"
         src={
-          news?.cover
-            ? `${apiUrl}${news.cover}`
-            : 'static/images/no-image.jpg'
+          news?.cover ? `${apiUrl}${news.cover}` : '/static/images/no-image.jpg'
         }
         width="400"
         height="400"

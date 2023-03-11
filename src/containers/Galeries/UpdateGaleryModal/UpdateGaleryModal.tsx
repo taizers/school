@@ -97,9 +97,7 @@ export const UpdateGaleryModal: FC<UpdateGaleryModalType> = ({
     }
 
     if (deleted.includes(cover.toString())) {
-      createToast.error(
-        'Нельзя удалить обложку'
-      );
+      createToast.error('Нельзя удалить обложку');
       return;
     }
 

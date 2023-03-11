@@ -4,6 +4,7 @@ import CssBaseline from '@mui/material/CssBaseline';
 import Box from '@mui/material/Box';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
+import Button from '@mui/material/Button';
 import Container from '@mui/material/Container';
 import { UserType } from '../../constants/tsSchemes';
 import UpdateUserModal from '../UpdateUserModal/index';
@@ -11,11 +12,27 @@ import { apiUrl } from '../../constants/constants';
 
 type ProfileType = {
   user: UserType;
+  isOpen: boolean;
+  updateProfile: (data: any) => Promise<any>;
+  setProfileModal: (data: boolean) => void;
 };
 
-export const Profile: FC<ProfileType> = ({ user }) => {
+export const Profile: FC<ProfileType> = ({
+  user,
+  updateProfile,
+  isOpen,
+  setProfileModal,
+}) => {
   return (
     <Container maxWidth="xs">
+      {isOpen && (
+        <UpdateUserModal
+          user={user}
+          isOpen={isOpen}
+          updateProfile={updateProfile}
+          setProfileModal={setProfileModal}
+        />
+      )}
       <CssBaseline />
       <Box
         sx={{
@@ -68,7 +85,14 @@ export const Profile: FC<ProfileType> = ({ user }) => {
             <Typography component="h3" variant="h5">
               Роль: {user.role}
             </Typography>
-            <UpdateUserModal />
+            <Button
+              fullWidth
+              variant="contained"
+              sx={{ mt: 3, mb: 2 }}
+              onClick={() => setProfileModal(true)}
+            >
+              Редактировать профиль
+            </Button>
           </Box>
         )}
       </Box>

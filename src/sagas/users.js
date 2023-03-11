@@ -93,7 +93,8 @@ function* updateProfile({ payload }) {
     const {
       data: { data },
     } = yield call(usersApi.updateProfile, payload);
-    yield put(authAction.loginSuccessed(data));
+    yield put(usersAction.updateProfileSuccessed(data));
+    yield put(usersAction.setProfileModal(false));
   } catch (error) {
     yield createToast.error(error?.response?.data?.data?.message);
   } finally {

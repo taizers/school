@@ -8,7 +8,7 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import { isArray } from 'lodash';
-import { StyledValue } from './styled';
+import { StyledValue, StyledSubTitle } from './styled';
 import PersonalCard from '../PersonalCard/index';
 import NewsWidget from '../../components/NewsWidget/index';
 
@@ -75,7 +75,8 @@ export const HomePage: FC<HomePageType> = ({ ceo, getCEO }) => {
   }, []);
 
   return (
-    <Box sx={{ width: '100%' }}>
+    <Box>
+      <StyledSubTitle>Общая информация</StyledSubTitle>
       <Box
         sx={{
           display: 'flex',

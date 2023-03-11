@@ -1,5 +1,9 @@
 import { NextFunction, Response } from 'express';
-import { createStorage, deleteStorage, findStorageList } from '../services/db/storages.services';
+import {
+  createStorage,
+  deleteStorage,
+  findStorageList,
+} from '../services/db/storages.services';
 import { customResponse } from '../helpers/responce';
 import { ParamsIdRequest } from '../types/requests/global.request.type';
 import logger from '../helpers/logger';
@@ -13,7 +17,6 @@ export const createStorageAction = async (
   const { title, group_id, created_at } = req.body;
   const { id } = req.user;
   const { mimetype, size, path } = req.file;
-  
 
   logger.info(
     `Create Storage Action: { title: ${title}, mimetype: ${mimetype}, size: ${size}, path: ${path}, userId: ${id}, storagegroup_id: ${group_id}, created_at: ${created_at} } `
@@ -54,7 +57,7 @@ export const findStoragesFromGroupAction = async (
     const files = await findStorageList(group_id, page - 1, limit);
     const group = await findStorageGroup({ id: group_id });
 
-    return customResponse(res, 200, {...group, files});
+    return customResponse(res, 200, { ...group, files });
   } catch (err) {
     logger.error('Find Storage List Action - Cannot Find storage', err);
     next(err);

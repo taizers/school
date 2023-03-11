@@ -23,7 +23,7 @@ export type LoginUserType = {
 };
 
 export type SignUpUserType = {
-  username: string;
+  username?: string;
   email: string;
   password: string;
   activationkey: string;

@@ -33,14 +33,14 @@ const Copyright = (props: any) => {
   );
 };
 
-type LoginTypes = {
+type SignUpTypes = {
   signUp: (data: { data: SignUpUserType; history: any }) => Promise<any>;
   isLoading: boolean;
 };
 
 const theme = createTheme();
 
-export const SignUp: FC<LoginTypes> = ({ signUp, isLoading }) => {
+export const SignUp: FC<SignUpTypes> = ({ signUp, isLoading }) => {
   let history = useNavigate();
 
   const onSubmit = (event: React.FormEvent<HTMLFormElement>) => {
@@ -48,21 +48,24 @@ export const SignUp: FC<LoginTypes> = ({ signUp, isLoading }) => {
     const formData = new FormData(event.currentTarget);
     const secondPassword = formData.get('secondPassword')?.toString() || '';
 
-    const data = {
-      email: formData.get('email')?.toString() || '',
-      password: formData.get('password')?.toString() || '',
-      username: formData.get('name')?.toString() || '',
-      activationkey: formData.get('activationkey')?.toString() || '',
-    };
+    const email = formData.get('email')?.toString() || '';
+    const password = formData.get('password')?.toString() || '';
+    const username = formData.get('name')?.toString() || undefined;
+    const activationkey = formData.get('activationkey')?.toString() || '';
 
     if (
-      data.email &&
-      data.password &&
-      data.username &&
-      data.activationkey &&
-      data.password === secondPassword
+      email &&
+      password &&
+      activationkey &&
+      password === secondPassword
     ) {
-      console.log('+++++++');
+      const data = {
+        email,
+        password,
+        username,
+        activationkey,
+      };
+
       signUp({ data, history });
     } else {
       createToast.error('Проверьте заполнение полей');

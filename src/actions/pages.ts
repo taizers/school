@@ -57,7 +57,7 @@ export const updatePageSuccessed = (data: any) => ({
 
 export const deletePage = (id: string, history: any) => ({
   type: DELETE_PAGE,
-  payload: {id, history},
+  payload: { id, history },
 });
 
 export const deletePageSuccessed = () => ({

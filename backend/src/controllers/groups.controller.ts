@@ -22,7 +22,9 @@ export const createGroupAction = async (
   const { title, created_at } = req.body;
   const { role } = req.user;
 
-  logger.info(`Create Group Action: { title: ${title}, created_at: ${created_at} } `);
+  logger.info(
+    `Create Group Action: { title: ${title}, created_at: ${created_at} } `
+  );
 
   try {
     if (role !== 'admin') {
@@ -153,7 +155,9 @@ export const updateGroupAction = async (
   const { id } = req.params;
   const { role } = req.user;
 
-  logger.info(`Update Groups Action: { title: ${title}, created_at: ${created_at} } `);
+  logger.info(
+    `Update Groups Action: { title: ${title}, created_at: ${created_at} } `
+  );
 
   try {
     if (role !== 'admin') {

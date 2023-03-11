@@ -131,17 +131,21 @@ export const updateGaleryAction = async (
       const ids = deleted.split(' ');
 
       if (ids.includes(cover.toString())) {
-        throw new Error('Нельзя удалить обложку')
+        throw new Error('Нельзя удалить обложку');
       }
 
-      const galeryPhoto = await findGaleryPhoto({id: cover});
+      const galeryPhoto = await findGaleryPhoto({ id: cover });
 
       if (!galeryPhoto?.name) {
-        throw new Error('Фото обложки не найдено')
+        throw new Error('Фото обложки не найдено');
       }
 
       if (title || created_at) {
-        updatedGalery = await updateGalery(id, { title, cover: galeryPhoto.name, created_at });
+        updatedGalery = await updateGalery(id, {
+          title,
+          cover: galeryPhoto.name,
+          created_at,
+        });
       }
     } else {
       if (title || created_at) {

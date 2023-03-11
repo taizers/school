@@ -1,4 +1,3 @@
-
 .subnav {
   overflow: hidden;
   position: relative;
@@ -20,7 +19,7 @@
   text-align: left;
 } 
 
-.dropdown {
+.subnav .dropdown {
   float: left;
   overflow: hidden;
 } 
@@ -36,7 +35,7 @@
     margin: 0;
 }
   
-.dropdown-content {
+.subnav .dropdown-content {
     display: none;
     position: absolute;
     background-color: #f9f9f9;
@@ -59,22 +58,22 @@
     color: white;
 }
   
-.dropdown-content a:hover {
+.subnav .dropdown-content a:hover {
     background-color: #ddd;
     color: black;
 }
   
-.dropdown:hover .dropdown-content {
+.subnav .dropdown:hover .dropdown-content {
     display: block;
 }
 
-.dropbtn a {
+.subnav .dropbtn a {
     padding: 0;
     position: relative;
     padding-right: 18px;
 }
 
-.caret-down {
+.subnav .caret-down {
     font-size: 12px;
     position: absolute;
     right: 5px;

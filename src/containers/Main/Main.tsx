@@ -14,6 +14,9 @@ import NotFound from '../../components/NotFound/index';
 import TeachersPage from '../TeachersPage/index';
 import AdministrationPage from '../AdministrationPage/index';
 import Galeries from '../Galeries/index';
+import Schedule from '../Schedule/index';
+import ScheduleRings from '../ScheduleRings/index';
+import ScheduleQuartersAndHolidays from '../ScheduleQuartersAndHolidays/index';
 import Galery from '../../components/Galery/index';
 import News from '../News/index';
 import Users from '../Users/index';
@@ -22,7 +25,7 @@ import NewsItem from '../../components/NewsItem/index';
 import {
   PublicRoute,
   PrivateRoute,
-  PublicRouteWithSideBar,
+  PrivateAdminRoute,
 } from '../../router/components/index';
 import { Link } from 'react-router-dom';
 import { StyledLink, StyledImage } from './styled';
@@ -90,6 +93,7 @@ export const Main: FC<MainType> = ({}) => {
       <Header />
       <MainMenu />
       <Box
+        className="container"
         sx={{
           display: 'flex',
           '@media screen and (max-width: 1000px)': {
@@ -104,20 +108,39 @@ export const Main: FC<MainType> = ({}) => {
             <Route path="/" element={<HomePage />} />
             <Route path="/administration" element={<AdministrationPage />} />
             <Route path="/teachers" element={<TeachersPage />} />
-            <Route path="/profile" element={<Profile />} />
             <Route path="/galeries" element={<Galeries />} />
             <Route path="/galeries/:id" element={<Galery />} />
-            <Route path="/users" element={<Users />} />
-            <Route path="/storages" element={<StorageGroups />} />
-            <Route path="/storages/:id" element={<StorageFiles />} />
             <Route path="/pages/:id" element={<Page />} />
             <Route path="/news" element={<News />} />
             <Route path="/news/:id" element={<NewsItem />} />
+            <Route path="/schedule" element={<Schedule />} />
+            <Route path="/schedule" element={<Schedule />} />
+            <Route path="/schedule/rings" element={<ScheduleRings />} />
+            <Route
+              path="/schedule/quarters-and-holidays"
+              element={<ScheduleQuartersAndHolidays />}
+            />
+            <Route
+              path="/users"
+              element={<PrivateAdminRoute component={<Users />} />}
+            />
+            <Route
+              path="/profile"
+              element={<PrivateRoute component={<Profile />} />}
+            />
+            <Route
+              path="/storages"
+              element={<PrivateRoute component={<StorageGroups />} />}
+            />
+            <Route
+              path="/storages/:id"
+              element={<PrivateRoute component={<StorageFiles />} />}
+            />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </Box>
       </Box>
-      <Box sx={{ m: '20px 10px' }}>
+      <Box sx={{ m: '20px 10px' }} className="container">
         <Slide
           slidesToScroll={1}
           slidesToShow={1}

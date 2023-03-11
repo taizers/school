@@ -8,10 +8,13 @@ import DeleteModal from '../../components/DeleteModal';
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
 import { StyledGroupName } from './styled';
+import { StyledPageTitle } from '../../styled';
 
 type TeachersPageType = {
   groups: any;
   group: any;
+  isAuth: boolean;
+  role: string;
   isLoading: boolean;
   isOpen: boolean;
   getAllGroups: () => Promise<any>;
@@ -26,6 +29,8 @@ export const TeachersPage: FC<TeachersPageType> = ({
   groups,
   group,
   isOpen,
+  isAuth,
+  role,
   isLoading,
   updateGroup,
   getAllGroups,
@@ -60,14 +65,17 @@ export const TeachersPage: FC<TeachersPageType> = ({
     <Box
       sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}
     >
+      <StyledPageTitle>Учительская</StyledPageTitle>
       <Box>
-        <Button
-          variant="contained"
-          sx={{ mt: 3, mb: 2 }}
-          onClick={() => setGroupsModalStatus(true)}
-        >
-          {'Создать Группу'}
-        </Button>
+        {isAuth && role === 'admin' && (
+          <Button
+            variant="contained"
+            sx={{ mt: 3, mb: 2 }}
+            onClick={() => setGroupsModalStatus(true)}
+          >
+            {'Создать Группу'}
+          </Button>
+        )}
         {isDeleteModalOpen && (
           <DeleteModal
             item={'новость'}
@@ -117,26 +125,30 @@ export const TeachersPage: FC<TeachersPageType> = ({
             <Box sx={{ display: 'flex' }}>
               <StyledGroupName>{item.title}</StyledGroupName>
               <Box sx={{ display: 'flex' }}>
-                <Button
-                  variant="contained"
-                  sx={{ m: 2 }}
-                  onClick={() => {
-                    setGroupsModalStatus(true);
-                    setGroupId(item.id);
-                  }}
-                >
-                  <EditIcon />
-                </Button>
-                <Button
-                  sx={{ m: 2, ml: 0 }}
-                  variant="contained"
-                  onClick={() => {
-                    setDeleteModalStatus(true);
-                    setDeleteId(item.id);
-                  }}
-                >
-                  <DeleteIcon />
-                </Button>
+                {isAuth && role === 'admin' && (
+                  <Button
+                    variant="contained"
+                    sx={{ m: 2 }}
+                    onClick={() => {
+                      setGroupsModalStatus(true);
+                      setGroupId(item.id);
+                    }}
+                  >
+                    <EditIcon />
+                  </Button>
+                )}
+                {isAuth && role === 'admin' && (
+                  <Button
+                    sx={{ m: 2, ml: 0 }}
+                    variant="contained"
+                    onClick={() => {
+                      setDeleteModalStatus(true);
+                      setDeleteId(item.id);
+                    }}
+                  >
+                    <DeleteIcon />
+                  </Button>
+                )}
               </Box>
             </Box>
             <Box

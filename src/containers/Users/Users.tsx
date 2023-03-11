@@ -17,6 +17,7 @@ import { useNavigate } from 'react-router-dom';
 
 import DotMenu from '../../components/DotMenu/index';
 import { UsersType } from '../../constants/tsSchemes';
+import { StyledPageTitle } from '../../styled';
 
 type UsersComponetTypes = {
   getAllUsers: (page: number, limit: number) => Promise<any>;
@@ -103,6 +104,7 @@ export const Users: FC<UsersComponetTypes> = ({
     <Box
       sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}
     >
+      <StyledPageTitle>Пользователи</StyledPageTitle>
       <Button
         variant="contained"
         sx={{ m: 1 }}

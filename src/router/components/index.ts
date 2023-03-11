@@ -1,5 +1,5 @@
 import PrivateRoute from './PrivateRoute';
 import PublicRoute from './PublicRoute';
-import PublicRouteWithSideBar from './PublicRouteWithSideBar';
+import PrivateAdminRoute from './PrivateAdminRoute';
 
-export { PrivateRoute, PublicRoute, PublicRouteWithSideBar };
+export { PrivateRoute, PublicRoute, PrivateAdminRoute };

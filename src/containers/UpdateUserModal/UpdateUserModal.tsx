@@ -4,33 +4,31 @@ import TextField from '@mui/material/TextField';
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
-import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
-import { UserType, UpdateUserType } from '../../constants/tsSchemes';
+import { UserType } from '../../constants/tsSchemes';
+import UploadFile from '../../components/UploadFile';
+import { createToast } from '../../utils/toasts';
 
 type UpdateUserModalType = {
   user: UserType;
-  updateProfile: (data: UpdateUserType) => Promise<any>;
+  isOpen: boolean;
+  updateProfile: (data: any) => Promise<any>;
+  setProfileModal: (data: boolean) => void;
 };
 
 export const UpdateUserModal: FC<UpdateUserModalType> = ({
   user,
   updateProfile,
+  setProfileModal,
+  isOpen,
 }) => {
-  const [open, setOpen] = useState(false);
   const [name, setName] = useState('');
   const [oldPassword, setOldPassword] = useState('');
   const [newPassword, setNewPassword] = useState('');
-
-  const handleClickOpen = () => {
-    setOpen(true);
-  };
+  const [file, setFile] = useState<any>();
 
   const handleClose = () => {
-    setOpen(false);
-    setName('');
-    setOldPassword('');
-    setNewPassword('');
+    setProfileModal(false);
   };
 
   const onChangeName = (e: any) => {
@@ -46,39 +44,33 @@ export const UpdateUserModal: FC<UpdateUserModalType> = ({
   };
 
   const onSubmitForm = () => {
-    const data: UpdateUserType = { id: user.id };
+    const formData = new FormData();
 
-    if ((!name || name === user.username) && (!oldPassword || !newPassword)) {
-      return console.log('Empty');
+    if ((oldPassword && !newPassword) || (!oldPassword && newPassword)) {
+      return createToast.error('Ошибка валидации');
     }
 
     if (oldPassword && newPassword) {
-      data.old_password = oldPassword;
-      data.new_password = newPassword;
+      formData.append('old_password', oldPassword);
+      formData.append('new_password', newPassword);
     }
 
     if (name) {
-      data.username = name;
+      formData.append('username', name);
     }
 
-    console.log(data);
-    updateProfile(data);
+    if (file) {
+      formData.append('file', file[0]?.file);
+    }
+
+    updateProfile(formData);
   };
 
   return (
     <div>
-      <Button
-        fullWidth
-        variant="contained"
-        sx={{ mt: 3, mb: 2 }}
-        onClick={handleClickOpen}
-      >
-        Редактировать профиль
-      </Button>
-      <Dialog open={open} onClose={handleClose}>
+      <Dialog open={isOpen} onClose={handleClose}>
         <DialogTitle>Редактирование профиля</DialogTitle>
         <DialogContent>
-          {/* <DialogContentText>Редактирование профиля</DialogContentText> */}
           <TextField
             autoFocus
             margin="dense"
@@ -110,6 +102,7 @@ export const UpdateUserModal: FC<UpdateUserModalType> = ({
             variant="standard"
             onChange={onChangeNewPAssword}
           />
+          <UploadFile files={file} setFiles={setFile} />
         </DialogContent>
         <DialogActions>
           <Button onClick={handleClose}>Отмена</Button>

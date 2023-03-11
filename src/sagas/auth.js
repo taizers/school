@@ -49,8 +49,8 @@ function* checkAuth({ payload: { history } }) {
     yield setToken(user_session.access_token);
     yield put(authAction.loginSuccessed(user));
   } catch (error) {
-    // yield clearToken();
-    // yield put(authAction.clearAuth());
+    yield clearToken();
+    yield put(authAction.clearAuth());
     yield createToast.error(error?.response?.data?.data?.message);
   }
 }

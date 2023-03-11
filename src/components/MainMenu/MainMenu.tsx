@@ -2,40 +2,43 @@ import './style.css';
 import React, { useState, FC } from 'react';
 import { Link } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
+import { apiUrl } from '../../constants/constants';
 
 type MainMenuType = {
   isAuth: boolean;
   role: string;
+  user: any;
   logout: (history: any) => Promise<any>;
 };
 
-export const MainMenu: FC<MainMenuType> = ({ isAuth, role, logout }) => {
+export const MainMenu: FC<MainMenuType> = ({ isAuth, role, user, logout }) => {
   let history = useNavigate();
 
   const onEventOff = (evt: any) => evt.preventDefault();
 
   const OpenCloseButtonClick = (evt: any) => {
     onEventOff(evt);
-    onElementClick();
+    onElementClick(null);
   };
 
   const onLogoutClick = () => {
-    onElementClick();
+    onElementClick(null);
     logout(history);
   };
 
-  const onElementClick = () => {
+  const onElementClick = (evt: any) => {
     let x: any = document.getElementById('mainnav');
-    if (x.className === 'mainnav') {
+    if (x.className === 'mainnav container') {
       x.className += ' responsive';
     } else {
-      x.className = 'mainnav';
+      x.className = 'mainnav container';
     }
+    
   };
 
   return (
-    <div className="mainnav-wrapper">
-      <div className="mainnav" id="mainnav">
+    <div className="mainnav-wrapper ">
+      <div className="mainnav container" id="mainnav">
         <Link key="main link 1" to="/">
           Главная
         </Link>
@@ -62,51 +65,25 @@ export const MainMenu: FC<MainMenuType> = ({ isAuth, role, logout }) => {
             <Link onClick={onElementClick} to="/schedule/rings">
               Расписание звонков
             </Link>
-            <Link onClick={onElementClick} to="/schedule/vacations">
+            <Link onClick={onElementClick} to="/schedule/quarters-and-holidays">
               Расписание четвертей и каникул
             </Link>
-            <Link onClick={onElementClick} to="/schedule/class">
+            <Link onClick={onElementClick} to="/schedule/classes">
               Расписание классов
             </Link>
           </div>
         </div>
-        <div key="main menu 3" className="dropdown">
-          <button className="dropbtn">
-            <Link onClick={onElementClick} to="/electronic-appeals">
-              <span className="dropbtn-text">Электронные обращения</span>
-              <span className="fa-caret-down">&#x25BC;</span>
-            </Link>
-          </button>
-          <div className="dropdown-content">
-            <Link
-              onClick={onElementClick}
-              key="link 1"
-              to="/electronic-appeals/individual"
-            >
-              Физического лица
-            </Link>
-            <Link
-              onClick={onElementClick}
-              key="link 2"
-              to="/electronic-appeals/legal-entity-and-individual-entrepreneur"
-            >
-              Юридического лица и индивидуального предпринимателя
-            </Link>
-            <Link
-              onClick={onElementClick}
-              key="link 3"
-              to="/electronic-appeals/requirements"
-            >
-              Требования к оформлению и порядок рассмотрения обращений
-            </Link>
-          </div>
-        </div>
+        <Link onClick={onElementClick} key="main link 6" to="/electronic-appeals">
+          Электронные обращения
+        </Link>
         <div key="main menu 4" className="dropdown avatar-btn">
           <button className="dropbtn">
             <a onClick={onElementClick} href="/profile">
               <img
                 className="avatar"
-                src="/static/images/school.jpg"
+                src={
+                  user?.avatar ? `${apiUrl}${user.avatar}` : '/static/images/no-image.jpg'
+                }
                 alt="avatar"
               />
             </a>
@@ -127,11 +104,11 @@ export const MainMenu: FC<MainMenuType> = ({ isAuth, role, logout }) => {
                 Профиль
               </Link>
             )}
-            {isAuth && role === 'admin' && (
+            {/* {isAuth && role === 'admin' && (
               <Link onClick={onElementClick} key="user link 4" to="/settings">
                 Настройки сайта
               </Link>
-            )}
+            )} */}
             {isAuth && role === 'admin' && (
               <Link onClick={onElementClick} key="user link 5" to="/users">
                 Пользователи
@@ -149,7 +126,6 @@ export const MainMenu: FC<MainMenuType> = ({ isAuth, role, logout }) => {
             )}
           </div>
         </div>
-
         <a href="#!" className="icon" onClick={OpenCloseButtonClick}>
           &#9776;
         </a>

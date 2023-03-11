@@ -36,13 +36,15 @@ export const SubMenu: FC<SubMenuType> = ({
     <Box
       sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}
     >
-      {isAuth && <Button
-        variant="outlined"
-        sx={{ m: 1 }}
-        onClick={() => setCreatePageModalStatus(true)}
-      >
-        Создать страницу
-      </Button>}
+      {isAuth && (
+        <Button
+          variant="outlined"
+          sx={{ m: 1 }}
+          onClick={() => setCreatePageModalStatus(true)}
+        >
+          Создать страницу
+        </Button>
+      )}
       {isOpen && (
         <CreatePageModal
           isOpen={isOpen}
@@ -52,31 +54,40 @@ export const SubMenu: FC<SubMenuType> = ({
           setModalStatus={setCreatePageModalStatus}
         />
       )}
-      {
-        pages && <div className="subnav" id="subnav">
+      {pages && (
+        <div className="subnav" id="subnav">
           {pages.map((page: any) => {
-              if (page.subpages?.length) {
-                return (
-                  <div key={`page ${page.id}`} className="dropdown">
-                    <button className="dropbtn">
-                      <Link to={`/pages/${page.id}`}>
-                        <span className="dropbtn-text">{page.title}</span>
-                        <span className="caret-down">&#x25BC;</span>
+            if (page.subpages?.length) {
+              return (
+                <div key={`page ${page.id}`} className="dropdown">
+                  <button className="dropbtn">
+                    <Link to={`/pages/${page.id}`}>
+                      <span className="dropbtn-text">{page.title}</span>
+                      <span className="caret-down">&#x25BC;</span>
+                    </Link>
+                  </button>
+                  <div className="dropdown-content">
+                    {page.subpages?.map((subpage: any) => (
+                      <Link
+                        key={`subpage ${subpage.id}`}
+                        to={`/pages/${subpage.id}`}
+                      >
+                        {subpage.title}
                       </Link>
-                    </button>
-                    <div className="dropdown-content">
-                      {
-                        page.subpages?.map((subpage: any) => <Link key={`subpage ${subpage.id}`} to={`/pages/${subpage.id}`}>{subpage.title}</Link>)
-                      }
-                    </div>
+                    ))}
                   </div>
-                )
-              } else {
-                return <Link key={`page ${page.id}`} to={`/pages/${page.id}`}>{page.title}</Link>
-              }
+                </div>
+              );
+            } else {
+              return (
+                <Link key={`page ${page.id}`} to={`/pages/${page.id}`}>
+                  {page.title}
+                </Link>
+              );
+            }
           })}
         </div>
-      }
+      )}
     </Box>
   );
 };

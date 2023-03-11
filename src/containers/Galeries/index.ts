@@ -11,6 +11,9 @@ import {
 } from '../../actions/galeries';
 
 const mapStateToProps = (state: {
+  auth: {
+    isAuth: boolean;
+  };
   galeries: {
     isLoading: boolean;
     galeries: any;
@@ -19,6 +22,7 @@ const mapStateToProps = (state: {
     isOpenUpdateGaleryModal: boolean;
   };
 }) => ({
+  isAuth: state.auth.isAuth,
   isLoading: state.galeries.isLoading,
   galeries: state.galeries.galeries,
   galery: state.galeries.galery,

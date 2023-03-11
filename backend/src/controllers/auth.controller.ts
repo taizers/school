@@ -35,7 +35,7 @@ export const signUpAction = async (
     logger.info(`SignUp Action - User already exists`);
     return customResponse(res, 422, {
       code: 422,
-      message: 'Пользователь уже зарегитрировался',
+      message: 'Пользователь уже зарегистрировался',
     });
   }
 

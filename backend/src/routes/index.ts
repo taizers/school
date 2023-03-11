@@ -6,7 +6,10 @@ import {
   refreshAction,
   logoutAction,
 } from '../controllers/auth.controller';
-import { getCEOAction, uploadUserAvatarAction } from '../controllers/users.controller';
+import {
+  getCEOAction,
+  uploadUserAvatarAction,
+} from '../controllers/users.controller';
 // import {
 //   searchProjectAction,
 //   getProjectsStatisticAction,
@@ -39,9 +42,7 @@ import usersRouter from './users.routes';
 import storageGroupsRouter from './storage-groups.routes';
 import storageRouter from './storages.routes';
 
-import {
-  uploadAvatarMiddleware,
-} from '../middlewares/upload.middleware';
+import { uploadAvatarMiddleware } from '../middlewares/upload.middleware';
 import verifyToken from '../middlewares/auth.middleware';
 import { getStorageGroupsListAction } from '../controllers/storage-groups.controller';
 import { getPagesdListAction } from '../controllers/pages.controller';
@@ -57,20 +58,17 @@ router.post('/sign-out', cookiesValidation, logoutAction);
 
 // Routers
 
-router.use('/galeries', verifyToken, galeriesRouter);
-router.use('/groups', verifyToken, groupsRouter);
+router.use('/galeries', galeriesRouter);
+router.use('/groups', groupsRouter);
 router.use('/storage', verifyToken, storageRouter);
 router.use('/storage-groups', verifyToken, storageGroupsRouter);
-router.use('/pages', verifyToken, pagesRouter);
-router.use('/news', verifyToken, newsRouter);
-router.use('/comments', verifyToken, commentsRouter);
+router.use('/pages', pagesRouter);
+router.use('/news', newsRouter);
+router.use('/comments', commentsRouter);
 router.use('/users', verifyToken, usersRouter);
 
 router.get('/storage-groups-list', verifyToken, getStorageGroupsListAction);
 router.get('/pages-list', verifyToken, getPagesdListAction);
-
-//No Auth requests
-
 router.get('/users-ceo', getCEOAction);
 
 // Search
@@ -104,8 +102,7 @@ router.use('/galeries-items', express.static('storage/galeries-items'));
 router.use('/files', express.static('storage/files'));
 router.use('/news-covers', express.static('storage/news-covers'));
 
-
-router.get('/administration-group', verifyToken, getAdministartionGroupAction);
+router.get('/administration-group', getAdministartionGroupAction);
 router.get('/groups-list', verifyToken, getGroupsListAction);
 
 export default router;

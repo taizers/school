@@ -2,7 +2,6 @@ import React, { FC } from 'react';
 import { Navigate } from 'react-router-dom';
 
 import { AppContainer, MainContent } from '../styled';
-import Sidebar from '../../../components/Sidebar/index';
 import { getToken } from '../../../utils/index';
 
 type PrivateRouteType = {
@@ -15,11 +14,7 @@ export const PrivateRoute: FC<PrivateRouteType> = ({ component, isAuth }) => {
 
   return (
     <AppContainer>
-      <Sidebar>
-        <MainContent>
-          {isAuth || token ? component : <Navigate to={'/login'} />}
-        </MainContent>
-      </Sidebar>
+      {isAuth || token ? component : <Navigate to={'/login'} />}
     </AppContainer>
   );
 };

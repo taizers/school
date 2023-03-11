@@ -63,7 +63,6 @@ export const TEachersModal: FC<TEachersModalType> = ({
   return (
     <Dialog
       disableEnforceFocus
-      fullScreen
       scroll="body"
       open={isOpen}
       onClose={onModalClose}

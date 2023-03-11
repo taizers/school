@@ -2,6 +2,7 @@ import {
   LOGIN_SUCCESSED,
   SET_AUTH_LOADING,
   CLEAR_AUTH,
+  UPDATE_PROFILE_SUCCESSED,
 } from '../constants/types';
 
 const initialState = {
@@ -24,6 +25,12 @@ const reducer = (
         authUser: payload,
         role: payload?.role,
         isAuth: true,
+      };
+    case UPDATE_PROFILE_SUCCESSED:
+      return {
+        ...state,
+        authUser: payload,
+        role: payload?.role,
       };
     case CLEAR_AUTH:
       return initialState;

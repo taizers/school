@@ -4,7 +4,10 @@ import {
   deleteStorageAction,
   findStoragesFromGroupAction,
 } from '../controllers/storages.controller';
-import { createStorageValidation, findStoragesFromGroupValidation } from '../validations/storages.validation';
+import {
+  createStorageValidation,
+  findStoragesFromGroupValidation,
+} from '../validations/storages.validation';
 import { paramsIdValidation } from '../validations/global.validation';
 import { uploadFilesMiddleware } from '../middlewares/upload.middleware';
 
@@ -17,6 +20,10 @@ router.post(
   createStorageAction
 );
 router.delete('/:id', paramsIdValidation, deleteStorageAction);
-router.get('/:id', findStoragesFromGroupValidation, findStoragesFromGroupAction);
+router.get(
+  '/:id',
+  findStoragesFromGroupValidation,
+  findStoragesFromGroupAction
+);
 
 export default router;

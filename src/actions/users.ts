@@ -68,16 +68,12 @@ export const updateUser = (data: UpdateUserType, id: string) => ({
   payload: { data, id },
 });
 
-export const updateProfile = (data: UpdateUserType) => ({
+export const updateProfile = (data: any) => ({
   type: UPDATE_PROFILE,
   payload: data,
 });
 
-export const updateProfileSuccessed = (data: {
-  id: string;
-  name: string;
-  email: string;
-}) => ({
+export const updateProfileSuccessed = (data: any) => ({
   type: UPDATE_PROFILE_SUCCESSED,
   payload: data,
 });

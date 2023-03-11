@@ -4,6 +4,7 @@ import {
   deleteCommentAction,
   getCommentsAction,
 } from '../controllers/comments.controller';
+import verifyToken from '../middlewares/auth.middleware';
 import {
   createCommentValidation,
   getCommentsValidation,
@@ -12,8 +13,8 @@ import { paramsIdValidation } from '../validations/global.validation';
 
 const router = express.Router();
 
-router.post('/', createCommentValidation, createCommentAction);
-router.delete('/:id', paramsIdValidation, deleteCommentAction);
+router.post('/', verifyToken, createCommentValidation, createCommentAction);
+router.delete('/:id', verifyToken, paramsIdValidation, deleteCommentAction);
 router.get('/', getCommentsValidation, getCommentsAction);
 
 export default router;

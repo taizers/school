@@ -4,6 +4,7 @@ import moment from 'moment';
 import Pagination from '@mui/material/Pagination';
 import CreateNewsModal from './CreateNewsModal/index';
 import Button from '@mui/material/Button';
+import Laoding from '../../components/Loading/index';
 import {
   StyledTitle,
   StyledImage,
@@ -15,6 +16,7 @@ import { apiUrl } from '../../constants/constants';
 import DeleteModal from '../../components/DeleteModal';
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
+import { StyledPageTitle } from '../../styled';
 
 type NewsType = {
   getAllNewsPaginated: (page: number, limit: number) => Promise<any>;
@@ -27,6 +29,7 @@ type NewsType = {
   allNews: any;
   news: any;
   isOpen: boolean;
+  isAuth: boolean;
 };
 
 export const News: FC<NewsType> = ({
@@ -40,6 +43,7 @@ export const News: FC<NewsType> = ({
   setNewsModalStatus,
   isOpen,
   news,
+  isAuth,
 }) => {
   moment().locale('ru');
   const [page, setPage] = useState(1);
@@ -88,15 +92,19 @@ export const News: FC<NewsType> = ({
     <Box
       sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}
     >
+      {isLoading && <Laoding />}
+      <StyledPageTitle>Новости</StyledPageTitle>
       <Box>
-        <Button
-          fullWidth
-          variant="contained"
-          sx={{ mt: 3, mb: 2 }}
-          onClick={() => setNewsModalStatus(true)}
-        >
-          {'Создать новость'}
-        </Button>
+        {isAuth && (
+          <Button
+            fullWidth
+            variant="contained"
+            sx={{ mt: 3, mb: 2 }}
+            onClick={() => setNewsModalStatus(true)}
+          >
+            {'Создать новость'}
+          </Button>
+        )}
         {isDeleteModalOpen && (
           <DeleteModal
             item={'новость'}
@@ -161,26 +169,30 @@ export const News: FC<NewsType> = ({
               Подробнее...
             </StyledNoteLink>
             <Box sx={{ display: 'flex', gap: '10px' }}>
-              <Button
-                variant="contained"
-                sx={{ m: 1 }}
-                onClick={() => {
-                  setNewsModalStatus(true);
-                  setNewsId(item.id);
-                }}
-              >
-                <EditIcon />
-              </Button>
-              <Button
-                sx={{ m: 1 }}
-                variant="contained"
-                onClick={() => {
-                  setDeleteModalStatus(true);
-                  setDeleteId(item.id);
-                }}
-              >
-                <DeleteIcon />
-              </Button>
+              {isAuth && (
+                <Button
+                  variant="contained"
+                  sx={{ m: 1 }}
+                  onClick={() => {
+                    setNewsModalStatus(true);
+                    setNewsId(item.id);
+                  }}
+                >
+                  <EditIcon />
+                </Button>
+              )}
+              {isAuth && (
+                <Button
+                  sx={{ m: 1 }}
+                  variant="contained"
+                  onClick={() => {
+                    setDeleteModalStatus(true);
+                    setDeleteId(item.id);
+                  }}
+                >
+                  <DeleteIcon />
+                </Button>
+              )}
             </Box>
           </Box>
         ))}

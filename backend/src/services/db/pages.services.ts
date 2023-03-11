@@ -17,8 +17,8 @@ export const checkPage = async (where: object) => {
 };
 
 export const checkSubPages = async (id: string) => {
-  const group = await Page.findOne({ 
-    where: {id},
+  const group = await Page.findOne({
+    where: { id },
     include: [
       {
         model: Page,

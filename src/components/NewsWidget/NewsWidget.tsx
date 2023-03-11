@@ -28,22 +28,32 @@ export const NewsWidget: FC<NewsWidgetType> = ({
 
   moment().locale('ru');
   return (
-    <Box sx={{display: 'flex', flexDirection: 'column',}}>
-      <StyledTitle>Новости</StyledTitle>
-      <Box sx={{ 
-        display: 'flex',
-        flexWrap: 'wrap',
-        gap: '10px',
-        justifyContent: 'center',
-        '@media screen and (max-width: 800px)': {flexDirection: 'column', maxWidth: '800px', alignItems: 'center'}
-      }}>
+    <Box sx={{ display: 'flex', flexDirection: 'column' }}>
+      <StyledTitle>Последние новости</StyledTitle>
+      <Box
+        sx={{
+          display: 'flex',
+          flexWrap: 'wrap',
+          gap: '10px',
+          justifyContent: 'center',
+          '@media screen and (max-width: 800px)': {
+            flexDirection: 'column',
+            maxWidth: '800px',
+            alignItems: 'center',
+          },
+        }}
+      >
         {newsWidget &&
           newsWidget.news?.map((item: any, index: number) => (
             <Box
               key={`news ${item.title} ${index}`}
               sx={{
                 display: 'flex',
-                '@media screen and (max-width: 800px)': {flexDirection: 'column', maxWidth: '400px', alignItems: 'center'},
+                '@media screen and (max-width: 800px)': {
+                  flexDirection: 'column',
+                  maxWidth: '400px',
+                  alignItems: 'center',
+                },
                 gap: '10px',
                 mb: '10px',
                 p: '5px',
@@ -78,14 +88,13 @@ export const NewsWidget: FC<NewsWidgetType> = ({
               </Box>
             </Box>
           ))}
-
       </Box>
       <Button
-          sx={{ fontWeigth: 500, alignSelf: 'center', mt: 1 }}
-          href="/news"
-          variant="contained"
+        sx={{ fontWeigth: 500, alignSelf: 'center', mt: 1 }}
+        href="/news"
+        variant="contained"
       >
-          Все новости
+        Все новости
       </Button>
     </Box>
   );

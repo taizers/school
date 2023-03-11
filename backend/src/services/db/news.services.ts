@@ -92,7 +92,10 @@ export const findAllNews = async (page: number, limit: number) => {
     throw new ResourceNotFoundError('News');
   }
 
-  const news = rows?.map((item: any) => ({...item?.dataValues, cover: editPath(item?.dataValues?.cover)}));
+  const news = rows?.map((item: any) => ({
+    ...item?.dataValues,
+    cover: editPath(item?.dataValues?.cover),
+  }));
 
   const totalPages = !count ? 1 : Math.ceil(count / limit);
 

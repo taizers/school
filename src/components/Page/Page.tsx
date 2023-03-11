@@ -8,7 +8,6 @@ import { Markup } from 'interweave';
 import DeleteModal from '../DeleteModal/index';
 import DeleteIcon from '@mui/icons-material/Delete';
 
-
 type PageType = {
   getPage: (id: string) => Promise<any>;
   deletePage: (id: string, history: any) => Promise<any>;
@@ -22,7 +21,18 @@ type PageType = {
   isAuth: boolean;
 };
 
-export const Page: FC<PageType> = ({ getPage, page, isOpen, isAuth, isLoading, deletePage, setUpdatePageModalStatus, updatePage, getPagesList, pagesList }) => {
+export const Page: FC<PageType> = ({
+  getPage,
+  page,
+  isOpen,
+  isAuth,
+  isLoading,
+  deletePage,
+  setUpdatePageModalStatus,
+  updatePage,
+  getPagesList,
+  pagesList,
+}) => {
   const { id } = useParams();
   const [isDelteModalOpen, setDelteModalOpen] = useState(false);
   const history = useNavigate();
@@ -43,7 +53,7 @@ export const Page: FC<PageType> = ({ getPage, page, isOpen, isAuth, isLoading, d
     if (page?.id) {
       updatePage(data, page.id);
     }
-  }
+  };
 
   const onDeleteUser = () => {
     if (page?.id) {
@@ -55,22 +65,26 @@ export const Page: FC<PageType> = ({ getPage, page, isOpen, isAuth, isLoading, d
     <Box
       sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}
     >
-      {isAuth && <Button
-        variant="outlined"
-        sx={{ m: 1 }}
-        onClick={() => setUpdatePageModalStatus(true)}
-      >
-        Редактировать страницу
-      </Button>}
-      {isAuth && <Button
-        sx={{ m: 1 }}
-        variant="contained"
-        onClick={() => {
-          setDelteModalOpen(true);
-        }}
-      >
-        <DeleteIcon />
-      </Button>}
+      {isAuth && (
+        <Button
+          variant="outlined"
+          sx={{ m: 1 }}
+          onClick={() => setUpdatePageModalStatus(true)}
+        >
+          Редактировать страницу
+        </Button>
+      )}
+      {isAuth && (
+        <Button
+          sx={{ m: 1 }}
+          variant="contained"
+          onClick={() => {
+            setDelteModalOpen(true);
+          }}
+        >
+          <DeleteIcon />
+        </Button>
+      )}
       {isOpen && (
         <UpdatePageModal
           isOpen={isOpen}
@@ -89,17 +103,14 @@ export const Page: FC<PageType> = ({ getPage, page, isOpen, isAuth, isLoading, d
           deleteAction={onDeleteUser}
         />
       )}
-      {
-          page && <Box
-          sx={{ width: '100%' }}
-        >
+      {page && (
+        <Box sx={{ width: '100%' }}>
           <StyledTitle>{page.title}</StyledTitle>
           <StyledWrapper>
             {page.content ? <Markup content={page.content} /> : 'Нет контента'}
           </StyledWrapper>
         </Box>
-      }
+      )}
     </Box>
-
   );
 };

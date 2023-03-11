@@ -11,12 +11,13 @@ import {
   updateGroupValidation,
 } from '../validations/groups.validation';
 import { paramsIdValidation } from '../validations/global.validation';
+import verifyToken from '../middlewares/auth.middleware';
 
 const router = express.Router();
 
-router.post('/', createGroupValidation, createGroupAction);
-router.delete('/:id', paramsIdValidation, deleteGroupAction);
-router.put('/:id', updateGroupValidation, updateGroupAction);
+router.post('/', verifyToken, createGroupValidation, createGroupAction);
+router.delete('/:id', verifyToken, paramsIdValidation, deleteGroupAction);
+router.put('/:id', verifyToken, updateGroupValidation, updateGroupAction);
 router.get('/:id', paramsIdValidation, getGroupAction);
 router.get('/', getGroupsAction);
 

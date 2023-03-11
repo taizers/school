@@ -7,32 +7,6 @@ import Typography from '@mui/material/Typography';
 import ImageViewer from 'react-simple-image-viewer';
 import { apiUrl } from '../../constants/constants';
 
-const galery = {
-  title: 'Название Альбома',
-  photos: [
-    {
-      id: 1,
-      url: '/static/images/school.jpg',
-    },
-    {
-      id: 2,
-      url: '/static/images/school.jpg',
-    },
-    {
-      id: 3,
-      url: '/static/images/school.jpg',
-    },
-    {
-      id: 4,
-      url: '/static/images/school.jpg',
-    },
-    {
-      id: 5,
-      url: '/static/images/images.jpg',
-    },
-  ],
-};
-
 type GaleryType = {
   isLoading: boolean;
   galery: any;

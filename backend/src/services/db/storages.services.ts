@@ -14,7 +14,7 @@ import { editPath } from '../../utils/path';
 export const findStorageList = async (
   group_id: number,
   page: number,
-  limit: number,
+  limit: number
 ) => {
   const { count, rows } = await Storage.findAndCountAll({
     offset: page * limit,
@@ -30,7 +30,11 @@ export const findStorageList = async (
     order: [['created_at', 'DESC']],
   });
 
-  const storages = rows?.map((item: any) => ({...item?.dataValues, name: editPath(item?.dataValues.name)})) || [];
+  const storages =
+    rows?.map((item: any) => ({
+      ...item?.dataValues,
+      name: editPath(item?.dataValues.name),
+    })) || [];
 
   const totalPages = !count ? 1 : Math.ceil(count / limit);
 
@@ -59,7 +63,7 @@ export const deleteStorage = async (id: string) => {
   const photo = await Storage.findOne({ where: { id }, attributes: ['name'] });
 
   if (!photo) {
-    throw new ResourceNotFoundError('Файл'); 
+    throw new ResourceNotFoundError('Файл');
   }
 
   await fs.unlink(photo?.name);

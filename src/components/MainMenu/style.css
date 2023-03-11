@@ -17,12 +17,12 @@
   display: none;
 } 
 
-.dropdown {
+.mainnav .dropdown {
   float: left;
   overflow: hidden;
 } 
 
-.icon {
+.mainnav .icon {
     font-size:15px;
 }
 
@@ -35,15 +35,6 @@
     background-color: inherit;
     font-family: inherit;
     margin: 0;
-}
-  
-.dropdown-content {
-    display: none;
-    position: absolute;
-    background-color: #f9f9f9;
-    min-width: 160px;
-    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
-    z-index: 1;
 }
   
 .mainnav .dropdown-content a {
@@ -60,40 +51,54 @@
     color: white;
 }
   
-.dropdown-content a:hover {
+.mainnav .dropdown-content a:hover {
     background-color: #ddd;
     color: black;
 }
-  
-.dropdown:hover .dropdown-content {
+
+  .mainnav .dropdown:hover .dropdown-content {
+
     display: block;
+  }
+
+
+.mainnav .dropdown .dropdown-content {
+  display: none;
+  position: absolute;
+  background-color: #f9f9f9;
+  min-width: 160px;
+  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+  z-index: 1;
 }
 
 
-.dropdown.avatar-btn .dropdown-content{
+.mainnav .dropdown.avatar-btn .dropdown-content{
   top: 10;
   right: 0;
 }
 
-.dropbtn a {
+.mainnav .dropbtn a {
     padding: 0;
-    padding-right: 18px;
 }
 
-.fa-caret-down {
+.mainnav .fa-caret-down {
     margin-left: 5px;
     font-size: 12px;
 }
 
-.dropdown.avatar-btn {
+.mainnav .dropdown.avatar-btn .dropbtn a {
+  height: 42px;
+}
+
+.mainnav .dropdown.avatar-btn {
   float: right;
 }
 
-.dropdown.avatar-btn .dropbtn{
+.mainnav .dropdown.avatar-btn .dropbtn{
   padding: 4px 10px;
 }
 
-.avatar {
+.mainnav .avatar {
   width: 42px;
   height: 42px;
   border-radius: 50%;
@@ -103,7 +108,7 @@
   position: relative;
 }
 
-.dropdown.avatar-btn .dropdown-content {
+.mainnav .dropdown.avatar-btn .dropdown-content {
   right: 0;
 }
   
@@ -115,12 +120,12 @@
       float: right;
       display: block;
     }
-    .dropbtn a {
+    .mainnav .dropbtn a {
         padding: 0;
         position: relative;
     }
     
-    .fa-caret-down {
+    .mainnav .fa-caret-down {
         position: absolute;
         right: 5px;
         top: 50%;
@@ -132,7 +137,7 @@
     .mainnav.responsive {position: relative;}
     .mainnav.responsive .icon {
       position: absolute;
-      right: 0;
+      right: 15px;
       top: 0;
     }
     .mainnav.responsive a {
@@ -148,7 +153,7 @@
       text-align: left;
     }
     
-    .dropdown.avatar-btn .dropbtn a {
+    .mainnav .dropdown.avatar-btn .dropbtn a {
       text-align: center;
     }
 }

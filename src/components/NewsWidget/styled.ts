@@ -12,8 +12,9 @@ export const StyledImage = styled.img`
 export const StyledWrapper = styled.div`
   width: 100%;
 `;
-export const StyledTitle = styled.h2`
+export const StyledTitle = styled.h3`
   align-self: flex-start;
+  font-size: 20px;
   color: #515156;
 `;
 

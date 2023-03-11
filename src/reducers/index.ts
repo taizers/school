@@ -4,7 +4,6 @@ import { connectRouter } from 'connected-react-router';
 import { LOGOUT } from '../constants/types';
 import auth from './auth';
 import users from './users';
-import books from './books';
 import news from './news';
 import galeries from './galeries';
 import groups from './groups';
@@ -15,7 +14,6 @@ import { clearToken } from '../utils';
 const appReducer = combineReducers({
   auth,
   users,
-  books,
   news,
   galeries,
   groups,
@@ -27,7 +25,12 @@ const appReducer = combineReducers({
 
 const rootReducer = (state: any, action: { type: string; action: any }) => {
   if (action.type === LOGOUT) {
-    state = undefined;
+    state.auth = {
+      authUser: {},
+      isLoading: false,
+      isAuth: false,
+      role: '',
+    };
     clearToken();
   }
   return appReducer(state, action);

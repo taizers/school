@@ -6,7 +6,7 @@ import Typography from '@mui/material/Typography';
 
 export const Header: FC<any> = () => {
   return (
-    <StyledHeader>
+    <StyledHeader className="container">
       <img
         src="/static/images/school.jpg"
         alt="Герб школы"

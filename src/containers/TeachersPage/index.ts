@@ -10,6 +10,10 @@ import {
 } from '../../actions/groups';
 
 const mapStateToProps = (state: {
+  auth: {
+    isAuth: boolean;
+    role: string;
+  };
   groups: {
     isLoading: boolean;
     groups: any;
@@ -18,6 +22,8 @@ const mapStateToProps = (state: {
   };
 }) => ({
   isLoading: state.groups.isLoading,
+  isAuth: state.auth.isAuth,
+  role: state.auth.role,
   groups: state.groups.groups,
   group: state.groups.group,
   isOpen: state.groups.groupsModalIsOpen,

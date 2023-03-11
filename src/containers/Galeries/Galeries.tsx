@@ -10,6 +10,7 @@ import { apiUrl } from '../../constants/constants';
 import DeleteModal from '../../components/DeleteModal/index';
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
+import { StyledPageTitle } from '../../styled';
 
 type GaleriesType = {
   getAllGaleriesPaginated: (page: number, limit: number) => Promise<any>;
@@ -20,6 +21,7 @@ type GaleriesType = {
   setCreateGaleryModalStatus: (data: boolean) => void;
   setUpdateGaleryModalStatus: (data: boolean) => void;
   isLoading: boolean;
+  isAuth: boolean;
   galeries: any;
   galery: any;
   isCreateModalOpen: boolean;
@@ -34,6 +36,7 @@ export const Galeries: FC<GaleriesType> = ({
   deleteGalery,
   getGalery,
   galery,
+  isAuth,
   isCreateModalOpen,
   isUpdateModalOpen,
   galeries,
@@ -78,13 +81,16 @@ export const Galeries: FC<GaleriesType> = ({
     <Box
       sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}
     >
+      <StyledPageTitle>Фотоальбом</StyledPageTitle>
       <Box sx={{ m: '10px' }}>
-        <Button
-          variant="outlined"
-          onClick={() => setCreateGaleryModalStatus(true)}
-        >
-          Создать альбом
-        </Button>
+        {isAuth && (
+          <Button
+            variant="outlined"
+            onClick={() => setCreateGaleryModalStatus(true)}
+          >
+            Создать альбом
+          </Button>
+        )}
         {isCreateModalOpen && (
           <CreateGaleryModal
             isOpen={isCreateModalOpen}
@@ -154,26 +160,30 @@ export const Galeries: FC<GaleriesType> = ({
               )}`}</StyledDate>
             </StyledLink>
             <Box sx={{ display: 'flex', gap: '10px' }}>
-              <Button
-                sx={{ m: 1 }}
-                variant="contained"
-                onClick={() => {
-                  setUpdateGaleryModalStatus(true);
-                  setGaleryId(item.id);
-                }}
-              >
-                <EditIcon />
-              </Button>
-              <Button
-                sx={{ m: 1 }}
-                variant="contained"
-                onClick={() => {
-                  setDeleteId(item.id);
-                  setDelteModalOpen(true);
-                }}
-              >
-                <DeleteIcon />
-              </Button>
+              {isAuth && (
+                <Button
+                  sx={{ m: 1 }}
+                  variant="contained"
+                  onClick={() => {
+                    setUpdateGaleryModalStatus(true);
+                    setGaleryId(item.id);
+                  }}
+                >
+                  <EditIcon />
+                </Button>
+              )}
+              {isAuth && (
+                <Button
+                  sx={{ m: 1 }}
+                  variant="contained"
+                  onClick={() => {
+                    setDeleteId(item.id);
+                    setDelteModalOpen(true);
+                  }}
+                >
+                  <DeleteIcon />
+                </Button>
+              )}
             </Box>
           </Box>
         ))}

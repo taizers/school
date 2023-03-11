@@ -16,6 +16,7 @@ import moment from 'moment';
 import { useNavigate } from 'react-router-dom';
 
 import DotMenu from '../../components/DotMenu/index';
+import { StyledPageTitle } from '../../styled';
 
 type StorageGroupsTypes = {
   getAllStorageGroups: (page: number, limit: number) => Promise<any>;
@@ -93,6 +94,7 @@ export const StorageGroups: FC<StorageGroupsTypes> = ({
     <Box
       sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}
     >
+      <StyledPageTitle>Группы файлов</StyledPageTitle>
       <Button
         variant="contained"
         sx={{ m: 1 }}

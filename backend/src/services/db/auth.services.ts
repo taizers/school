@@ -31,7 +31,7 @@ export const login = async (email: string, password: string) => {
     include: [
       {
         model: Group,
-        as: 'users'
+        as: 'users',
       },
     ],
     row: true,
@@ -86,9 +86,9 @@ export const refresh = async (refreshToken: string) => {
     include: [
       {
         model: Group,
-        as: 'users'
+        as: 'users',
       },
-    ]
+    ],
   });
 
   if (!user) {

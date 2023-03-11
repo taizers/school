@@ -1,5 +1,7 @@
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const { Note, User, Group } = require('../../db/models/index');
+// eslint-disable-next-line @typescript-eslint/no-var-requires
+const fs = require('fs').promises;
 
 import UserDto from '../../dtos/user.dto';
 import Sequelize = require('sequelize');
@@ -25,11 +27,18 @@ export const getUser = async (where: object) => {
 };
 
 export const deleteUser = async (id: string) => {
+  const previosUser = await getUser({id});
+
   const result = await User.destroy({ where: { id } });
 
   if (result === 0) {
-    throw new EntityNotFoundError(id, 'Страница');
+    throw new EntityNotFoundError(id, 'Пользователь');
+  } else {
+    if (previosUser?.avatar) {
+      await fs.unlink(previosUser.avatar);
+    }
   }
+
 };
 
 export const findUser = async (where: object) => {
@@ -39,7 +48,7 @@ export const findUser = async (where: object) => {
     include: [
       {
         model: Group,
-        as: 'users'
+        as: 'users',
       },
     ],
     attributes: {
@@ -63,7 +72,7 @@ export const findUserExcludePassword = async (where: object) => {
     include: [
       {
         model: Group,
-        as: 'users'
+        as: 'users',
       },
     ],
     attributes: {
@@ -88,7 +97,7 @@ export const findPaginatedUsers = async (page: number, limit: number) => {
     include: [
       {
         model: Group,
-        as: 'users'
+        as: 'users',
       },
     ],
     attributes: {
@@ -97,12 +106,11 @@ export const findPaginatedUsers = async (page: number, limit: number) => {
     order: [['created_at', 'DESC']],
   });
 
-
   const users = rows.map((item: any) => {
     const dtosUser = new UserDto(item);
 
     return { activationkey: item.activationkey, ...dtosUser };
-  })
+  });
 
   return { totalPages: Math.ceil(count / limit), page: page + 1, users };
 };
@@ -120,10 +128,14 @@ export const findUsers = async (where: object) => {
   return dtosUsers;
 };
 
-export const updateUser = async (id: string, payload: object) => {
+export const updateUser = async (id: string, payload: any) => {
+  let previosAvatar;
   let user;
 
-  console.log(payload)
+  if (payload?.avatar) {
+    const previosUser = await getUser({id});
+    previosAvatar = previosUser.avatar;
+  }
 
   try {
     user = await User.update(payload, {
@@ -133,15 +145,18 @@ export const updateUser = async (id: string, payload: object) => {
       include: [
         {
           model: Group,
-          as: 'users'
+          as: 'users',
         },
       ],
       attributes: {
         exclude: ['password', 'activationkey'],
       },
     });
+    
+    if (previosAvatar) {
+      await fs.unlink(previosAvatar);
+    }
   } catch (error) {
-    console.log(error);
     throw new Error('Could not update user');
   }
 
