@@ -47,6 +47,7 @@ export default (sequelize, DataTypes) => {
     User.hasOne(models.Token, { onDelete: 'cascade', foreignKey: 'owner_id' });
     User.belongsTo(models.Group, { foreignKey: 'group_id', as: 'users' });
     User.hasMany(models.Galery, { foreignKey: 'creator_id' });
+    User.hasMany(models.Class, { foreignKey: 'classteach_id' });
     User.hasMany(models.Comment, { foreignKey: 'creator_id' });
     User.hasMany(models.News, { foreignKey: 'creator_id' });
     User.hasMany(models.Storage, { foreignKey: 'creator_id' });

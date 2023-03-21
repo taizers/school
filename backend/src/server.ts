@@ -27,7 +27,7 @@ app.use('/api/v1', router);
 app.use(errorMiddleware);
 
 try {
-  app.post('/add-admin', async (req, res) => {
+  app.get('/add-admin', async (req, res) => {
     const user = await createUser({
       username: 'Александр Сачок',
       role: 'admin',
@@ -38,12 +38,6 @@ try {
 } catch (error) {
   console.log(error);
 }
-
-
-// app.get('*', (req, res) => {
-//   console.log(path.join(__dirname, 'build', 'index.html'))
-//   res.sendFile(path.join(__dirname, 'build', 'index.html'));
-// });
 
 app.use('/static', express.static(path.join(__dirname, 'build/static')));
 app.use(
